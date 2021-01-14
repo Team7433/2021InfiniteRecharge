@@ -50,9 +50,11 @@ void StoreBallHolder::Execute() {
     m_intake->Set(Position::Out, m_intakeSpeed);
     m_ballholder->SetIndexer(m_indexRunSpeed);
 
-    // if (m_timer.Get() < BallHolderConstants::kTimerMagazineDelay) {
-
-    // }
+    if (m_timer.Get() < BallHolderConstants::kTimerMagazineDelay) {
+      m_ballholder->SetMagazine(m_magazineRunSpeed);
+      m_timer.Reset();
+      m_timer.Stop();
+    }
 
     if (m_ballholder->GetSensorBeltIn() && m_lastSensorBeltIn == false) {
       m_timer.Reset();
