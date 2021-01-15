@@ -7,6 +7,7 @@
 
 #include "commands/StoreBallHolder.h"
 #include "Constants.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 StoreBallHolder::StoreBallHolder(BallHolder * ballholder, FloorIntake * floorIntake, double indexSpeed, double magazineSpeed, double intakeSpeed) {
   AddRequirements({ballholder, floorIntake});
@@ -49,8 +50,10 @@ void StoreBallHolder::Execute() {
   } else {
     m_intake->Set(Position::Out, m_intakeSpeed);
     m_ballholder->SetIndexer(m_indexRunSpeed);
+    frc::SmartDashboard::PutNumber("magazine/Timer", m_timer.Get().to<double>());
+    frc::SmartDashboard::PutBoolean("magazine/Last", m_lastSensorBeltIn);
 
-    if (m_timer.Get() < BallHolderConstants::kTimerMagazineDelay) {
+    if (m_timer.Get() > BallHolderConstants::kTimerMagazineDelay) {
       m_ballholder->SetMagazine(m_magazineRunSpeed);
       m_timer.Reset();
       m_timer.Stop();
@@ -67,6 +70,8 @@ void StoreBallHolder::Execute() {
       m_timer.Stop();
     }
   }
+
+  m_lastSensorBeltIn = m_ballholder->GetSensorBeltIn();
 
     
 }
