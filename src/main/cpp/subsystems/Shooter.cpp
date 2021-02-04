@@ -29,7 +29,7 @@ void Shooter::Periodic() {
    // frc::SmartDashboard::PutNumber("I Accumulator", GetIAccumulator());
    // frc::SmartDashboard::PutNumber("Percentage Output", GetPercentageOutput());
    // frc::SmartDashboard::PutNumber("Target velocity", GetVelocityLoopTarget());
-   // frc::SmartDashboard::PutNumber("Current Velocity", GetVelocity());
+   frc::SmartDashboard::PutNumber("Shooter/Velocity", GetVelocity());
 
 
 }
