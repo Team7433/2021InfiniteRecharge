@@ -14,12 +14,12 @@ FloorIntake::FloorIntake() {
 
 // This method will be called once per scheduler run
 void FloorIntake::Periodic() {
-    frc::SmartDashboard::PutNumber("Intake/Current", m_RollerMotor->GetOutputCurrent());
     
 }
 
 
 void FloorIntake::Set(Position position, double roller) {
+    m_percentOutput = roller;
     m_RollerMotor->Set(ControlMode::PercentOutput, roller);
     
     //Change the following in constants file

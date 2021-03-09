@@ -38,9 +38,13 @@ class StoreBallHolder
     FloorIntake * m_intake;
 
     frc2::Timer m_timer = frc2::Timer();
+    frc2::Timer m_timer2 = frc2::Timer();
 
     double m_magazineRunSpeed;
     double m_indexRunSpeed;
     double m_intakeSpeed;
+    double m_currentAverage;
     bool m_lastSensorBeltIn = false;
+    bool m_overloaded = false;
+
 };

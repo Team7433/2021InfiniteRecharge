@@ -8,6 +8,7 @@
 #include "commands/StoreBallHolder.h"
 #include "Constants.h"
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <math.h>
 
 StoreBallHolder::StoreBallHolder(BallHolder * ballholder, FloorIntake * floorIntake, double indexSpeed, double magazineSpeed, double intakeSpeed) {
   AddRequirements({ballholder, floorIntake});
@@ -72,6 +73,41 @@ void StoreBallHolder::Execute() {
   }
 
   m_lastSensorBeltIn = m_ballholder->GetSensorBeltIn();
+
+
+  double current = m_intake->GetCurrent();
+
+  
+
+  if (m_intake->GetPercentageOutput() > 0) {
+    
+    m_currentAverage = m_currentAverage - (m_currentAverage/5) + (abs(current)/5);
+    frc::SmartDashboard::PutNumber("CurrentAverageFloorIntake", m_currentAverage);
+    frc::SmartDashboard::PutNumber("currentFloorIntake", current);
+
+    if (m_currentAverage > 20.0) {
+
+      if (m_overloaded == false) {
+        m_overloaded = true;
+        m_timer2.Reset();
+        m_timer2.Start();
+      }
+
+    }
+
+
+  }
+
+  if (m_overloaded == true) {
+    m_intake->Set(Position::Out, -0.65);
+    if (m_timer2.Get() > BallHolderConstants::kOverloadReverseLength) {
+          
+          m_intake->Set(Position::Out, m_intakeSpeed);
+          m_overloaded = false;
+          m_currentAverage = 0.0;
+          m_timer2.Stop();
+          }
+  }
 
     
 }

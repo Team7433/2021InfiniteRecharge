@@ -86,6 +86,7 @@ namespace BallHolderConstants {
     constexpr int ksensorId_beltMiddle = 5;
 
     constexpr units::time::second_t kTimerMagazineDelay = 0.1_s;
+    constexpr units::time::second_t kOverloadReverseLength = 0.2_s;
 
 }
 

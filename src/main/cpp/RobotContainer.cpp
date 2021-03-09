@@ -74,9 +74,9 @@ void RobotContainer::ConfigureButtonBindings()
     return newSpeed;
   }));
 
-  frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
-    m_gyro.Reset(); 
-    });
+  // frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
+  //   m_gyro.Reset(); 
+  //   });
 
   //frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, [] { return frc::SmartDashboard::GetNumber("ArmAngle", 0); }));
 

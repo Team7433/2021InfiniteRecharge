@@ -31,7 +31,6 @@ SetBallManipulation::SetBallManipulation(Feeder * feeder, BallHolder * holder, F
   } else {
     AddCommands(SetFeeder(feeder, BeltPosition::In, feederMotor),
               StoreBallHolder(holder, intake, indexRoller, magazineBelts, floorIntake));
-              SetFloorIntake(intake, Position::Out, floorIntake);
   }
   
 }
