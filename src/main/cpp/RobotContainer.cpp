@@ -21,8 +21,8 @@ RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem), m_vision(&
   // Configure the button bindings
   ConfigureButtonBindings();
 
-  frc::SmartDashboard::PutNumber("ShooterSpeed", 16000);
-  frc::SmartDashboard::PutNumber("ArmAngle", 29);
+  frc::SmartDashboard::PutNumber("Custom/Speed", 16000);
+  frc::SmartDashboard::PutNumber("Custom/Angle", 29);
 }
 
 void RobotContainer::ConfigureButtonBindings()
@@ -41,7 +41,7 @@ void RobotContainer::ConfigureButtonBindings()
   // frc2::JoystickButton(&m_driverStick, 2).WhenPressed(DistanceSet(&m_vision, &m_arm, &m_shooter));
 
   frc2::JoystickButton(&m_driverStick, 7).WhenPressed(RunShooter(&m_shooter, 17000.00));
-  frc2::JoystickButton(&m_driverStick, 9).WhenPressed(RunShooter(&m_shooter, [] { return frc::SmartDashboard::GetNumber("ShooterSpeed", 0); }));
+  frc2::JoystickButton(&m_driverStick, 9).WhenPressed(RunShooter(&m_shooter, [] { return frc::SmartDashboard::GetNumber("Custom/Speed", 0); }));
   frc2::JoystickButton(&m_driverStick, 8).WhenPressed(RunShooter(&m_shooter, 0.0));
   frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SetArmAngle(&m_arm, 56));
 
@@ -51,26 +51,26 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, 40));
 
   frc2::POVButton(&m_driverStick, 0).WhenPressed(SetArmAngle(&m_arm, [] {
-    double newAngle = frc::SmartDashboard::GetNumber("ArmAngle", 0) + 1;
-    frc::SmartDashboard::PutNumber("ArmAngle", newAngle);
+    double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) + 1;
+    frc::SmartDashboard::PutNumber("Custom/Angle", newAngle);
     return newAngle;
   }));
 
   frc2::POVButton(&m_driverStick, 180).WhenPressed(SetArmAngle(&m_arm, [] {
-    double newAngle = frc::SmartDashboard::GetNumber("ArmAngle", 0) - 1;
-    frc::SmartDashboard::PutNumber("ArmAngle", newAngle);
+    double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) - 1;
+    frc::SmartDashboard::PutNumber("Custom/Angle", newAngle);
     return newAngle;
   }));
 
   frc2::POVButton(&m_driverStick, 270).WhenPressed(RunShooter(&m_shooter, [] {
-    double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;
-    frc::SmartDashboard::PutNumber("ShooterSpeed", newSpeed);
+    double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) - 100.0;
+    frc::SmartDashboard::PutNumber("Custom/Speed", newSpeed);
     return newSpeed;
   }));
 
   frc2::POVButton(&m_driverStick, 90).WhenPressed(RunShooter(&m_shooter, [] {
-    double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) + 100.0;
-    frc::SmartDashboard::PutNumber("ShooterSpeed", newSpeed);
+    double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) + 100.0;
+    frc::SmartDashboard::PutNumber("Custom/Speed", newSpeed);
     return newSpeed;
   }));
 
