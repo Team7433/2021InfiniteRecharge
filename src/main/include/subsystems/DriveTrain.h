@@ -12,6 +12,8 @@
 #include <frc/drive/DifferentialDrive.h>
 #include "Constants.h"
 
+#include "util/MotionProfileRunner.h"
+
 
 using namespace DriveTrainConstants;
 
@@ -28,18 +30,28 @@ class DriveTrain : public frc2::SubsystemBase {
 
   void CurvatureDrive(double forward, double rotation, bool quickTurn);
 
+  void MPStart() { m_profiler->Start(kMPStartBuffer); }
+
+  void MPUpdate() { m_profiler->UpdateRunner(); }
+
+  void MPStop() { m_profiler->Stop(); }
+
+  bool MPIsFinished() { return m_profiler->IsFinishedProfile(); }
+
+  bool MPLoad(std::string path) {return m_profiler->LoadFromFile(path); }
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
 
-  WPI_TalonFX * m_leftDrive1 = new WPI_TalonFX{kLeftDrive1ID};
-  WPI_TalonFX * m_leftDrive2 = new WPI_TalonFX{kLeftDrive2ID};
-  WPI_TalonFX * m_rightDrive1 = new WPI_TalonFX{kRightDrive1ID};
-  WPI_TalonFX * m_rightDrive2 = new WPI_TalonFX{kRightDrive2ID};
+  WPI_TalonFX * m_leftDriveMaster = new WPI_TalonFX{kLeftDrive1ID};
+  WPI_TalonFX * m_leftDriveSlave = new WPI_TalonFX{kLeftDrive2ID};
+  WPI_TalonFX * m_rightDriveMaster = new WPI_TalonFX{kRightDrive1ID};
+  WPI_TalonFX * m_rightDriveSlave = new WPI_TalonFX{kRightDrive2ID};
 
-  frc::DifferentialDrive m_robotDrive{*m_leftDrive1, *m_rightDrive1};
+  frc::DifferentialDrive m_robotDrive{*m_leftDriveMaster, *m_rightDriveMaster};
   
-
+  Iona::MotionProfileRunner *m_profiler = new Iona::MotionProfileRunner(m_leftDriveMaster, m_rightDriveMaster);
 
 };

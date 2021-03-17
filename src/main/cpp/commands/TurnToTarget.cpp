@@ -60,7 +60,7 @@ void TurnToTarget::Execute() {
 
 // Called once the command ends or is interrupted.
 void TurnToTarget::End(bool interrupted) {
- // m_driveTrain->ArcadeDrive(0, 0);
+  m_driveTrain->ArcadeDrive(0, 0, false);
   m_done = false;
 
   

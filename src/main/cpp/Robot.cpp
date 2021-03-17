@@ -11,7 +11,7 @@
 #include <frc2/command/CommandScheduler.h>
 
 void Robot::RobotInit() {
-  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  // frc::CameraServer::GetInstance()->StartAutomaticCapture();
 }
 
 /**

@@ -39,6 +39,24 @@ namespace DriveTrainConstants {
 
     //constexpr double KangleKp = 0.01;
 
+    constexpr int kPIDSlotIdx = 0;
+    constexpr int kTimeoutMs = 10;
+
+    constexpr double kF_Profiling = 0.04815;//0.05115
+    constexpr double kP_Profiling = 1;//1
+    constexpr double kI_Profiling = 0;
+    constexpr double kD_Profiling = 0;//20
+
+    constexpr double kUnitsPerRotations = 2048 * 10.71;
+    constexpr double kMetersPerRotation = 3.14159265359 * 0.15565;
+    constexpr double kMetersPerUnit = kMetersPerRotation / kUnitsPerRotations;
+
+    constexpr double kUnits100msPerMeterSecond = ( 2048 * 10.71 ) / ( 10 * 0.4790928797);
+
+
+ 
+    constexpr double kMPStartBuffer = 5;
+
 }
 
 namespace FloorIntakeConstants {

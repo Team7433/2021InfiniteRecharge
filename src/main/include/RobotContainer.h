@@ -27,6 +27,7 @@
 #include "commands/SetArmAngle.h"
 #include "commands/ManualArmControl.h"
 #include "commands/DistanceSet.h"
+#include "commands/DriveRunProfile.h"
 
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/FloorIntake.h"
@@ -76,6 +77,9 @@ class RobotContainer {
   frc::Joystick m_driverStick{kMainDriverStickId};
   frc::XboxController m_operatorController{kOperatorControllerId};
   frc::Joystick m_buttonBox{kButtonBoxId};
+
+  std::string m_pathName = "JustForward";
+  std::string m_pathName2 = "JustBack";
 
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 
