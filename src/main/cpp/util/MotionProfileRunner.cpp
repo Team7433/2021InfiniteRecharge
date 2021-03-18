@@ -147,7 +147,7 @@ void MotionProfileRunner::Start(int startPoints) {
     
     if (m_LoggingFile->is_open()) {
 
-      *m_LoggingFile << "Pos,velocity,target pos,target vel,error,Pos,velocity,target pos,target vel,error" << std::endl;
+      *m_LoggingFile << "Pos,velocity,target pos,traj vel,traj pos,error,%output,Pos,velocity,target pos,traj vel,traj pos,error,%output" << std::endl;
 
     }
 
@@ -177,8 +177,8 @@ void MotionProfileRunner::UpdateRunner() {
 
   if (m_LoggingFile->is_open()) {
 
-    *m_LoggingFile << m_leftMotor->GetSelectedSensorPosition() << "," << m_leftMotor->GetSelectedSensorVelocity() << "," << m_leftMotor->GetClosedLoopTarget() << "," << m_leftMotor->GetActiveTrajectoryVelocity() << "," << m_leftMotor->GetClosedLoopError() << ",";
-    *m_LoggingFile << m_rightMotor->GetSelectedSensorPosition() << "," << m_rightMotor->GetSelectedSensorVelocity() << "," << m_rightMotor->GetClosedLoopTarget() << "," << m_leftMotor->GetActiveTrajectoryVelocity() << "," << m_rightMotor->GetClosedLoopError() << std::endl;
+    *m_LoggingFile << m_leftMotor->GetSelectedSensorPosition() << "," << m_leftMotor->GetSelectedSensorVelocity() << "," << m_leftMotor->GetClosedLoopTarget() << "," << m_leftMotor->GetActiveTrajectoryVelocity() << "," << m_rightMotor->GetActiveTrajectoryPosition() << "," << m_leftMotor->GetClosedLoopError() << "," << m_leftMotor->GetMotorOutputPercent() << ",";
+    *m_LoggingFile << m_rightMotor->GetSelectedSensorPosition() << "," << m_rightMotor->GetSelectedSensorVelocity() << "," << m_rightMotor->GetClosedLoopTarget() << ","  << m_rightMotor->GetActiveTrajectoryVelocity() << "," << m_rightMotor->GetActiveTrajectoryPosition() << "," << m_rightMotor->GetClosedLoopError() << "," << m_rightMotor->GetMotorOutputPercent() << std::endl;
 
   }
 
