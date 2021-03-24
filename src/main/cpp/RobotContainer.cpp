@@ -13,7 +13,7 @@
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
-RobotContainer::RobotContainer() : m_autonomousCommand(&m_subsystem), m_vision(&m_arm)
+RobotContainer::RobotContainer() : m_vision(&m_arm)
 {
   // Initialize all of your commands and subsystems here
   m_driveTrain.SetDefaultCommand(DriveWithJoystick(&m_driverStick, &m_driveTrain));
@@ -124,7 +124,7 @@ void RobotContainer::ConfigureButtonBindings()
         frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
         return Angle;
       }
-      return 0.0;
+      return ArmConstants::armAngleOffset;
     }),
     RunShooter(&m_shooter, [this] {
       double distance = m_vision.getPortDistance() / 1000;
@@ -153,7 +153,7 @@ void RobotContainer::ConfigureButtonBindings()
 frc2::Command *RobotContainer::GetAutonomousCommand()
 {
   // An example command will be run in autonomous
-  return &m_autonomousCommand;
+  return nullptr;
 }
 
 void RobotContainer::zeroOutputDisabled()

@@ -14,7 +14,7 @@
 #include <frc2/command/ConditionalCommand.h>
 #include <POVButton.h>
 
-#include "commands/ExampleCommand.h"
+// #include "commands/ExampleCommand.h"
 #include "commands/DriveWithJoystick.h"
 #include "commands/SetFloorIntake.h"
 #include "commands/RunShooter.h"
@@ -70,7 +70,7 @@ class RobotContainer {
   Vision m_vision;
   Arm m_arm;
 
-  ExampleCommand m_autonomousCommand;
+  // ExampleCommand m_autonomousCommand;
 
 
   //Joysticks

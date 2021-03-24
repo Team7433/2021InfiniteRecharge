@@ -130,6 +130,7 @@ bool MotionProfileRunner::LoadFromFile(std::string newPath) {
     m_profileLength = profileLength;
     m_profileLoaded = true;
     m_profileStarted = false;
+    return false;
 
     } else {
         return true;
