@@ -23,6 +23,16 @@ constexpr double kPi = 3.1415926545897;
 #include <ctre/Phoenix.h>
 #include <units/time.h>
 
+
+namespace AutonmousConstants {
+
+    constexpr units::time::second_t kUnloadMagazineTimeout = 1.0_s;
+
+
+}
+
+
+
 namespace DriverControls {
 
     constexpr int kMainDriverStickId = 0;

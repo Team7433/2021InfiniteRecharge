@@ -9,6 +9,7 @@
 
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/ParallelCommandGroup.h>
+#include <frc2/command/SequentialCommandGroup.h>
 
 
 #include <frc/smartdashboard/SmartDashboard.h>
@@ -33,8 +34,13 @@ void RobotContainer::ConfigureButtonBindings()
     SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false),
     RunShooter(&m_shooter, 0.0)
   )); //Stopy
-  frc2::JoystickButton(&m_operatorController, 3).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.3, 0.3, 0.3, 0.5, false)); //Shooty
-  frc2::JoystickButton(&m_operatorController, 4).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, -0.5, -0.3, -0.3, -0.3, false)); //Reversy
+  // frc2::JoystickButton(&m_operatorController, 3).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.3, 0.3, 0.3, 0.5, false)); //Shooty
+  frc2::JoystickButton(&m_operatorController, 3).WhenPressed(frc2::SequentialCommandGroup(
+    UnloadMagazine(&m_ballholder, &m_feeder),
+    RunShooter(&m_shooter, 0.0)
+  ));
+  frc2::JoystickButton(&m_operatorController, 4).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, -0.5, -0.3, -0.3, -0.3, false));
+ //Reversy
 
   //frc2::JoystickButton(&m_driverStick, 1).WhileHeld(GoToAngle(&m_driveTrain, &m_gyro, &m_driverStick, 0.0));
   // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(TurnToTarget(&m_vision, &m_gyro, &m_driveTrain));
