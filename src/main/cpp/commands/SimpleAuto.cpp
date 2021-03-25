@@ -4,9 +4,13 @@
 
 #include "commands/SimpleAuto.h"
 
+#include <frc/smartdashboard/SmartDashboard.h>
+
 #include <frc2/command/ParallelCommandGroup.h>
 #include <frc2/command/ParallelDeadlineGroup.h>
 #include <frc2/command/ParallelRaceGroup.h>
+#include <frc2/command/ConditionalCommand.h>
+#include <frc2/command/InstantCommand.h>
 
 #include "commands/ExampleCommand.h"
 #include "commands/DriveWithJoystick.h"
@@ -29,34 +33,49 @@
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake * m_floorIntake, DriveTrain * m_driveTrain, Arm * m_arm, Vision * m_vision, Gyro * m_gyro, Shooter * m_shooter) {
 
+  //Auto to run 6A
   AddCommands(
     frc2::ParallelCommandGroup(
       SetArmAngle(m_arm, [] {
         double distance = 4.4;
-
-        // double Angle = 0.00262689 * (std::pow(distance, 6)) + -0.0721799 * (std::pow(distance, 5)) + 0.767968 * (std::pow(distance, 4)) + -4.01135 * (std::pow(distance, 3)) + 11.3266 * (std::pow(distance, 2)) + -21.1942 * (std::pow(distance, 1)) + 56.4509;
-        double Angle = 15.5504 + (130.439 / (distance + 2.46224));
-        frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
-        return Angle;
-
-      }),
+        return 15.5504 + (130.439 / (distance + 2.46224));
+      }), // SetArmAngle
       RunShooter(m_shooter, [] {
         double distance = 4.4;
-
-        // double Speed = -0.67217 * (std::pow(distance, 6)) + 17.5164 * (std::pow(distance, 5)) - 168.137 * (std::pow(distance, 4)) + 707.557 * (std::pow(distance, 3)) - 1182.52 * (std::pow(distance, 2)) + 1721.41 * (std::pow(distance, 1)) + 9963.13;
-        double Speed = 10648.9 + 1447.44 * distance;
-        frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
-
-        return Speed;
-      })
+        return 10648.9 + 1447.44 * distance;
+      }) // RunShooter
+    ), // ParallelCommandGroup - Get into shooting mode
+    UnloadMagazine(m_ballholder, m_feeder),
+    frc2::ParallelCommandGroup(
+      DriveRunProfile(m_driveTrain, "6ACollectBalls"),
+      SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true),
+      RunShooter(m_shooter, 0.0),
+      SetArmAngle(m_arm, 6)
     ),
-    frc2::SequentialCommandGroup(
-      UnloadMagazine(m_ballholder, m_feeder),
-      RunShooter(m_shooter, 0.0)
-    )
-     
-  
-  );
+    frc2::ConditionalCommand(
+      frc2::ParallelCommandGroup( // ### Future Todo: These can probably be hard coded and therefore can get to position earlier
+        SetArmAngle(m_arm, [m_vision] {
+          double distance = m_vision->getPortDistance() / 1000;
+          return 15.5504 + (130.439 / (distance + 2.46224));
+        }), // SetArmAngle
+        RunShooter(m_shooter, [m_vision] {
+          double distance = m_vision->getPortDistance() / 1000;
+          return 10648.9 + 1447.44 * distance;
+        }), // RunShooter
+        TurnToTarget(m_vision, m_gyro, m_driveTrain)
+      ), // ParallelCommandGroup
+      frc2::InstantCommand([this] { // Not Detected
+        std::cout << "@@@ Auto - Did not detect target to target towards @@@\n"; 
+        Cancel(); // Do not run the remainder of auto if cannot find target
+      }), 
+      [m_vision] {
+        return m_vision->getPowerPortDetected();
+      } // Conditional Condition
+    ), // ConditionalCommand TargetDetected
+    UnloadMagazine(m_ballholder, m_feeder),
+    RunShooter(m_shooter, 0.0),
+    SetArmAngle(m_arm, 6)
+  ); // AddCommands
 
 
 

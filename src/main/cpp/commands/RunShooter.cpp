@@ -58,5 +58,7 @@ void RunShooter::End(bool interrupted) {
 // Returns true when the command should end.
 bool RunShooter::IsFinished() { 
   frc::SmartDashboard::PutBoolean("Shooter/OnTarget", m_shooter->GetVelocityLoopTarget() == m_actualVelocity);
-  return (m_shooter->GetVelocityLoopTarget() == m_actualVelocity); 
+  frc::SmartDashboard::PutNumber("Shooter/TalonTargetSpeed", m_shooter->GetVelocityLoopTarget()); //This number in int form
+  frc::SmartDashboard::PutNumber("Shooter/SentTargetSpeed", m_actualVelocity);
+  return (m_shooter->GetVelocityLoopTarget() == int(m_actualVelocity)); 
 }
