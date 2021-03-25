@@ -32,7 +32,8 @@ void SetArmAngle::Initialize() {
 void SetArmAngle::Execute() {}
 
 // Called once the command ends or is interrupted.
-void SetArmAngle::End(bool interrupted) {}
+void SetArmAngle::End(bool interrupted) {
+}
 
 // Returns true when the command should end.
 bool SetArmAngle::IsFinished() { return true; }

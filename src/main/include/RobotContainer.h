@@ -29,6 +29,7 @@
 #include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
 #include "commands/UnloadMagazine.h"
+#include "commands/SimpleAuto.h"
 
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/FloorIntake.h"

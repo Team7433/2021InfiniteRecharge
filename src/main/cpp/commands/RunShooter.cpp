@@ -31,7 +31,7 @@ void RunShooter::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void RunShooter::Execute() {
   if (m_actualVelocity != 0) {
-  m_shooter->configKF((474.592 + (384574 / (m_actualVelocity - 1917.6))) / 10000);
+    m_shooter->configKF((474.592 + (384574 / (m_actualVelocity - 1917.6))) / 10000);
   }
   double difference = m_actualVelocity - m_shooter->GetVelocityLoopTarget();
 
@@ -56,4 +56,7 @@ void RunShooter::End(bool interrupted) {
 }
 
 // Returns true when the command should end.
-bool RunShooter::IsFinished() { return (m_shooter->GetVelocityLoopTarget() == m_actualVelocity); }
+bool RunShooter::IsFinished() { 
+  frc::SmartDashboard::PutBoolean("Shooter/OnTarget", m_shooter->GetVelocityLoopTarget() == m_actualVelocity);
+  return (m_shooter->GetVelocityLoopTarget() == m_actualVelocity); 
+}

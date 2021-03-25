@@ -22,11 +22,12 @@
 #include "commands/ManualArmControl.h"
 #include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
+#include "commands/UnloadMagazine.h"
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballHolder, FloorIntake * m_floorIntake, DriveTrain * m_driveTrain, Arm * m_arm, Vision * m_vision, Gyro * m_gyro, Shooter * m_shooter) {
+SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake * m_floorIntake, DriveTrain * m_driveTrain, Arm * m_arm, Vision * m_vision, Gyro * m_gyro, Shooter * m_shooter) {
 
   AddCommands(
     frc2::ParallelCommandGroup(
@@ -48,10 +49,14 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballHolder, FloorIntake
 
         return Speed;
       })
+    ),
+    frc2::SequentialCommandGroup(
+      UnloadMagazine(m_ballholder, m_feeder),
+      RunShooter(m_shooter, 0.0)
     )
+     
   
-  
-  )
+  );
 
 
 
