@@ -28,6 +28,7 @@
 #include "commands/ManualArmControl.h"
 #include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
+#include "commands/UnloadMagazine.h"
 
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/FloorIntake.h"
