@@ -7,13 +7,16 @@
 
 #include "commands/SetArmAngle.h"
 
-SetArmAngle::SetArmAngle(Arm* arm, double angle) : SetArmAngle(arm, [angle] { return angle; } ) {
-
-  
-
-}
+SetArmAngle::SetArmAngle(Arm* arm, double angle) : SetArmAngle(arm, [angle] { return angle; } ) {}
 
 SetArmAngle::SetArmAngle(Arm* arm, std::function<double()> angle) {
+  // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements({arm});
+  m_angle = [angle] { return units::degree_t(angle()); };
+  m_arm = arm;
+}
+
+SetArmAngle::SetArmAngle(Arm* arm, std::function<units::degree_t()> angle) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({arm});
   m_angle = angle;
@@ -23,8 +26,7 @@ SetArmAngle::SetArmAngle(Arm* arm, std::function<double()> angle) {
 // Called when the command is initially scheduled.
 void SetArmAngle::Initialize() {
 
-  m_arm->SetAngle(m_angle());
-
+  m_arm->SetAngle(m_angle().to<double>());
 
 }
 

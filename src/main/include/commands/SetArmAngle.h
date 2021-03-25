@@ -12,6 +12,8 @@
 
 #include "subsystems/Arm.h"
 
+#include <units/angle.h>
+
 /**
  * An example command.
  *
@@ -26,6 +28,8 @@ class SetArmAngle
 
   SetArmAngle(Arm* arm, std::function<double()> angle);
 
+  SetArmAngle(Arm* arm, std::function<units::degree_t()> angle);
+
   void Initialize() override;
 
   void Execute() override;
@@ -35,5 +39,5 @@ class SetArmAngle
   bool IsFinished() override;
 
   Arm* m_arm;
-  std::function<double()> m_angle;
+  std::function<units::degree_t()> m_angle;
 };
