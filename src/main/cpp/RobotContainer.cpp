@@ -82,49 +82,15 @@ void RobotContainer::ConfigureButtonBindings()
 
   //frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, [] { return frc::SmartDashboard::GetNumber("ArmAngle", 0); }));
 
-  // frc2::JoystickButton(&m_buttonBOX, 1).WhenPressed(SetArmAngle(&m_arm, [] {
-  //   double newAngle = frc::SmartDashboard::GetNumber("ArmAngle", 0) + 1;
-  //   frc::SmartDashboard::PutNumber("ArmAngle", newAngle);
-
-  //   return newAngle;
-  // }));
-
-  // frc2::Command * lineNSpeed = &frc2::ParallelCommandGroup(SetArmAngle(&m_arm, [this] {
-  //   if (m_vision.getPowerPortDetected() == true)
-  //   {
-  //     double distance = m_vision.getPortDistance() / 1000;
-
-  //     // double Angle = 0.00262689 * (std::pow(distance, 6)) + -0.0721799 * (std::pow(distance, 5)) + 0.767968 * (std::pow(distance, 4)) + -4.01135 * (std::pow(distance, 3)) + 11.3266 * (std::pow(distance, 2)) + -21.1942 * (std::pow(distance, 1)) + 56.4509;
-  //     double Angle = 15.5504 + (130.439 / (distance + 2.46224));
-  //     frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
-  //     return Angle;
-  //   }
-  //   return 0.0;
-  // }),
-  // RunShooter(&m_shooter, [this] {
-  //   double distance = m_vision.getPortDistance() / 1000
-
-  //   // double Speed = -0.67217 * (std::pow(distance, 6)) + 17.5164 * (std::pow(distance, 5)) - 168.137 * (std::pow(distance, 4)) + 707.557 * (std::pow(distance, 3)) - 1182.52 * (std::pow(distance, 2)) + 1721.41 * (std::pow(distance, 1)) + 9963.13;
-  //   double Speed = 10648.9 + 1447.44 * distance;
-  //   frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
-
-  //   return Speed;
-  // }),
-  // TurnToTarget(&m_vision, &m_gyro, &m_driveTrain))
-
   // auto set angle and speed of arm and shooter
   frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(frc2::ParallelCommandGroup(
     SetArmAngle(&m_arm, [this] {
-      if (m_vision.getPowerPortDetected() == true)
-      {
-        double distance = m_vision.getPortDistance() / 1000;
+      double distance = m_vision.getPortDistance() / 1000;
 
-        // double Angle = 0.00262689 * (std::pow(distance, 6)) + -0.0721799 * (std::pow(distance, 5)) + 0.767968 * (std::pow(distance, 4)) + -4.01135 * (std::pow(distance, 3)) + 11.3266 * (std::pow(distance, 2)) + -21.1942 * (std::pow(distance, 1)) + 56.4509;
-        double Angle = 15.5504 + (130.439 / (distance + 2.46224));
-        frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
-        return Angle;
-      }
-      return ArmConstants::armAngleOffset;
+      // double Angle = 0.00262689 * (std::pow(distance, 6)) + -0.0721799 * (std::pow(distance, 5)) + 0.767968 * (std::pow(distance, 4)) + -4.01135 * (std::pow(distance, 3)) + 11.3266 * (std::pow(distance, 2)) + -21.1942 * (std::pow(distance, 1)) + 56.4509;
+      double Angle = 15.5504 + (130.439 / (distance + 2.46224));
+      frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
+      return Angle;
     }),
     RunShooter(&m_shooter, [this] {
       double distance = m_vision.getPortDistance() / 1000;
@@ -135,11 +101,9 @@ void RobotContainer::ConfigureButtonBindings()
 
       return Speed;
     }),
-
     TurnToTarget(&m_vision, &m_gyro, &m_driveTrain)
-  ) , frc2::InstantCommand([this] {
-    printf("Test");
-  }), [this] {
+  ) , frc2::InstantCommand([this] {  }), 
+  [this] {
     return m_vision.getPowerPortDetected();
   }));
 

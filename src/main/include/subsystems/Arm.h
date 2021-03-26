@@ -13,6 +13,9 @@
 
 #include <ctre/Phoenix.h>
 
+#include <units/length.h>
+#include <units/angle.h>
+
 #include "Constants.h"
 
 using namespace ArmConstants;
@@ -28,6 +31,7 @@ class Arm : public frc2::SubsystemBase {
   void ManualControl(double Output);
   void SetPosition(double Position);
   void SetAngle(double Angle);
+  void SetAngle(units::angle::armEncoderUnits_t Angle);
   void SetLock(Lock_Position lock_position);
   double GetPosition();
   double GetVelocity();
@@ -36,6 +40,9 @@ class Arm : public frc2::SubsystemBase {
   double GetTargetPosition();
   double GetArmAngle();
   double GetArmAngleMotor();
+
+  //Method used to do some calculations
+  units::degree_t CalculateAngleFromDistance(units::meter_t distance);
   
 
  private:

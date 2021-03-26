@@ -6,6 +6,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "subsystems/Arm.h"
+#include <units/length.h>
+#include <units/angle.h>
 
 Arm::Arm() {
 
@@ -61,6 +63,10 @@ void Arm::SetPosition(double Position) {
     m_armMotor->Set(ControlMode::MotionMagic, Position);
 }
 
+void Arm::SetAngle(units::angle::armEncoderUnits_t Angle) {
+    m_armMotor->Set(ControlMode::MotionMagic, Angle.to<double>());
+}
+
 void Arm::SetAngle(double Angle) {
     //some complex math equations ++--++--
     m_armMotor->Set(ControlMode::MotionMagic, (53.8) * (Angle - armAngleOffset));
@@ -104,4 +110,12 @@ double Arm::GetArmAngleMotor() {
     return (m_armMotor->GetSelectedSensorPosition() / 53.8) +  armAngleOffset;
 
 }
+
+// units::degree_t Arm::CalculateAngleFromDistance(units::meter_t distance) {
+
+//     double distanceMM = distance.to<double>();
+
+//     return units::degree_t(15.5504 + (130.439 / (distanceMM) + 2.46224)));
+
+// }
 

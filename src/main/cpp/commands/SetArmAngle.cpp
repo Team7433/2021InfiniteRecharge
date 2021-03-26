@@ -26,7 +26,7 @@ SetArmAngle::SetArmAngle(Arm* arm, std::function<units::degree_t()> angle) {
 // Called when the command is initially scheduled.
 void SetArmAngle::Initialize() {
 
-  m_arm->SetAngle(m_angle().to<double>());
+  m_arm->SetAngle(m_angle());
 
 }
 

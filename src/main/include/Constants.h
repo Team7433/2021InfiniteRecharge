@@ -22,6 +22,7 @@ constexpr double kPi = 3.1415926545897;
 
 #include <ctre/Phoenix.h>
 #include <units/time.h>
+#include <units/angle.h>
 
 namespace DriverControls {
 
@@ -149,6 +150,14 @@ namespace ArmConstants {
 
 
 } 
+
+// UNIT_ADD(units::angle, armSensorUnit, armSensorUnits, armUnits, unit<std::ratio<381, 1250>, units::degree>)
+namespace units::angle {
+
+    using armEncoderUnits = units::unit<std::ratio<10, 538>, degree, std::ratio<0>, std::ratio<553, 100>>;
+    using armEncoderUnits_t = units::unit_t<units::angle::armEncoderUnits>;
+    
+}
 
 namespace VisionConstants {
 
