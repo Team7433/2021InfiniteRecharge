@@ -75,7 +75,7 @@ class RobotContainer {
   //Joysticks
   frc::Joystick m_driverStick{kMainDriverStickId};
   frc::XboxController m_operatorController{kOperatorControllerId};
-  frc::Joystick m_buttonBox{kButtonBoxId};
+  // frc::Joystick m_buttonBox{kButtonBoxId};
 
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 
