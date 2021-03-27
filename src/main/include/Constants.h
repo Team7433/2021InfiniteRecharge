@@ -23,6 +23,7 @@ constexpr double kPi = 3.1415926545897;
 #include <ctre/Phoenix.h>
 #include <units/time.h>
 #include <units/angle.h>
+#include <units/length.h>
 
 namespace DriverControls {
 
@@ -163,18 +164,18 @@ namespace VisionConstants {
 
     constexpr int klidarPort = 0;
     //Port height
-    constexpr int kheightOfTarget = 2012;
+    constexpr units::millimeter_t kheightOfTarget = 2012_mm;
 
     //Ground to pivot point
-    constexpr double kheightOfRobot = 242.405;
+    constexpr units::millimeter_t kheightOfRobot = 242.405_mm;
     //Pivot to center of camera
-    constexpr int klengthOfArm = 818.195;
+    constexpr units::millimeter_t klengthOfArm = 818.195_mm;
     //Pivot to edge of bumper
-    constexpr int klengthPivotToBumper = 617;
+    constexpr units::millimeter_t klengthPivotToBumper = 617_mm;
 
-    constexpr double kangleOfCamera = 5.47;
+    constexpr units::degree_t kangleOfCamera = 5.47_deg;
     // angle from pivot to camera
-    constexpr double kangleOffsetCamera = 20.21;
+    constexpr units::degree_t kangleOffsetCamera = 20.21_deg;
     
     
     

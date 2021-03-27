@@ -13,8 +13,24 @@ GoToAngle::GoToAngle(DriveTrain* drivetrain, Gyro* gyro, frc::Joystick* joystick
 
   m_gyro = gyro;
   m_driveTrain = drivetrain;
+  m_target = units::degree_t( target );
+  m_joystick = joystick;
+
+}
+
+GoToAngle::GoToAngle(DriveTrain* drivetrain, Gyro* gyro, frc::Joystick* joystick, units::degree_t target) {
+  // Use addRequirements() here to declare subsystem dependencies.
+  AddRequirements({drivetrain, gyro});
+
+  m_gyro = gyro;
+  m_driveTrain = drivetrain;
   m_target = target;
   m_joystick = joystick;
+
+}
+
+// Called when the command is initially scheduled.
+void GoToAngle::Initialize() {
 
   frc::SmartDashboard::PutNumber("Drive Kp", 0.0);
   frc::SmartDashboard::PutNumber("Target angle", 0.0);
@@ -23,23 +39,16 @@ GoToAngle::GoToAngle(DriveTrain* drivetrain, Gyro* gyro, frc::Joystick* joystick
 
 }
 
-// Called when the command is initially scheduled.
-void GoToAngle::Initialize() {
-
-
-
-}
-
 // Called repeatedly when this Command is scheduled to run
 void GoToAngle::Execute() {
   
   m_kp = frc::SmartDashboard::GetNumber("Drive Kp", 0.0);
 
-  m_target = frc::SmartDashboard::GetNumber("Target angle", 0.0);
+  m_target = units::degree_t( frc::SmartDashboard::GetNumber("Target angle", 0.0) );
 
 
 
-  m_difference = m_target - m_gyro->GetYaw();
+  m_difference = ( m_target - m_gyro->GetYaw() ).to<double>();
 
   m_output = m_difference * m_kp;
 

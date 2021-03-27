@@ -18,8 +18,8 @@ Vision::Vision(Arm* arm) {
 void Vision::Periodic() {
     frc::SmartDashboard::PutNumber("Lidar Distance", getLidarDistance());
     frc::SmartDashboard::PutBoolean("TargetDetected", getPowerPortDetected());
-    frc::SmartDashboard::PutNumber("Target Distance Bumper", getPortDistanceBumper());
-    frc::SmartDashboard::PutNumber("Target Distance", getPortDistance());
+    frc::SmartDashboard::PutNumber("Target Distance Bumper", getPortDistanceBumper().to<double>());
+    frc::SmartDashboard::PutNumber("Target Distance", getPortDistance().to<double>());
 }
 
 bool Vision::getPowerPortDetected() {
@@ -29,13 +29,14 @@ bool Vision::getPowerPortDetected() {
     return false;
 }
 
-double Vision::getPowerPortHorizontalAngle() {
-    return nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0);
+units::degree_t Vision::getPowerPortHorizontalAngle() {
+    return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) );
 }
 
-double Vision::getPowerPortVerticalAngle() {
-    return nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ty", 0.0);
+units::degree_t Vision::getPowerPortVerticalAngle() {
+    return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("ty", 0.0) );
 }
+
 double Vision::getCamMode() {
     return nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("camMode", 0);
 }
@@ -43,36 +44,29 @@ void Vision::changeCamMode(int mode) {
     nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("camMode", mode);
 }
 
-double Vision::getPortDistance() {
+units::meter_t Vision::getPortDistance() {
     if (getPowerPortDetected() == true) {
-        AngleOfArm = m_arm->GetArmAngle();
+        AngleOfArm = m_arm->GetArmAngleUnits();
         
-        HC = klengthOfArm * sin((AngleOfArm+kangleOffsetCamera)*kPi/180) + kheightOfRobot;
-        frc::SmartDashboard::PutNumber("HC", HC);
+        HC = klengthOfArm * units::math::sin( AngleOfArm + kangleOffsetCamera ) + kheightOfRobot;
+        // frc::SmartDashboard::PutNumber("Vision/CameraHeight", HC.to<double>());
         HeightOfTarget_datam = kheightOfTarget - HC;
-
-
-        PHI = AngleOfArm + kangleOfCamera;
-        frc::SmartDashboard::PutNumber("PHI Value", PHI);
-
-        return ((HeightOfTarget_datam)/tan((PHI + getPowerPortVerticalAngle())*kPi/180));
+        // frc::SmartDashboard::PutNumber("Vision/", PHI.to<double>());
+        return HeightOfTarget_datam / units::math::tan( AngleOfArm + kangleOfCamera + getPowerPortVerticalAngle() );
     } else {
-        return (0);
+        return -1_m;
     }
 }
 
-double Vision::getPortDistanceBumper() {
+units::meter_t Vision::getPortDistanceBumper() {
 
     if (getPowerPortDetected() == true) {
-        AngleOfArm = m_arm->GetArmAngle();
+        AngleOfArm = m_arm->GetArmAngleUnits();
 
         // return getPortDistance() + (klengthOfArm * cos(AngleOfArm+kangleOffsetCamera)*kPi/180);
-        return getPortDistance() + klengthOfArm * cos((AngleOfArm+kangleOffsetCamera)*kPi/180) - klengthPivotToBumper;
-        ;
-        
-
+        return units::millimeter_t(getPortDistance() + klengthOfArm * units::math::cos( AngleOfArm + kangleOffsetCamera ) - klengthPivotToBumper );
     } else {
-        return 0;
+        return -1_m;
     }
 
 

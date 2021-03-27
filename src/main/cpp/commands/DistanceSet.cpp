@@ -19,16 +19,16 @@ void DistanceSet::Initialize() {
 
 //grabs the distance from port using vision subsystem
   if(m_vision->getPowerPortDetected()) {
-    double distance = m_vision->getPortDistance()/ 1000;
+    // double distance = m_vision->getPortDistance()/ 1000;
 
-    //sets the speed using line of best fit equation
-    double Speed = -0.67217*(std::pow(distance, 6)) + 17.5164*(std::pow(distance, 5)) + 168.137*(std::pow(distance, 4)) + 707.557*(std::pow(distance, 3)) + 1182.52*(std::pow(distance, 2)) + 1721.41*(std::pow(distance, 1)) + 9963.13;
-    double Angle = 0.00262689*(std::pow(distance, 6)) + -0.0721799*(std::pow(distance, 5)) + 0.767968*(std::pow(distance, 4)) + -4.01135*(std::pow(distance, 3)) + 11.3266*(std::pow(distance, 2)) + -21.1942*(std::pow(distance, 1)) + 56.4509;
+    // //sets the speed using line of best fit equation
+    // double Speed = -0.67217*(std::pow(distance, 6)) + 17.5164*(std::pow(distance, 5)) + 168.137*(std::pow(distance, 4)) + 707.557*(std::pow(distance, 3)) + 1182.52*(std::pow(distance, 2)) + 1721.41*(std::pow(distance, 1)) + 9963.13;
+    // double Angle = 0.00262689*(std::pow(distance, 6)) + -0.0721799*(std::pow(distance, 5)) + 0.767968*(std::pow(distance, 4)) + -4.01135*(std::pow(distance, 3)) + 11.3266*(std::pow(distance, 2)) + -21.1942*(std::pow(distance, 1)) + 56.4509;
 
-    frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
-    frc::SmartDashboard::PutNumber("TargetAngle", Angle);
+    // frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
+    // frc::SmartDashboard::PutNumber("TargetAngle", Angle);
 
-    m_arm->SetAngle(Angle);
+    // m_arm->SetAngle(Angle);
     // m_shooter->SetVelocity(Speed);
 
   }

@@ -30,23 +30,23 @@ Gyro::Gyro() {
 
 // This method will be called once per scheduler run
 void Gyro::Periodic() {
-    frc::SmartDashboard::PutNumber("Gyro Yaw Value", GetYaw());
-    frc::SmartDashboard::PutNumber("Gyro Roll Value", GetRoll());
-    frc::SmartDashboard::PutNumber("Gyro Pitch Value", GetPitch());
+    frc::SmartDashboard::PutNumber("Gyro/Yaw", GetYaw().to<double>());
+    frc::SmartDashboard::PutNumber("Gyro/Roll", GetRoll().to<double>());
+    frc::SmartDashboard::PutNumber("Gyro/Pitch", GetPitch().to<double>());
 }
 
-double Gyro::GetYaw() {
-    return m_gyro->GetYaw();
+units::degree_t Gyro::GetYaw() {
+    return units::degree_t( m_gyro->GetYaw() );
 }
 
 void Gyro::Reset() {
     return m_gyro->Reset();
 }
 
-double Gyro::GetPitch() {
-    return m_gyro->GetPitch();
+units::degree_t Gyro::GetPitch() {
+    return units::degree_t( m_gyro->GetPitch() );
 }
 
-double Gyro::GetRoll() {
-    return m_gyro->GetRoll();
+units::degree_t Gyro::GetRoll() {
+    return units::degree_t( m_gyro->GetRoll() );
 }

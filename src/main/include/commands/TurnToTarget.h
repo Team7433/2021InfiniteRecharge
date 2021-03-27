@@ -40,7 +40,7 @@ class TurnToTarget
   DriveTrain* m_driveTrain;
   Gyro* m_gyro;
 
-  double m_gyroTarget;
+  units::degree_t m_gyroTarget;
 
   bool m_done = false;
 

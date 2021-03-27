@@ -13,6 +13,8 @@
 
 #include <AHRS.h>
 
+#include <units/angle.h>
+
 class Gyro : public frc2::SubsystemBase {
  public:
   Gyro();
@@ -23,9 +25,9 @@ class Gyro : public frc2::SubsystemBase {
 
   void Periodic();
   void Reset();
-  double GetYaw();
-  double GetPitch();
-  double GetRoll();
+  units::degree_t GetYaw();
+  units::degree_t GetPitch();
+  units::degree_t GetRoll();
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

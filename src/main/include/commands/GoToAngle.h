@@ -17,6 +17,8 @@
 
 #include "Constants.h"
 
+#include <units/angle.h>
+
 using namespace DriveTrainConstants;
 
 /**
@@ -30,6 +32,7 @@ class GoToAngle
     : public frc2::CommandHelper<frc2::CommandBase, GoToAngle> {
  public:
   GoToAngle(DriveTrain* drivetrain, Gyro* gyro, frc::Joystick* joystick, double target);
+  GoToAngle(DriveTrain* drivetrain, Gyro* gyro, frc::Joystick* joystick, units::degree_t target);
 
   void Initialize() override;
 
@@ -44,7 +47,7 @@ class GoToAngle
   DriveTrain* m_driveTrain;
   Gyro* m_gyro;
   frc::Joystick* m_joystick;
-  double m_target;
+  units::degree_t m_target;
 
 
   

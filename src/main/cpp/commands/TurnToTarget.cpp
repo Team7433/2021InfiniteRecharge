@@ -7,6 +7,7 @@
 
 #include "commands/TurnToTarget.h"
 #include <cmath>
+#include <units/math.h>
 
 TurnToTarget::TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain) {
   // Use addRequirements() here to declare subsystem dependencies.
@@ -28,8 +29,8 @@ void TurnToTarget::Initialize() {
   }
   //using vision to set a gyro target
 
-  m_gyroTarget = (m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle()) - atan(160 / m_vision->getPortDistance()) * (180/kPi);
-   frc::SmartDashboard::PutNumber("Gyro target limelight", m_gyroTarget);
+  m_gyroTarget = m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision->getPortDistance());
+  frc::SmartDashboard::PutNumber("Gyro target limelight", m_gyroTarget.to<double>());
 
 
 }
@@ -39,7 +40,7 @@ void TurnToTarget::Execute() {
   
 
   //Sets the error
-  m_error = m_gyroTarget - m_gyro->GetYaw();
+  m_error = ( m_gyroTarget - m_gyro->GetYaw() ).to<double>();
   frc::SmartDashboard::PutNumber("Limelight gyro error", m_error);
  
 

@@ -45,14 +45,12 @@ Arm::Arm() {
 
 // This method will be called once per scheduler run
 void Arm::Periodic() {
-    frc::SmartDashboard::PutNumber("Arm velocity", GetVelocity());
-    frc::SmartDashboard::PutNumber("Arm Position", GetPosition());
-    frc::SmartDashboard::PutNumber("Arm Output power", GetMotorOutput());
-    //frc::SmartDashboard::PutNumber("Arm Error", GetError());
-    //frc::SmartDashboard::PutNumber("Arm target position", GetTargetPosition());
-    frc::SmartDashboard::PutNumber("Arm Angle: ", GetArmAngle());
-    frc::SmartDashboard::PutNumber("Motor Arm Angle: ", GetArmAngleMotor());
-    frc::SmartDashboard::PutNumber("Arm Angle Difference ", (GetArmAngle() - GetArmAngleMotor()));
+    frc::SmartDashboard::PutNumber("Arm/Velocity", GetVelocity());
+    frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
+    frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
+    frc::SmartDashboard::PutNumber("Arm/Angle", GetArmAngleUnits().to<double>());
+    frc::SmartDashboard::PutNumber("Arm/AngleMotor", GetArmAngleMotorUnits().to<double>());
+    frc::SmartDashboard::PutNumber("Arm/EncoderDifference", (GetArmAngleUnits() - GetArmAngleMotorUnits()).to<double>()  );
 }
 
 void Arm::ManualControl(double Output) {
@@ -98,10 +96,7 @@ double Arm::GetTargetPosition() {
     return m_armMotor->GetClosedLoopTarget();
 }
 double Arm::GetArmAngle() {
-    // return (m_armMotor->GetSelectedSensorPosition() / 53.8) +  6;
-    // return 360*(m_armEncoder->GetSelectedSensorPosition()/4096);
-    // double value = (m_armEncoder->GetSelectedSensorPosition() / 4096.0);
-    // printf("%f \n", value);
+
     return ((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 196;
 }
 
@@ -111,11 +106,23 @@ double Arm::GetArmAngleMotor() {
 
 }
 
-// units::degree_t Arm::CalculateAngleFromDistance(units::meter_t distance) {
+units::degree_t Arm::GetArmAngleUnits() {
 
-//     double distanceMM = distance.to<double>();
+    return units::degree_t(((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 196);
 
-//     return units::degree_t(15.5504 + (130.439 / (distanceMM) + 2.46224)));
+}
 
-// }
+units::degree_t Arm::GetArmAngleMotorUnits() {
+   
+    return units::armEncoderUnits_t(m_armMotor->GetSelectedSensorPosition());
+
+}
+
+units::degree_t Arm::CalculateAngleFromDistance(units::meter_t distance) {
+
+    double distanceMM = distance.to<double>();
+
+    return units::degree_t(15.5504 + (130.439 / (distanceMM) + 2.46224));
+
+}
 

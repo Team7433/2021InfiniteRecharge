@@ -40,6 +40,8 @@ class Arm : public frc2::SubsystemBase {
   double GetTargetPosition();
   double GetArmAngle();
   double GetArmAngleMotor();
+  units::degree_t GetArmAngleUnits();
+  units::degree_t GetArmAngleMotorUnits();
 
   //Method used to do some calculations
   units::degree_t CalculateAngleFromDistance(units::meter_t distance);

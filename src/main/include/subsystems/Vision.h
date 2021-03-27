@@ -16,6 +16,8 @@
 #include "subsystems/Arm.h"
 
 #include <math.h>
+#include <units/math.h>
+#include <units/length.h>
 
 #include "Constants.h"
 using namespace VisionConstants;
@@ -30,17 +32,17 @@ class Vision : public frc2::SubsystemBase {
 
   bool getPowerPortDetected();
 
-  double getPowerPortHorizontalAngle();
+  units::degree_t getPowerPortHorizontalAngle();
   
-  double getPowerPortVerticalAngle();
+  units::degree_t getPowerPortVerticalAngle();
 
   double getCamMode();
 
   void changeCamMode(int mode);
 
-  double getPortDistance();
+  units::meter_t getPortDistance();
 
-  double getPortDistanceBumper();
+  units::meter_t getPortDistanceBumper();
 
   double getLidarDistance();
 
@@ -52,9 +54,9 @@ class Vision : public frc2::SubsystemBase {
   frc::Counter* m_lidar = new frc::Counter(klidarPort);
 
 
-  double HC;
-  double HeightOfTarget_datam;
-  double AngleOfArm;
-  double PHI;
+  units::millimeter_t HC;
+  units::millimeter_t HeightOfTarget_datam;
+  units::degree_t PHI;
+  units::degree_t AngleOfArm;
   Arm* m_arm;
 };
