@@ -77,9 +77,7 @@ void RobotContainer::ConfigureButtonBindings()
     return newSpeed;
   }));
 
-  frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
-    m_gyro.Reset(); 
-    });
+
 
   //frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, [] { return frc::SmartDashboard::GetNumber("ArmAngle", 0); }));
 
@@ -101,12 +99,8 @@ void RobotContainer::ConfigureButtonBindings()
     return m_vision.getPowerPortDetected();
   }));
 
-  // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {
-  //   double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;
-  //   frc::SmartDashboard::PutNumber("ShooterSpeed", newSpeed);
-  //   return newSpeed;
-  // }));
-}
+  ConfigureButtonBox();
+} // ConfigureButtonBindings
 
 frc2::Command *RobotContainer::GetAutonomousCommand()
 {
@@ -123,4 +117,19 @@ void RobotContainer::ResetStartOfTeleop()
 {
 
   m_arm.SetLock(ArmConstants::Unlock);
+}
+
+void RobotContainer::ConfigureButtonBox() {
+  #ifdef ButtonBox
+
+    frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
+      m_gyro.Reset(); 
+    });
+    // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {
+    //   double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;
+    //   frc::SmartDashboard::PutNumber("ShooterSpeed", newSpeed);
+    //   return newSpeed;
+    // }));
+    
+  #endif //ButtonBox
 }

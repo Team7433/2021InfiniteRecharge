@@ -79,7 +79,10 @@ class RobotContainer {
   //Joysticks
   frc::Joystick m_driverStick{kMainDriverStickId};
   frc::XboxController m_operatorController{kOperatorControllerId};
+
+#ifdef ButtonBox  
   frc::Joystick m_buttonBox{kButtonBoxId};
+#endif //ButtonBox
 
   std::string m_pathName = "JustForward";
   std::string m_pathName2 = "JustForwardSlow";
@@ -87,4 +90,5 @@ class RobotContainer {
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 
   void ConfigureButtonBindings();
+  void ConfigureButtonBox();
 };
