@@ -36,4 +36,5 @@ class SetArmAngle
 
   Arm* m_arm;
   std::function<double()> m_angle;
+  double m_setAngle;
 };

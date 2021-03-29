@@ -46,11 +46,11 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
       }) // RunShooter
     ), // ParallelCommandGroup - Get into shooting mode
     UnloadMagazine(m_ballholder, m_feeder),
-    frc2::ParallelCommandGroup(
+    frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6ACollectBalls"),
       SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true),
       RunShooter(m_shooter, 0.0),
-      SetArmAngle(m_arm, 6)
+      SetArmAngle(m_arm, 7)
     ),
     frc2::ConditionalCommand(
       frc2::ParallelCommandGroup( // ### Future Todo: These can probably be hard coded and therefore can get to position earlier
@@ -69,7 +69,10 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
         Cancel(); // Do not run the remainder of auto if cannot find target
       }), 
       [m_vision] {
-        return m_vision->getPowerPortDetected();
+        bool detected = m_vision->getPowerPortDetected();
+        std::cout << "Detected: " << detected << "\n";
+        frc::SmartDashboard::PutBoolean("Testing/IsDetected", detected);
+        return detected;
       } // Conditional Condition
     ), // ConditionalCommand TargetDetected
     UnloadMagazine(m_ballholder, m_feeder),

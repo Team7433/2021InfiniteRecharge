@@ -23,7 +23,9 @@ SetArmAngle::SetArmAngle(Arm* arm, std::function<double()> angle) {
 // Called when the command is initially scheduled.
 void SetArmAngle::Initialize() {
 
-  m_arm->SetAngle(m_angle());
+  m_setAngle = m_angle();
+  m_arm->SetAngle(m_setAngle);
+  
 
 
 }
@@ -36,4 +38,9 @@ void SetArmAngle::End(bool interrupted) {
 }
 
 // Returns true when the command should end.
-bool SetArmAngle::IsFinished() { return true; }
+bool SetArmAngle::IsFinished() { 
+
+  frc::SmartDashboard::PutNumber("Arm/SetFinishDifference", m_arm->GetArmAngleMotor() - m_setAngle);
+  return m_arm->GetArmAngleMotor() > m_setAngle - 1.5 && m_arm->GetArmAngleMotor() < m_setAngle + 1.5;
+
+}
