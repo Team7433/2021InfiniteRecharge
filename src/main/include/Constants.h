@@ -96,7 +96,7 @@ namespace ShooterConstants {
     constexpr double kshooterIZone = 1000;
     constexpr double kshooterMaxAccumulator = 0;
 
-    constexpr double kshooterRampSpeed = 300;
+    constexpr double kshooterRampSpeed = 600;
 
     constexpr ctre::phoenix::motorcontrol::InvertType kbMotorInvert = InvertType::FollowMaster;
 
@@ -143,8 +143,8 @@ namespace ArmConstants {
     constexpr double Kd = 0.0;
     constexpr double Kf = 4.7142;
 
-    constexpr double KmotionCruiseVelocity = 150.0;
-    constexpr double KmotionAcceleration = 100.0;
+    constexpr double KmotionCruiseVelocity = 300.0;
+    constexpr double KmotionAcceleration = 300.0;
 
     constexpr int kSolonoidPortAid = 0;
     constexpr int kSolonoidPortBid = 7;
