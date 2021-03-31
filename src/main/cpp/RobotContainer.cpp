@@ -38,7 +38,8 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::JoystickButton(&m_operatorController, 4).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, -0.5, -0.3, -0.3, -0.3, false)); //Reversy
   frc2::JoystickButton(&m_driverStick, 11).WhenPressed(DriveRunProfile(&m_driveTrain, m_pathName2));
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SimpleAuto(&m_feeder, &m_ballholder, &m_floorIntake, &m_driveTrain, &m_arm, &m_vision, &m_gyro, &m_shooter));
-  frc2::JoystickButton(&m_driverStick, 12).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, 90));
+  frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm));
+  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, 90));
 
   //frc2::JoystickButton(&m_driverStick, 1).WhileHeld(GoToAngle(&m_driveTrain, &m_gyro, &m_driverStick, 0.0));
   // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(TurnToTarget(&m_vision, &m_gyro, &m_driveTrain));
@@ -78,9 +79,9 @@ void RobotContainer::ConfigureButtonBindings()
     return newSpeed;
   }));
 
-  // frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
-  //   m_gyro.Reset(); 
-  //   });
+  frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
+    m_gyro.Reset(); 
+    });
 
   //frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, [] { return frc::SmartDashboard::GetNumber("ArmAngle", 0); }));
 

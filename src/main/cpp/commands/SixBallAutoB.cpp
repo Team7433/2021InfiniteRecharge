@@ -33,13 +33,12 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
   // 6B
   AddCommands(
     frc2::ParallelCommandGroup(
-      TurnToTarget(m_vision, m_gyro, m_driveTrain),
       SetArmAngle(m_arm, [m_vision] {
-          double distance = m_vision->getPortDistance() / 1000;
+          double distance = 3.5;
           return 15.5504 + (130.439 / (distance + 2.46224));
         }), // SetArmAngle
         RunShooter(m_shooter, [m_vision] {
-          double distance = m_vision->getPortDistance() / 1000;
+          double distance = 3.5;
           return 10648.9 + 1447.44 * distance;
         }) // RunShooter
     ),
@@ -58,9 +57,8 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
     frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6BToShoot"),
-      SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.3, 0.3, 0, /* Storing */ true)
-      
-    ),
+      SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.3, 0.3, 0, /* Storing */ true)),      
+
     SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false),
 
 

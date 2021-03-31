@@ -124,15 +124,19 @@ bool TurnToTarget::IsFinished() {
   // }
   // return false;
 
-  if (fabs(m_error) < 1.0) {
+  // if (fabs(m_error) < 1.0) {
 
-    m_timer.Start();
+  //   m_timer.Start();
 
-  } else {
-    m_timer.Stop();
-    m_timer.Reset();
+  // } else {
+  //   m_timer.Stop();
+  //   m_timer.Reset();
 
-  }
+  // }
 
-  return (m_timer.Get() > 1.0_s);
+  // return (m_timer.Get() > 0.5_s);
+
+  return (fabs(m_error) < 0.5);
+
+
   }

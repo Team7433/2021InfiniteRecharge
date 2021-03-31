@@ -12,6 +12,7 @@
 
 void Robot::RobotInit() {
   // frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  m_container.CoastMode(); // Set DriveTrain to Coast Mode
 }
 
 /**
@@ -31,6 +32,8 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
  */
 void Robot::DisabledInit() {
   m_container.zeroOutputDisabled();
+  m_container.CoastMode(); // Set Drivetrain to Coast Mode
+  
 }
 
 void Robot::DisabledPeriodic() {}
@@ -41,6 +44,7 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
   m_autonomousCommand = m_container.GetAutonomousCommand();
+  m_container.BrakeMode(); // Set Drivetrain to Brake Mode
 
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
@@ -54,6 +58,7 @@ void Robot::TeleopInit() {
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
   // this line or comment it out.
+  m_container.BrakeMode(); // Set Drivetrain to Brake Mode
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;

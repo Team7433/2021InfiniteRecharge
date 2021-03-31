@@ -29,7 +29,9 @@
 #include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
 #include "commands/UnloadMagazine.h"
+
 #include "commands/SimpleAuto.h"
+#include "commands/SixBallAutoB.h"
 
 #include "subsystems/ExampleSubsystem.h"
 #include "subsystems/FloorIntake.h"
@@ -58,6 +60,8 @@ class RobotContainer {
 
   frc2::Command* GetAutonomousCommand();
 
+  void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
+  void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
   void zeroOutputDisabled();
   void ResetStartOfTeleop();
  private:
@@ -78,7 +82,7 @@ class RobotContainer {
   //Joysticks
   frc::Joystick m_driverStick{kMainDriverStickId};
   frc::XboxController m_operatorController{kOperatorControllerId};
-  // frc::Joystick m_buttonBox{kButtonBoxId};
+  frc::Joystick m_buttonBox{kButtonBoxId};
 
   std::string m_pathName = "JustForward";
   std::string m_pathName2 = "JustForwardSlow";
