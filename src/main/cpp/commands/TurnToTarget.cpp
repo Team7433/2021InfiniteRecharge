@@ -20,20 +20,33 @@ TurnToTarget::TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain) {
   frc::SmartDashboard::PutNumber("Drive limelight Kp", 0.0);
 }
 
+TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, double overideAngle) {
+
+  AddRequirements({drivetrain, gyro});
+  m_driveTrain = drivetrain;
+  m_gyro = gyro;
+  m_overideAngle = overideAngle;
+  m_overide = true;
+
+
+}
+
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
   //Checks if there is a target if not ends command
-
-  if (m_vision->getPowerPortDetected() == false) {
-    m_done = true;
+  if (m_overide == false) {
+    if (m_vision->getPowerPortDetected() == false) {
+      m_done = true;
+    }
+    //using vision to set a gyro target
+    m_gyroTarget = (m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle()) - atan(160 / m_vision->getPortDistance()) * (180/kPi);
+    frc::SmartDashboard::PutNumber("Gyro target limelight", m_gyroTarget);
+    m_lastGyroAngle = m_gyro->GetYaw();
+    m_startError = m_gyroTarget - m_gyro->GetYaw();
+  } else {
+    m_gyroTarget = m_overideAngle;
+    m_startError = m_gyroTarget - m_gyro->GetYaw();
   }
-  //using vision to set a gyro target
-
-  m_gyroTarget = (m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle()) - atan(160 / m_vision->getPortDistance()) * (180/kPi);
-   frc::SmartDashboard::PutNumber("Gyro target limelight", m_gyroTarget);
-
-  m_lastGyroAngle = m_gyro->GetYaw();
-  m_startError = m_gyroTarget - m_gyro->GetYaw();
 
 }
 
@@ -42,7 +55,9 @@ void TurnToTarget::Execute() {
   
 
   //Sets the error
+
   m_error = m_gyroTarget - m_gyro->GetYaw();
+
   frc::SmartDashboard::PutNumber("Limelight gyro error", m_error);
  
 

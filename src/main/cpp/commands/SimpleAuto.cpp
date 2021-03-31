@@ -48,7 +48,7 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
     UnloadMagazine(m_ballholder, m_feeder),
     frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6ACollectBalls"),
-      SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0.75, 0.3, 0.3, 0, /* Storing */ true),
+      SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0.45, 0.3, 0.3, 0, /* Storing */ true),
       RunShooter(m_shooter, 0.0),
       SetArmAngle(m_arm, 7)
     ),
@@ -62,8 +62,7 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
           double distance = m_vision->getPortDistance() / 1000;
           return 10648.9 + 1447.44 * distance;
         }), // RunShooter
-        TurnToTarget(m_vision, m_gyro, m_driveTrain),
-        SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0, 0, 0, 0, false)
+        TurnToTarget(m_vision, m_gyro, m_driveTrain)
       ), // ParallelCommandGroup
       frc2::InstantCommand([this] { // Not Detected
         std::cout << "@@@ Auto - Did not detect target to target towards @@@\n"; 
@@ -77,8 +76,11 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
       } // Conditional Condition
     ), // ConditionalCommand TargetDetected
     UnloadMagazine(m_ballholder, m_feeder),
+    frc2::ParallelDeadlineGroup(
     RunShooter(m_shooter, 0.0),
-    SetArmAngle(m_arm, 6)
+    SetArmAngle(m_arm, 6),
+    SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0, 0, 0, 0, false)
+    )
   ); // AddCommands
 
 

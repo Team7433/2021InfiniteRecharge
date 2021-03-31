@@ -46,8 +46,8 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm velocity", GetVelocity());
     frc::SmartDashboard::PutNumber("Arm Position", GetPosition());
     frc::SmartDashboard::PutNumber("Arm Output power", GetMotorOutput());
-    frc::SmartDashboard::PutNumber("Arm Error", GetError());
-    frc::SmartDashboard::PutNumber("Arm target position", GetTargetPosition());
+    // frc::SmartDashboard::PutNumber("Arm Error", GetError());
+    // frc::SmartDashboard::PutNumber("Arm target position", GetTargetPosition());
     frc::SmartDashboard::PutNumber("Arm Angle: ", GetArmAngle());
     frc::SmartDashboard::PutNumber("Motor Arm Angle: ", GetArmAngleMotor());
     frc::SmartDashboard::PutNumber("Arm Angle Difference ", (GetArmAngle() - GetArmAngleMotor()));

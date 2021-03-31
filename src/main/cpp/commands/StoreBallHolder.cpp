@@ -84,8 +84,9 @@ void StoreBallHolder::Execute() {
     m_currentAverage = m_currentAverage - (m_currentAverage/5) + (abs(current)/5);
     frc::SmartDashboard::PutNumber("CurrentAverageFloorIntake", m_currentAverage);
     frc::SmartDashboard::PutNumber("currentFloorIntake", current);
+    frc::SmartDashboard::PutBoolean("StalldetectedFloorIntake", m_overloaded);
 
-    if (m_currentAverage > 20.0) {
+    if (m_currentAverage > 18.0) {
 
       if (m_overloaded == false) {
         m_overloaded = true;
@@ -98,16 +99,16 @@ void StoreBallHolder::Execute() {
 
   }
 
-  if (m_overloaded == true) {
-    m_intake->Set(Position::Out, -0.65);
-    if (m_timer2.Get() > BallHolderConstants::kOverloadReverseLength) {
+  // if (m_overloaded == true) {
+  //   m_intake->Set(Position::Out, -0.65);
+  //   if (m_timer2.Get() > BallHolderConstants::kOverloadReverseLength) {
           
-          m_intake->Set(Position::Out, m_intakeSpeed);
-          m_overloaded = false;
-          m_currentAverage = 0.0;
-          m_timer2.Stop();
-          }
-  }
+  //         m_intake->Set(Position::Out, m_intakeSpeed);
+  //         m_overloaded = false;
+  //         m_currentAverage = 0.0;
+  //         m_timer2.Stop();
+  //         }
+  // }
 
     
 }
