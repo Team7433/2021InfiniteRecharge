@@ -78,7 +78,7 @@ class RobotContainer {
   //Joysticks
   frc::Joystick m_driverStick{kMainDriverStickId};
   frc::XboxController m_operatorController{kOperatorControllerId};
-  frc::Joystick m_buttonBox{kButtonBoxId};
+  // frc::Joystick m_buttonBox{kButtonBoxId};
 
   std::string m_pathName = "JustForward";
   std::string m_pathName2 = "JustForwardSlow";
