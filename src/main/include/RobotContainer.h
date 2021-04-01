@@ -89,7 +89,8 @@ class RobotContainer {
   std::string m_pathName2 = "JustForwardSlow";
 
   double m_startingDistance;
-  double m_startingAverageEncoder;
+  double m_startingRightEncoder;
+  double m_startingLeftEncoder;
   double m_metersPerEncoder;
   double m_targetAngle;
 
