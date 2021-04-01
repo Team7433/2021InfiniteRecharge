@@ -13,25 +13,34 @@ SetArmAngle::SetArmAngle(Arm* arm, double angle) : SetArmAngle(arm, [angle] { re
 
 }
 
-SetArmAngle::SetArmAngle(Arm* arm, std::function<double()> angle) {
+SetArmAngle::SetArmAngle(Arm* arm, std::function<double()> angle, bool update) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({arm});
   m_angle = angle;
   m_arm = arm;
+  m_update = update;
 }
 
 // Called when the command is initially scheduled.
 void SetArmAngle::Initialize() {
-
-  m_setAngle = m_angle();
-  m_arm->SetAngle(m_setAngle);
-  
+  if (m_update == false) {
+    m_setAngle = m_angle();
+    m_arm->SetAngle(m_setAngle);
+  }
 
 
 }
 
 // Called repeatedly when this Command is scheduled to run
-void SetArmAngle::Execute() {}
+void SetArmAngle::Execute() {
+
+  if (m_update) {
+    m_setAngle = m_angle();
+    m_arm->SetAngle(m_setAngle);
+
+  }
+
+}
 
 // Called once the command ends or is interrupted.
 void SetArmAngle::End(bool interrupted) {
@@ -41,6 +50,6 @@ void SetArmAngle::End(bool interrupted) {
 bool SetArmAngle::IsFinished() { 
 
   frc::SmartDashboard::PutNumber("Arm/SetFinishDifference", m_arm->GetArmAngleMotor() - m_setAngle);
-  return m_arm->GetArmAngleMotor() > m_setAngle - 1.5 && m_arm->GetArmAngleMotor() < m_setAngle + 1.5;
+  return m_arm->GetArmAngleMotor() > m_setAngle - 1.5 && m_arm->GetArmAngleMotor() < m_setAngle + 1.5 && m_update == false;
 
 }

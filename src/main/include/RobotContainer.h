@@ -29,6 +29,7 @@
 #include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
 #include "commands/UnloadMagazine.h"
+#include "commands/GyroDrive.h"
 
 #include "commands/SimpleAuto.h"
 #include "commands/SixBallAutoB.h"
@@ -86,6 +87,8 @@ class RobotContainer {
 
   std::string m_pathName = "JustForward";
   std::string m_pathName2 = "JustForwardSlow";
+
+  double m_startingDistance;
 
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 

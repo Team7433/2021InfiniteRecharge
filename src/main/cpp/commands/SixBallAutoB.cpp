@@ -49,15 +49,15 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
     frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6BCollectBalls"),
-      SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.3, 0.3, 0, /* Storing */ true),
+      SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.5, 0.3, 0, /* Storing */ true),
       RunShooter(m_shooter, 0.0),
-      SetArmAngle(m_arm, 7)
+      SetArmAngle(m_arm, 6)
     ), //Parallel Deadline Group
 
 
     frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6BToShoot"),
-      SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.3, 0.3, 0, /* Storing */ true)),      
+      SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.5, 0.3, 0, /* Storing */ true)),      
 
     SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false),
 
@@ -76,7 +76,7 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
     UnloadMagazine(m_ballHolder, m_feeder),
 
-    frc2::ParallelCommandGroup(
+    frc2::ParallelDeadlineGroup(
       RunShooter(m_shooter, 0.0),
       SetArmAngle(m_arm, 6),
       SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false)

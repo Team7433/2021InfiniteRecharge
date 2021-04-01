@@ -24,7 +24,7 @@ class SetArmAngle
  public:
   SetArmAngle(Arm* arm, double angle);
 
-  SetArmAngle(Arm* arm, std::function<double()> angle);
+  SetArmAngle(Arm* arm, std::function<double()> angle, bool Update = false);
 
   void Initialize() override;
 
@@ -37,4 +37,5 @@ class SetArmAngle
   Arm* m_arm;
   std::function<double()> m_angle;
   double m_setAngle;
+  double m_update;
 };

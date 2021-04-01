@@ -116,7 +116,8 @@ void RobotContainer::ConfigureButtonBindings()
   // TurnToTarget(&m_vision, &m_gyro, &m_driveTrain))
 
   // auto set angle and speed of arm and shooter
-  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(frc2::ParallelCommandGroup(
+  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(
+    frc2::ParallelCommandGroup(
     SetArmAngle(&m_arm, [this] {
       if (m_vision.getPowerPortDetected() == true)
       {
@@ -145,6 +146,23 @@ void RobotContainer::ConfigureButtonBindings()
   }), [this] {
     return m_vision.getPowerPortDetected();
   }));
+
+    // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(GyroDrive(&m_gyro, &m_driveTrain, 90.0, [this] {return -m_driverStick.GetY(); } ));
+
+
+  frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
+    frc2::InstantCommand([this] {
+      m_startingDistance = m_vision.getPortDistance() / 1000;
+    }),
+    frc2::ParallelCommandGroup(
+      GyroDrive(&m_gyro, &m_driveTrain, 90.0, [this] {return -m_driverStick.GetY(); } ),
+      SetArmAngle(&m_arm, [this] { 
+        return 0.0;
+      }, true)
+    )
+
+  ));
+
 
   // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {
   //   double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;
