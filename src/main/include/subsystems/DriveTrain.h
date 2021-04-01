@@ -44,6 +44,9 @@ class DriveTrain : public frc2::SubsystemBase {
     m_leftDriveSlave->SetNeutralMode(NeutralMode::Coast);
     }
 
+  double getLeftEncoder() { return m_leftDriveMaster->GetSelectedSensorPosition(); }
+  double getRightEncoder() { return m_rightDriveMaster->GetSelectedSensorPosition(); }
+
   void MPStart() { m_profiler->Start(kMPStartBuffer); }
 
   void MPUpdate() { m_profiler->UpdateRunner(); }

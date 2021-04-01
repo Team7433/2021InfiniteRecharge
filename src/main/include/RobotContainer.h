@@ -89,6 +89,9 @@ class RobotContainer {
   std::string m_pathName2 = "JustForwardSlow";
 
   double m_startingDistance;
+  double m_startingAverageEncoder;
+  double m_metersPerEncoder;
+  double m_targetAngle;
 
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 
