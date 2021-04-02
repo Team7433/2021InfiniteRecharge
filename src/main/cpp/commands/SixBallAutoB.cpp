@@ -4,34 +4,13 @@
 
 #include "commands/SixBallAutoB.h"
 
-#include <frc/smartdashboard/SmartDashboard.h>
-
-#include <frc2/command/ParallelCommandGroup.h>
-#include <frc2/command/ParallelDeadlineGroup.h>
-#include <frc2/command/ParallelRaceGroup.h>
-#include <frc2/command/ConditionalCommand.h>
-#include <frc2/command/InstantCommand.h>
-
-#include "commands/ExampleCommand.h"
-#include "commands/DriveWithJoystick.h"
-#include "commands/SetFloorIntake.h"
-#include "commands/RunShooter.h"
-#include "commands/SetBallHolder.h"
-#include "commands/SetFeeder.h"
-#include "commands/SetBallManipulation.h"
-#include "commands/ChangeCamMode.h"
-#include "commands/GoToAngle.h"
-#include "commands/TurnToTarget.h"
-#include "commands/SetArmAngle.h"
-#include "commands/ManualArmControl.h"
-#include "commands/DistanceSet.h"
-#include "commands/DriveRunProfile.h"
-#include "commands/UnloadMagazine.h"
-
 SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain, Shooter* m_shooter, BallHolder* m_ballHolder, Feeder* m_feeder, Gyro* m_gyro, Vision* m_vision, Arm* m_arm) {
 
   // 6B
   AddCommands(
+    //start timer
+    frc2::InstantCommand([this] { m_timer.Start(); }),
+
     frc2::ParallelCommandGroup(
       SetArmAngle(m_arm, [m_vision] {
           double distance = 3.5;
@@ -74,14 +53,15 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
         }) // RunShooter
     ), // Parallel Command Group
 
-    UnloadMagazine(m_ballHolder, m_feeder),
-
+    UnloadMagazine(m_ballHolder, m_feeder), //unload all balls
+    //reset arm position, rampdown shooter, stop floor intake
     frc2::ParallelDeadlineGroup(
       RunShooter(m_shooter, 0.0),
       SetArmAngle(m_arm, 6),
       SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false)
-    ) // Parallel Deadline Group
-
+    ), // Parallel Deadline Group
+    //end timer and print out autonomous length
+    frc2::InstantCommand([this] { m_timer.Stop(); std::cout << units::time::to_string(m_timer.Get()) << std::endl; m_timer.Reset(); })
   ); // Add Commands
 
 }
