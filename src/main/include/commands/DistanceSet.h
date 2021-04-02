@@ -14,6 +14,9 @@
 #include "subsystems/Arm.h"
 #include "subsystems/Shooter.h"
 
+#include <units/length.h>
+#include <units/math.h>
+
 /**
  * An example command.
  *
@@ -25,6 +28,7 @@ class DistanceSet
     : public frc2::CommandHelper<frc2::CommandBase, DistanceSet> {
  public:
   DistanceSet(Vision* vision, Arm* arm, Shooter* shooter);
+  DistanceSet(units::meter_t distanceM, Arm* arm, Shooter* shoorter);
 
   void Initialize() override;
 
@@ -39,4 +43,8 @@ class DistanceSet
   Vision* m_vision;
   Arm* m_arm;
   Shooter* m_shooter;
+  units::meter_t m_distanceM = 0.0_m;
+  bool m_distanceOveride = false;
+
+
 };

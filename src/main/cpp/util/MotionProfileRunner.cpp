@@ -144,7 +144,7 @@ void MotionProfileRunner::Start(int startPoints) {
     m_state = 0;
     m_leftMotor->Set(ControlMode::MotionProfile, SetValueMotionProfile::Disable);
     m_rightMotor->Set(ControlMode::MotionProfile, SetValueMotionProfile::Disable);
-    m_LoggingFile = new std::ofstream (m_pathToProfileFolder + m_loadedPathName + "log.csv");
+    m_LoggingFile = new std::ofstream (m_pathToProfileFolder + "/logs/" + m_loadedPathName + "log.csv");
     
     if (m_LoggingFile->is_open()) {
 

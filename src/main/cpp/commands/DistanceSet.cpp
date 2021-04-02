@@ -12,24 +12,39 @@ DistanceSet::DistanceSet(Vision* vision, Arm* arm, Shooter* shooter) {
   // Use addRequirements() here to declare subsystem dependencies.
 
   m_vision = vision;
+  m_arm = arm;
+  m_shooter = shooter;
 }
+
+DistanceSet::DistanceSet(units::meter_t distanceM, Arm* arm, Shooter* shooter) {
+
+  m_distanceM = distanceM;
+  m_arm = arm;
+  m_shooter = shooter;
+  m_distanceOveride = true;
+
+}
+
 
 // Called when the command is initially scheduled.
 void DistanceSet::Initialize() {
 
-//grabs the distance from port using vision subsystem
+//grabs the distance from port using vision subsystem otherwise overrided use overrided distance
   if(m_vision->getPowerPortDetected()) {
-    // double distance = m_vision->getPortDistance()/ 1000;
+    units::meter_t distance = m_distanceM;
+    if (m_distanceOveride == false) {
+      distance = m_vision->getPortDistance();
+    }
+  
+    //sets the speed using line of best fit equation
+    units::degree_t Angle = 15.5504_deg + (units::degree_t(130.439 / (2.46224 + atof(units::length::to_string(distance).c_str()))));
+    double Speed = 10648.9 + 1447.44 * atof(units::length::to_string(distance).c_str());
+    //Displays target speed and angle on smartDashboard
+     frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
+     frc::SmartDashboard::PutString("TargetAngle", units::angle::to_string(Angle));
 
-    // //sets the speed using line of best fit equation
-    // double Speed = -0.67217*(std::pow(distance, 6)) + 17.5164*(std::pow(distance, 5)) + 168.137*(std::pow(distance, 4)) + 707.557*(std::pow(distance, 3)) + 1182.52*(std::pow(distance, 2)) + 1721.41*(std::pow(distance, 1)) + 9963.13;
-    // double Angle = 0.00262689*(std::pow(distance, 6)) + -0.0721799*(std::pow(distance, 5)) + 0.767968*(std::pow(distance, 4)) + -4.01135*(std::pow(distance, 3)) + 11.3266*(std::pow(distance, 2)) + -21.1942*(std::pow(distance, 1)) + 56.4509;
-
-    // frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
-    // frc::SmartDashboard::PutNumber("TargetAngle", Angle);
-
-    // m_arm->SetAngle(Angle);
-    // m_shooter->SetVelocity(Speed);
+    m_arm->SetAngle(Angle);
+    m_shooter->SetVelocity(Speed);
 
   }
 }

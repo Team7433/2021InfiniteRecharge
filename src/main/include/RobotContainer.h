@@ -25,7 +25,6 @@
 #include "commands/SetFeeder.h"
 #include "commands/SetBallManipulation.h"
 #include "commands/ChangeCamMode.h"
-#include "commands/GoToAngle.h"
 #include "commands/TurnToTarget.h"
 #include "commands/SetArmAngle.h"
 #include "commands/ManualArmControl.h"

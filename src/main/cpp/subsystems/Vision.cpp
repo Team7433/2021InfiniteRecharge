@@ -16,7 +16,6 @@ Vision::Vision(Arm* arm) {
 
 // This method will be called once per scheduler run
 void Vision::Periodic() {
-    frc::SmartDashboard::PutNumber("Lidar Distance", getLidarDistance());
     frc::SmartDashboard::PutBoolean("TargetDetected", getPowerPortDetected());
     frc::SmartDashboard::PutNumber("Target Distance Bumper", getPortDistanceBumper().to<double>());
     frc::SmartDashboard::PutNumber("Target Distance", getPortDistance().to<double>());
@@ -70,12 +69,4 @@ units::meter_t Vision::getPortDistanceBumper() {
     }
 
 
-}
-
-double Vision::getLidarDistance() {
-    m_lidar->SetMaxPeriod(1.0);
-    m_lidar->SetSemiPeriodMode(true);
-    m_lidar->Reset();
-    double cm = ((m_lidar->GetPeriod() * 1000000.0 / 10.0)/ 100);
-    return cm;
 }

@@ -44,15 +44,9 @@ class Vision : public frc2::SubsystemBase {
 
   units::meter_t getPortDistanceBumper();
 
-  double getLidarDistance();
-
-  
-
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-  frc::Counter* m_lidar = new frc::Counter(klidarPort);
-
 
   units::millimeter_t HC;
   units::millimeter_t HeightOfTarget_datam;

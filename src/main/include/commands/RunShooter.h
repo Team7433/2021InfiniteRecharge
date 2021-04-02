@@ -44,6 +44,6 @@ class RunShooter
  private:
   Shooter* m_shooter;
   std::function<double()>  m_velocity;
-  double m_actualVelocity;
+  double m_targetVelocity;
   bool m_done = false;
 };
