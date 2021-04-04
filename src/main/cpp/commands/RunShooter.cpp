@@ -47,7 +47,7 @@ void RunShooter::Execute() {
   }
 
   m_shooter->SetVelocity(setVelocity);
-  frc::SmartDashboard::PutNumber("ShooterCurrentVelocity", m_shooter->GetVelocity());
+  frc::SmartDashboard::PutNumber("RunShooter/ShooterCurrentVelocity", m_shooter->GetVelocity());
 }
 
 // Called once the command ends or is interrupted.

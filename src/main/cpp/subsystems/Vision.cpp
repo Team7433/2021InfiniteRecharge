@@ -16,9 +16,9 @@ Vision::Vision(Arm* arm) {
 
 // This method will be called once per scheduler run
 void Vision::Periodic() {
-    frc::SmartDashboard::PutBoolean("TargetDetected", getPowerPortDetected());
-    frc::SmartDashboard::PutNumber("Target Distance Bumper", getPortDistanceBumper().to<double>());
-    frc::SmartDashboard::PutNumber("Target Distance", getPortDistance().to<double>());
+    frc::SmartDashboard::PutBoolean("Vision/TargetDetected", getPowerPortDetected());
+    frc::SmartDashboard::PutNumber("Vision/Target Distance Bumper", getPortDistanceBumper().to<double>());
+    frc::SmartDashboard::PutNumber("Vision/Target Distance", getPortDistance().to<double>());
 }
 
 bool Vision::getPowerPortDetected() {

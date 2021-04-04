@@ -17,7 +17,7 @@ TurnToTarget::TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain) {
   m_driveTrain = drivetrain;
   m_gyro = gyro;
 
-  frc::SmartDashboard::PutNumber("Drive limelight Kp", 0.0);
+  frc::SmartDashboard::PutNumber("TTT/Drive limelight Kp", 0.0);
 }
 
 // Called when the command is initially scheduled.
@@ -30,7 +30,7 @@ void TurnToTarget::Initialize() {
   //using vision to set a gyro target
 
   m_gyroTarget = m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision->getPortDistance());
-  frc::SmartDashboard::PutNumber("Gyro target limelight", m_gyroTarget.to<double>());
+  frc::SmartDashboard::PutNumber("TTT/Gyro target limelight", m_gyroTarget.to<double>());
 
 
 }
@@ -41,11 +41,11 @@ void TurnToTarget::Execute() {
 
   //Sets the error
   m_error = ( m_gyroTarget - m_gyro->GetYaw() ).to<double>();
-  frc::SmartDashboard::PutNumber("Limelight gyro error", m_error);
+  frc::SmartDashboard::PutNumber("TTT/gyro error", m_error);
  
 
   //Sets the output to arcade drive.(error x kp)
-  frc::SmartDashboard::PutNumber("TurnToLimelight output power: ", (m_error * m_kp + 0.1));
+  frc::SmartDashboard::PutNumber("TTT/output power: ", (m_error * m_kp + 0.1));
   
   if (m_error > 0) {
     m_ks = 0.091;

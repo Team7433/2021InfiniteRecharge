@@ -18,11 +18,11 @@ BallHolder::BallHolder() {
 
 // This method will be called once per scheduler run
 void BallHolder::Periodic() {
-    frc::SmartDashboard::PutBoolean("BeltInSensor", GetSensorBeltIn());
-    frc::SmartDashboard::PutBoolean("BeltFullSensor", GetSensorBeltFull());
-    frc::SmartDashboard::PutBoolean("indexerOutSensor", GetSensorIndexerOut());
-    frc::SmartDashboard::PutBoolean("indexerInSensor", GetSensorIndexerIn());
-    frc::SmartDashboard::PutBoolean("BeltMiddleSensor", GetSensorBeltMiddle());
+    frc::SmartDashboard::PutBoolean("BH/BeltInSensor", GetSensorBeltIn());
+    frc::SmartDashboard::PutBoolean("BH/BeltFullSensor", GetSensorBeltFull());
+    frc::SmartDashboard::PutBoolean("BH/indexerOutSensor", GetSensorIndexerOut());
+    frc::SmartDashboard::PutBoolean("BH/indexerInSensor", GetSensorIndexerIn());
+    frc::SmartDashboard::PutBoolean("BH/BeltMiddleSensor", GetSensorBeltMiddle());
 }
 
 void BallHolder::SetMagazine(double value) {
