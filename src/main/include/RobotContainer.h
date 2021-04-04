@@ -17,7 +17,6 @@
 #include <units/angle.h>
 #include <units/length.h>
 
-// #include "commands/ExampleCommand.h"
 #include "commands/DriveWithJoystick.h"
 #include "commands/SetFloorIntake.h"
 #include "commands/RunShooter.h"
@@ -28,10 +27,9 @@
 #include "commands/TurnToTarget.h"
 #include "commands/SetArmAngle.h"
 #include "commands/ManualArmControl.h"
-#include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
+#include "commands/AutoTarget.h"
 
-#include "subsystems/ExampleSubsystem.h"
 #include "subsystems/FloorIntake.h"
 #include "subsystems/DriveTrain.h"
 #include "subsystems/Shooter.h"
@@ -62,7 +60,6 @@ class RobotContainer {
   void ResetStartOfTeleop();
  private:
   // The robot's subsystems and commands are defined here...
-  ExampleSubsystem m_subsystem;
   FloorIntake m_floorIntake;
   DriveTrain m_driveTrain;
   BallHolder m_ballholder;
