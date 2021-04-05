@@ -16,22 +16,31 @@
 #include "subsystems/Shooter.h"
 #include "subsystems/Vision.h"
 #include "subsystems/Gyro.h"
+#include "subsystems/DriveTrain.h"
 
 #include "commands/SetArmAngle.h"
 #include "commands/RunShooter.h"
 #include "commands/TurnToTarget.h"
+#include "commands/GyroDrive.h"
 
 
 class AutoTarget
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  AutoTarget> {
  public:
+  //overides for arm and shooter without turn to target or gyro drive
   AutoTarget(std::function<units::meter_t()> DistanceM, Arm* arm, Shooter* shooter);
   AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter);
   AutoTarget(Vision* vision, Arm* arm, Shooter* shooter);
+  //overide for turn to target
 
-  AutoTarget(std::function<units::meter_t()> DistanceM, std::function<units::degree_t()> gyroTarget, Arm* arm, Shooter* shooter);
-  AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro);
+  AutoTarget(std::function<units::meter_t()> distanceM, std::function<units::degree_t()> gyroTarget, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
+  AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
+
+  //overide for gyrodrive
+  AutoTarget(std::function<units::meter_t()> distanceM, std::function<units::degree_t()> gyroTarget, std::function<double()> forwardOutput, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
+  AutoTarget(std::function<double()> forwardOutput, Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
+  
 
 
  private:

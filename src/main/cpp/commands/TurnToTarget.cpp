@@ -19,7 +19,6 @@ TurnToTarget::TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain) {
   m_driveTrain = drivetrain;
   m_gyro = gyro;
 
-  frc::SmartDashboard::PutNumber("TTT/Drive limelight Kp", 0.0);
 }
 
 TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, units::degree_t overideAngle) {
@@ -38,12 +37,11 @@ void TurnToTarget::Initialize() {
   //Checks if there is a target if not ends command
   if (m_overide == false) {
     if (m_vision->getPowerPortDetected() == false) {
+      std::cout << "Power Port not detected" << std::endl;
       m_done = true;
     }
     //using vision to set a gyro target
     m_gyroTarget = m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision->getPortDistance());
-    frc::SmartDashboard::PutString("Gyro target limelight", units::angle::to_string(m_gyroTarget));
-
     m_lastGyroAngle = m_gyro->GetYaw();
     m_startError = m_gyroTarget - m_gyro->GetYaw();
   } else {
@@ -51,9 +49,7 @@ void TurnToTarget::Initialize() {
     m_startError = m_gyroTarget - m_gyro->GetYaw();
   }
 
-
-  
-  frc::SmartDashboard::PutString("TTT/Gyro target limelight", units::angle::to_string(m_gyroTarget));
+  frc::SmartDashboard::PutString("TTT/Gyro target", units::angle::to_string(m_gyroTarget));
 
 
 }
@@ -64,13 +60,7 @@ void TurnToTarget::Execute() {
 
   //Sets the error
   m_error = (m_gyroTarget - m_gyro->GetYaw());
-  frc::SmartDashboard::PutNumber("TTT/gyro error", m_error.to<double>());
- 
-
-  //Sets the output to arcade drive.(error x kp)
-  frc::SmartDashboard::PutNumber("TTT/output power: ", (m_error.to<double>() * m_kp + 0.1));
   
-
   // if (fabs(m_gyro->GetYaw() - m_lastGyroAngle) > 0.5) {
 
   //   m_ks = 0.0;
@@ -98,10 +88,12 @@ void TurnToTarget::Execute() {
   }
 
   double outputPower = (m_error.to<double>()*m_kp) + m_ks + m_accumulator;
-  frc::SmartDashboard::PutNumber("TurnToLimelight output power: ", outputPower);
+  frc::SmartDashboard::PutNumber("TTT/output power: ", outputPower);
   frc::SmartDashboard::PutNumber("TTT/AnglePerSecond", (m_gyro->GetYaw() - m_lastGyroAngle).to<double>());
   frc::SmartDashboard::PutNumber("TTT/KS", m_ks);
   frc::SmartDashboard::PutNumber("TTT/Accumululator", m_accumulator);
+  frc::SmartDashboard::PutNumber("TTT/gyro error", m_error.to<double>());
+
 
   m_driveTrain->ArcadeDrive(0, outputPower, false);
 

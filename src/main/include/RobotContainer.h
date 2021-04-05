@@ -88,8 +88,6 @@ class RobotContainer {
   frc::Joystick m_buttonBox{kButtonBoxId};
 #endif //ButtonBox
 
-  std::string m_pathName = "JustForward";
-  std::string m_pathName2 = "JustForwardSlow";
 
   double m_startingDistance;
   double m_startingRightEncoder;
