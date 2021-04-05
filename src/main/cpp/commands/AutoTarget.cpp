@@ -8,12 +8,11 @@
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, Arm* arm, Shooter* shooter) {
-  // Add your commands here, e.g.
-  // AddCommands(FooCommand(), BarCommand());
 
   //setting lambda function using line of best fit equation to figure out the perfect angle and velocity for shooter/arm for the perfect shot
     m_angle = [this, distanceM] {return 15.5504_deg + (units::degree_t(130.439 / (2.46224 + distanceM().to<double>()))); };
     m_velocity = [this, distanceM] {return 10648.9 + 1447.44 * distanceM().to<double>(); };
+
     AddCommands(
       frc2::InstantCommand(
         [this, distanceM] {
@@ -21,15 +20,41 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, Arm* arm, Shoo
           frc::SmartDashboard::PutNumber("AutoTarget/TargetSpeed", m_velocity());
           frc::SmartDashboard::PutString("AutoTarget/TargetAngle", units::angle::to_string(m_angle()));
         }
-      ),
+      ), // Instand Command
 
       frc2::ParallelCommandGroup(
         //setting arm angle and shooter velocity
         SetArmAngle(arm, m_angle),
         RunShooter(shooter, m_velocity)
-      )
+      ) //Parallel Command Group
 
-    );
+    ); // Add Commands
+}
+
+
+AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, std::function<units::degree_t()> gyroTarget, Arm* arm, Shooter* shooter) {
+
+  m_angle = [this, distanceM] {return 15.5504_deg + (units::degree_t(130.439 / (2.46224 + distanceM().to<double>()))); };
+  m_velocity = [this, distanceM] {return 10648.9 + 1447.44 * distanceM().to<double>(); };
+
+  AddCommands(
+    frc2::InstantCommand(
+        [this, distanceM] {
+          //logging this on smartdashboard
+          frc::SmartDashboard::PutNumber("AutoTarget/TargetSpeed", m_velocity());
+          frc::SmartDashboard::PutString("AutoTarget/TargetAngle", units::angle::to_string(m_angle()));
+        }
+      ), // Instand Command
+
+      frc2::ParallelCommandGroup(
+        //setting arm angle and shooter velocity
+        SetArmAngle(arm, m_angle),
+        RunShooter(shooter, m_velocity)
+      ) //Parallel Command Group
+
+
+  ); //Add Commands
+
 }
 
 AutoTarget::AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter) : AutoTarget([DistanceM] { return DistanceM; }, arm, shooter) {}

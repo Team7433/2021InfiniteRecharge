@@ -30,7 +30,7 @@ void TurnToTarget::Initialize() {
   //using vision to set a gyro target
 
   m_gyroTarget = m_gyro->GetYaw() + m_vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision->getPortDistance());
-  frc::SmartDashboard::PutNumber("TTT/Gyro target limelight", m_gyroTarget.to<double>());
+  frc::SmartDashboard::PutString("TTT/Gyro target limelight", units::angle::to_string(m_gyroTarget));
 
 
 }

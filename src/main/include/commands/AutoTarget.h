@@ -15,9 +15,11 @@
 #include "subsystems/Arm.h"
 #include "subsystems/Shooter.h"
 #include "subsystems/Vision.h"
+#include "subsystems/Gyro.h"
 
 #include "commands/SetArmAngle.h"
 #include "commands/RunShooter.h"
+#include "commands/TurnToTarget.h"
 
 
 class AutoTarget
@@ -27,6 +29,9 @@ class AutoTarget
   AutoTarget(std::function<units::meter_t()> DistanceM, Arm* arm, Shooter* shooter);
   AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter);
   AutoTarget(Vision* vision, Arm* arm, Shooter* shooter);
+
+  AutoTarget(std::function<units::meter_t()> DistanceM, std::function<units::degree_t()> gyroTarget, Arm* arm, Shooter* shooter);
+  AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro);
 
 
  private:
