@@ -17,7 +17,7 @@
 #include <units/angle.h>
 #include <units/length.h>
 
-#include "commands/DriveWithJoystick.h"
+  #include "commands/DriveWithJoystick.h"
 #include "commands/SetFloorIntake.h"
 #include "commands/RunShooter.h"
 #include "commands/SetBallHolder.h"
@@ -32,6 +32,8 @@
 #include "commands/UnloadMagazine.h"
 #include "commands/GyroDrive.h"
 #include "commands/AutoTarget.h"
+
+#include "commands/DriveMotionControl.h"
 
 #include "commands/SimpleAuto.h"
 #include "commands/SixBallAutoB.h"
