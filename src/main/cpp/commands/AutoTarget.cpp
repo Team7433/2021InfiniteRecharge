@@ -87,7 +87,7 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, std::function<
 
 
 //overides for arm and shooter without turn to target or gyro drive
-AutoTarget::AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter, bool update) : AutoTarget([DistanceM] { return DistanceM; }, arm, shooter, update) {}
+AutoTarget::AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter) : AutoTarget([DistanceM] { return DistanceM; }, arm, shooter, false) {}
 AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, bool update) : AutoTarget([vision] { return vision->getPortDistance(); }, arm, shooter, update) {}
 
 //overide for turn to target

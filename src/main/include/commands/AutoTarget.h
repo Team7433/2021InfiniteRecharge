@@ -30,7 +30,7 @@ class AutoTarget
  public:
   //overides for arm and shooter without turn to target or gyro drive
   AutoTarget(std::function<units::meter_t()> DistanceM, Arm* arm, Shooter* shooter, bool update = false);
-  AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter, bool update = false);
+  AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter);
   AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, bool update = false);
   //overide for turn to target
 

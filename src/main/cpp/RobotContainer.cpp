@@ -114,7 +114,7 @@ void RobotContainer::ConfigureButtonBindings()
       GyroDrive(&m_gyro, &m_driveTrain, m_targetAngle, [this] { return m_driverStick.GetY(); }),
       AutoTarget([this] {
         return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-      }, &m_arm, &m_shooter)
+      }, &m_arm, &m_shooter, true)
 
     )
 
