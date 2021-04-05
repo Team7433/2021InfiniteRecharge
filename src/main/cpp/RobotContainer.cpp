@@ -109,10 +109,14 @@ void RobotContainer::ConfigureButtonBindings()
       m_targetAngle = m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance()); //Sets target Gyro angle
     }),
 
-      AutoTarget([this] {
-         return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-      }, [this] { return m_targetAngle; }, [this] { return -m_driverStick.GetY(); }, &m_arm, &m_shooter, &m_gyro, &m_driveTrain)
+    frc2::ParallelCommandGroup(
 
+      GyroDrive(&m_gyro, &m_driveTrain, m_targetAngle, [this] { return m_driverStick.GetY(); }),
+      AutoTarget([this] {
+        return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
+      }, &m_arm, &m_shooter)
+
+    )
 
   ));
 

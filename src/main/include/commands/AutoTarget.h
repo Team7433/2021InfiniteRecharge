@@ -38,8 +38,8 @@ class AutoTarget
   AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
 
   //overide for gyrodrive
-  AutoTarget(std::function<units::meter_t()> distanceM, std::function<units::degree_t()> gyroTarget, std::function<double()> forwardOutput, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
-  AutoTarget(std::function<double()> forwardOutput, Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
+  // AutoTarget(std::function<units::meter_t()> distanceM, std::function<units::degree_t()> gyroTarget, std::function<double()> forwardOutput, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
+  // AutoTarget(std::function<double()> forwardOutput, Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain);
   
 
 

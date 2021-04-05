@@ -31,10 +31,9 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
     SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false),
 
-    frc2::ParallelCommandGroup(
-      TurnToTarget(m_vision, m_gyro, m_driveTrain),
-      AutoTarget(m_vision, m_arm, m_shooter)
-    ), // Parallel Command Group
+  
+      AutoTarget(m_vision, m_arm, m_shooter, m_gyro, m_driveTrain),
+  
 
     UnloadMagazine(m_ballHolder, m_feeder), //unload all balls
     //reset arm position, rampdown shooter, stop floor intake
