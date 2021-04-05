@@ -8,7 +8,7 @@
 // NOTE:  Consider using this command inline, rather than writing a subclass.
 // For more information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
-AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, Arm* arm, Shooter* shooter) {
+AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, Arm* arm, Shooter* shooter, bool update) {
 
   //setting lambda function using line of best fit equation to figure out the perfect angle and velocity for shooter/arm for the perfect shot
     m_angle = [this, distanceM] {return 15.5504_deg + (units::degree_t(130.439 / (2.46224 + distanceM().to<double>()))); };
@@ -25,8 +25,8 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, Arm* arm, Shoo
 
       frc2::ParallelCommandGroup(
         //setting arm angle and shooter velocity
-        SetArmAngle(arm, m_angle),
-        RunShooter(shooter, m_velocity)
+        SetArmAngle(arm, m_angle, update),
+        RunShooter(shooter, m_velocity, update)
       ) //Parallel Command Group
 
     ); // Add Commands
@@ -87,8 +87,8 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, std::function<
 
 
 //overides for arm and shooter without turn to target or gyro drive
-AutoTarget::AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter) : AutoTarget([DistanceM] { return DistanceM; }, arm, shooter) {}
-AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter) : AutoTarget([vision] { return vision->getPortDistance(); }, arm, shooter) {}
+AutoTarget::AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter, bool update) : AutoTarget([DistanceM] { return DistanceM; }, arm, shooter, update) {}
+AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, bool update) : AutoTarget([vision] { return vision->getPortDistance(); }, arm, shooter, update) {}
 
 //overide for turn to target
 AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain) : AutoTarget([vision] {return vision->getPortDistance();}, [vision, gyro] {return gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance());}, arm, shooter, gyro, drivetrain) {}
