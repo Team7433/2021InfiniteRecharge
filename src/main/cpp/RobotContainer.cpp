@@ -11,6 +11,7 @@
 
 #include <frc2/command/InstantCommand.h>
 #include <frc2/command/ParallelCommandGroup.h>
+#include <frc2/command/SequentialCommandGroup.h>
 
 #include <frc/smartdashboard/SmartDashboard.h>
 
@@ -37,7 +38,9 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::JoystickButton(&m_operatorController, 3).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.3, 0.3, 0.3, 0.5, false)); //Shooty
   frc2::JoystickButton(&m_operatorController, 4).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, -0.5, -0.3, -0.3, -0.3, false)); //Reversy
   frc2::JoystickButton(&m_driverStick, 11).WhenPressed(DriveRunProfile(&m_driveTrain, m_pathName2));
-  frc2::JoystickButton(&m_driverStick, 12).WhenPressed(DriveRunProfile(&m_driveTrain, m_pathName));
+  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SimpleAuto(&m_feeder, &m_ballholder, &m_floorIntake, &m_driveTrain, &m_arm, &m_vision, &m_gyro, &m_shooter));
+  frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm));
+  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, 90));
 
   //frc2::JoystickButton(&m_driverStick, 1).WhileHeld(GoToAngle(&m_driveTrain, &m_gyro, &m_driverStick, 0.0));
   // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(TurnToTarget(&m_vision, &m_gyro, &m_driveTrain));
@@ -82,7 +85,8 @@ void RobotContainer::ConfigureButtonBindings()
   //frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, [] { return frc::SmartDashboard::GetNumber("ArmAngle", 0); }));
 
   // auto set angle and speed of arm and shooter
-  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(frc2::ParallelCommandGroup(
+  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(
+    frc2::ParallelCommandGroup(
     SetArmAngle(&m_arm, [this] {
       units::meter_t distance = m_vision.getPortDistance();
 
@@ -99,7 +103,50 @@ void RobotContainer::ConfigureButtonBindings()
     return m_vision.getPowerPortDetected();
   }));
 
-  ConfigureButtonBox();
+ 
+    // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(GyroDrive(&m_gyro, &m_driveTrain, 90.0, [this] {return -m_driverStick.GetY(); } ));
+
+
+  frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
+    frc2::InstantCommand([this] {
+      m_startingDistance = m_vision.getPortDistance() / 1000; //Reads starting distance using limelight
+      m_startingRightEncoder = m_driveTrain.getRightEncoder();
+      m_startingLeftEncoder = m_driveTrain.getLeftEncoder();
+      m_targetAngle = (m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle()) - atan(160 / m_vision.getPortDistance()) * (180/kPi); //reads target angle and converting to gyro angle
+    }),
+    frc2::ParallelCommandGroup(
+      GyroDrive(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }, [this] {return -m_driverStick.GetY(); } ),
+      SetArmAngle(&m_arm, [this] { 
+        double currentDistance = m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2;
+        // double currentDistance = m_startingDistance + m_metersPerEncoder*((m_driveTrain.getLeftEncoder() + m_driveTrain.getRightEncoder()) / 2); 
+        double Angle = 15.5504 + (130.439 / (currentDistance + 2.46224));
+        frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
+        return Angle;
+      }, true),
+      RunShooter(&m_shooter, [this] {
+
+        // double currentDistance = m_startingDistance + m_metersPerEncoder*((m_driveTrain.getLeftEncoder() + m_driveTrain.getRightEncoder()) / 2);
+        double currentDistance = m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2;
+       
+        double Speed = 10648.9 + 1447.44 * currentDistance;
+
+        frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
+
+        return Speed;
+
+      })
+
+    )
+
+  ));
+
+
+  // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {
+  //   double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;
+  //   frc::SmartDashboard::PutNumber("ShooterSpeed", newSpeed);
+  //   return newSpeed;
+  // }));
+ ConfigureButtonBox();
 } // ConfigureButtonBindings
 
 frc2::Command *RobotContainer::GetAutonomousCommand()

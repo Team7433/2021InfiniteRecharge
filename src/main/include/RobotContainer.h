@@ -29,6 +29,11 @@
 #include "commands/ManualArmControl.h"
 #include "commands/DriveRunProfile.h"
 #include "commands/AutoTarget.h"
+#include "commands/UnloadMagazine.h"
+#include "commands/GyroDrive.h"
+
+#include "commands/SimpleAuto.h"
+#include "commands/SixBallAutoB.h"
 
 #include "subsystems/FloorIntake.h"
 #include "subsystems/DriveTrain.h"
@@ -56,6 +61,8 @@ class RobotContainer {
 
   frc2::Command* GetAutonomousCommand();
 
+  void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
+  void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
   void zeroOutputDisabled();
   void ResetStartOfTeleop();
  private:
@@ -82,6 +89,12 @@ class RobotContainer {
 
   std::string m_pathName = "JustForward";
   std::string m_pathName2 = "JustForwardSlow";
+
+  double m_startingDistance;
+  double m_startingRightEncoder;
+  double m_startingLeftEncoder;
+  double m_metersPerEncoder;
+  double m_targetAngle;
 
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 

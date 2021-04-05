@@ -48,8 +48,8 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Velocity", GetVelocity());
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
-    frc::SmartDashboard::PutNumber("Arm/Angle", GetArmAngleUnits().to<double>());
-    frc::SmartDashboard::PutNumber("Arm/AngleMotor", GetArmAngleMotorUnits().to<double>());
+    frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
+    frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
     frc::SmartDashboard::PutNumber("Arm/EncoderDifference", (GetArmAngleUnits() - GetArmAngleMotorUnits()).to<double>()  );
 }
 

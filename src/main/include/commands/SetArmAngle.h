@@ -24,11 +24,9 @@
 class SetArmAngle
     : public frc2::CommandHelper<frc2::CommandBase, SetArmAngle> {
  public:
-  SetArmAngle(Arm* arm, double angle);
+  SetArmAngle(Arm* arm, units::degree_t angle);
 
-  SetArmAngle(Arm* arm, std::function<double()> angle);
-
-  SetArmAngle(Arm* arm, std::function<units::degree_t()> angle);
+  SetArmAngle(Arm* arm, std::function<units::degree_t()> angle, bool update = false);
 
   void Initialize() override;
 
@@ -40,4 +38,7 @@ class SetArmAngle
 
   Arm* m_arm;
   std::function<units::degree_t()> m_angle;
+  std::function<double()> m_angle;
+  double m_setAngle;
+  double m_update;
 };

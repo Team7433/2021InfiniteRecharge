@@ -27,6 +27,16 @@ constexpr double kPi = 3.1415926545897;
 
 // #define ButtonBox
 
+
+namespace AutonmousConstants {
+
+    constexpr units::time::second_t kUnloadMagazineTimeout = 1.0_s;
+
+
+}
+
+
+
 namespace DriverControls {
 
     constexpr int kMainDriverStickId = 0;
@@ -90,7 +100,7 @@ namespace ShooterConstants {
     constexpr double kshooterIZone = 1000;
     constexpr double kshooterMaxAccumulator = 0;
 
-    constexpr double kshooterRampSpeed = 300;
+    constexpr double kshooterRampSpeed = 600;
 
     constexpr ctre::phoenix::motorcontrol::InvertType kbMotorInvert = InvertType::FollowMaster;
 
@@ -108,6 +118,7 @@ namespace BallHolderConstants {
     constexpr int ksensorId_beltMiddle = 5;
 
     constexpr units::time::second_t kTimerMagazineDelay = 0.1_s;
+    constexpr units::time::second_t kOverloadReverseLength = 0.2_s;
 
 }
 
@@ -137,8 +148,8 @@ namespace ArmConstants {
     constexpr double Kd = 0.0;
     constexpr double Kf = 4.7142;
 
-    constexpr double KmotionCruiseVelocity = 150.0;
-    constexpr double KmotionAcceleration = 100.0;
+    constexpr double KmotionCruiseVelocity = 300.0;
+    constexpr double KmotionAcceleration = 300.0;
 
     constexpr int kSolonoidPortAid = 0;
     constexpr int kSolonoidPortBid = 7;

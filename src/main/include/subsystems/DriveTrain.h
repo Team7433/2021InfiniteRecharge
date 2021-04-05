@@ -29,6 +29,23 @@ class DriveTrain : public frc2::SubsystemBase {
   void ArcadeDrive(double forward, double rotation, bool squaredInput);
 
   void CurvatureDrive(double forward, double rotation, bool quickTurn);
+  // Set Motors To Break mode
+  void SetBrakeMode() {
+    m_rightDriveMaster->SetNeutralMode(NeutralMode::Brake);
+    m_rightDriveSlave->SetNeutralMode(NeutralMode::Brake);
+    m_leftDriveMaster->SetNeutralMode(NeutralMode::Brake);
+    m_leftDriveSlave->SetNeutralMode(NeutralMode::Brake);
+  }
+  // Set Motors To Coast Mode
+  void SetCoastMode() {
+    m_rightDriveMaster->SetNeutralMode(NeutralMode::Coast);
+    m_rightDriveSlave->SetNeutralMode(NeutralMode::Coast);
+    m_leftDriveMaster->SetNeutralMode(NeutralMode::Coast);
+    m_leftDriveSlave->SetNeutralMode(NeutralMode::Coast);
+    }
+
+  double getLeftEncoder() { return m_leftDriveMaster->GetSelectedSensorPosition(); }
+  double getRightEncoder() { return m_rightDriveMaster->GetSelectedSensorPosition(); }
 
   void MPStart() { m_profiler->Start(kMPStartBuffer); }
 

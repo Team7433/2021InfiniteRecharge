@@ -14,12 +14,13 @@ RunShooter::RunShooter(Shooter* shooter, double  velocity) : RunShooter(shooter,
 
 }
 
-RunShooter::RunShooter(Shooter* shooter, std::function<double()>  velocity) {
+RunShooter::RunShooter(Shooter* shooter, std::function<double()>  velocity, bool update) {
 
   AddRequirements({shooter});
 
   m_shooter = shooter;
   m_velocity = velocity;
+  m_update = update;
 
 }
 
@@ -34,6 +35,15 @@ void RunShooter::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void RunShooter::Execute() {
 
+  if (m_update) {
+
+      m_targetVelocity = m_velocity();
+
+  }
+
+  if (m_targetVelocity != 0) {
+    m_shooter->configKF((474.592 + (384574 / (m_targetVelocity - 1917.6))) / 10000);
+  }
   double difference = m_targetVelocity - m_shooter->GetVelocityLoopTarget();
 
   double setVelocity = 0;
@@ -57,4 +67,9 @@ void RunShooter::End(bool interrupted) {
 }
 
 // Returns true when the command should end.
-bool RunShooter::IsFinished() { return (m_shooter->GetVelocityLoopTarget() == m_targetVelocity); }
+bool RunShooter::IsFinished() { 
+  frc::SmartDashboard::PutBoolean("Shooter/OnTarget", m_shooter->GetVelocityLoopTarget() == m_targetVelocity);
+  frc::SmartDashboard::PutNumber("Shooter/TalonTargetSpeed", m_shooter->GetVelocityLoopTarget()); //This number in int form
+  frc::SmartDashboard::PutNumber("Shooter/SentTargetSpeed", m_targetVelocity);
+  return (m_shooter->GetVelocityLoopTarget() == int(m_targetVelocity) && m_update == false); 
+}

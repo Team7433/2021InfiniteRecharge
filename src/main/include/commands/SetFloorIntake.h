@@ -11,6 +11,7 @@
 #include <frc2/command/CommandHelper.h>
 
 #include "subsystems/FloorIntake.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #include "Constants.h"
 /**
@@ -35,5 +36,11 @@ class SetFloorIntake
   private:
     FloorIntake * m_intake;
     FloorIntakeConstants::Position m_position;
+
+
+
+    double m_currentAverage = 0.0;
+    bool m_overloaded = false;
+    bool finished = false;
     double m_roller;
 };

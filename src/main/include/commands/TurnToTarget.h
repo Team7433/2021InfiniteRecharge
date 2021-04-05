@@ -10,6 +10,7 @@
 #include <frc2/command/CommandBase.h>
 #include <frc2/command/CommandHelper.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc2/Timer.h>
 
 #include "subsystems/Vision.h"
 #include "subsystems/DriveTrain.h"
@@ -27,6 +28,7 @@ class TurnToTarget
     : public frc2::CommandHelper<frc2::CommandBase, TurnToTarget> {
  public:
   TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain);
+  TurnToTarget(Gyro* , DriveTrain*, double);
 
   void Initialize() override;
 
@@ -39,16 +41,24 @@ class TurnToTarget
   Vision* m_vision;
   DriveTrain* m_driveTrain;
   Gyro* m_gyro;
+  frc2::Timer m_timer;
 
   units::degree_t m_gyroTarget;
 
   bool m_done = false;
 
-  double m_kp = 0.0099;
+  double m_overideAngle;
+  bool m_overide = false;
 
+  double m_kp = 0.01;
+  double m_ki = 0.001;
+  double m_izone = 6.0;
+  double m_accumulator = 0.0;
   double m_ks;
 
   double m_error;
+  double m_startError;
+  double m_lastGyroAngle = 0;
 
   double m_Iaccumulator;
 

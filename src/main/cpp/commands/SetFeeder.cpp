@@ -27,4 +27,4 @@ void SetFeeder::Execute() {}
 void SetFeeder::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool SetFeeder::IsFinished() { return false; }
+bool SetFeeder::IsFinished() { return true; }

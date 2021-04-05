@@ -26,8 +26,15 @@ class FloorIntake : public frc2::SubsystemBase {
 
   void Set(Position position, double roller);
 
+  double GetCurrent() const { return m_RollerMotor->GetOutputCurrent(); }
+
+  double GetPercentageOutput() const { return m_percentOutput; }
+  
+
  private:
   
   TalonSRX * m_RollerMotor = new TalonSRX{kIntakeMotorId};
   frc::DoubleSolenoid m_positionSolenoid{kSolonoidPortAId, kSolonoidPortBId};
+
+  double m_percentOutput;
 };
