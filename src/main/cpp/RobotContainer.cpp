@@ -103,7 +103,7 @@ void RobotContainer::ConfigureButtonBindings()
 
   frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
     frc2::InstantCommand([this] {
-      m_startingDistance = m_vision.getPortDistance().to<double>(); //Reads starting distance using limelight
+      m_startingDistance = m_vision.getPortDistance(); //Reads starting distance using limelight
       m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
       m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count
       m_targetAngle = m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance()); //Sets target Gyro angle

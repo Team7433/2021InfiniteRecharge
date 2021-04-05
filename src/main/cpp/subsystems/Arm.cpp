@@ -92,9 +92,16 @@ double Arm::GetMotorOutput() {
 double Arm::GetError() {
     return m_armMotor->GetClosedLoopError();
 }
+
+
 double Arm::GetTargetPosition() {
     return m_armMotor->GetClosedLoopTarget();
 }
+
+units::degree_t Arm::GetTargetPositionUnits() {
+    return units::armEncoderUnits_t(m_armMotor->GetClosedLoopTarget());
+}
+
 double Arm::GetArmAngle() {
 
     return ((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 196;

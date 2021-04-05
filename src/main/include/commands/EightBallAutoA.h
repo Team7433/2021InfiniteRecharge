@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #pragma once
-
 #include <iostream>
 
 #include <frc2/command/CommandHelper.h>
@@ -39,17 +38,18 @@
 #include "commands/DriveRunProfile.h"
 #include "commands/UnloadMagazine.h"
 #include "commands/AutoTarget.h"
-
-
-
-class SixBallAutoB
+#include "commands/DriveMotionControl.h"
+class EightBallAutoA
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 SixBallAutoB> {
- public:
-  SixBallAutoB(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
- private:
-  frc2::Timer m_timer;
-  
+                                 EightBallAutoA> {
+  public:
+    EightBallAutoA(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
 
-
-};
+  private: 
+    frc2::Timer m_timer;
+    units::meter_t m_startingDistance = 4.4_m;
+    double m_startingRightEncoder;
+    double m_startingLeftEncoder;
+    double m_metersPerEncoder;
+    units::degree_t m_targetAngle;
+  };

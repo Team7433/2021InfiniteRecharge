@@ -91,7 +91,7 @@ class RobotContainer {
 #endif //ButtonBox
 
 
-  double m_startingDistance;
+  units::meter_t m_startingDistance;
   double m_startingRightEncoder;
   double m_startingLeftEncoder;
   double m_metersPerEncoder;
