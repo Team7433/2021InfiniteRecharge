@@ -11,7 +11,6 @@
 #include <frc/smartdashboard/SmartDashboard.h>
 #include <frc2/Timer.h>
 
-#include "subsystems/ExampleSubsystem.h"
 #include "subsystems/FloorIntake.h"
 #include "subsystems/DriveTrain.h"
 #include "subsystems/Shooter.h"
@@ -27,7 +26,6 @@
 #include <frc2/command/ConditionalCommand.h>
 #include <frc2/command/InstantCommand.h>
 
-#include "commands/ExampleCommand.h"
 #include "commands/DriveWithJoystick.h"
 #include "commands/SetFloorIntake.h"
 #include "commands/RunShooter.h"
@@ -35,13 +33,12 @@
 #include "commands/SetFeeder.h"
 #include "commands/SetBallManipulation.h"
 #include "commands/ChangeCamMode.h"
-#include "commands/GoToAngle.h"
 #include "commands/TurnToTarget.h"
 #include "commands/SetArmAngle.h"
 #include "commands/ManualArmControl.h"
-#include "commands/DistanceSet.h"
 #include "commands/DriveRunProfile.h"
 #include "commands/UnloadMagazine.h"
+#include "AutoTarget.h"
 
 
 

@@ -28,7 +28,7 @@ class TurnToTarget
     : public frc2::CommandHelper<frc2::CommandBase, TurnToTarget> {
  public:
   TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain);
-  TurnToTarget(Gyro* , DriveTrain*, double);
+  TurnToTarget(Gyro* , DriveTrain*, units::degree_t);
 
   void Initialize() override;
 
@@ -47,18 +47,18 @@ class TurnToTarget
 
   bool m_done = false;
 
-  double m_overideAngle;
+  units::degree_t m_overideAngle;
   bool m_overide = false;
 
   double m_kp = 0.01;
   double m_ki = 0.001;
-  double m_izone = 6.0;
+  units::degree_t m_izone = 6.0_deg;
   double m_accumulator = 0.0;
   double m_ks;
 
-  double m_error;
-  double m_startError;
-  double m_lastGyroAngle = 0;
+  units::degree_t m_error;
+  units::degree_t m_startError;
+  units::degree_t m_lastGyroAngle = 0_deg;
 
   double m_Iaccumulator;
 

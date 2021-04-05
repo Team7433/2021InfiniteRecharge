@@ -31,6 +31,7 @@
 #include "commands/AutoTarget.h"
 #include "commands/UnloadMagazine.h"
 #include "commands/GyroDrive.h"
+#include "commands/AutoTarget.h"
 
 #include "commands/SimpleAuto.h"
 #include "commands/SixBallAutoB.h"
@@ -94,7 +95,7 @@ class RobotContainer {
   double m_startingRightEncoder;
   double m_startingLeftEncoder;
   double m_metersPerEncoder;
-  double m_targetAngle;
+  units::degree_t m_targetAngle;
 
   // frc::Joystick m_buttonBOX{kButtonBoxId}; //Used for testing in pits and at home
 

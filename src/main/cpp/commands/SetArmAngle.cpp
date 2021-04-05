@@ -45,7 +45,7 @@ void SetArmAngle::End(bool interrupted) {
 // Returns true when the command should end.
 bool SetArmAngle::IsFinished() { 
 
-  frc::SmartDashboard::PutNumber("Arm/SetFinishDifference", m_arm->GetArmAngleMotor() - m_setAngle);
-  return m_arm->GetArmAngleMotor() > m_setAngle - 1.5 && m_arm->GetArmAngleMotor() < m_setAngle + 1.5 && m_update == false;
+  frc::SmartDashboard::PutNumber("Arm/SetFinishDifference", (m_arm->GetArmAngleMotorUnits() - m_setAngle).to<double>());
+  return m_arm->GetArmAngleMotorUnits() > m_setAngle - 1.5_deg && m_arm->GetArmAngleMotorUnits() < m_setAngle + 1.5_deg && m_update == false;
 
 }

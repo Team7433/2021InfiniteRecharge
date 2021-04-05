@@ -38,7 +38,6 @@ class SetArmAngle
 
   Arm* m_arm;
   std::function<units::degree_t()> m_angle;
-  std::function<double()> m_angle;
-  double m_setAngle;
+  units::degree_t m_setAngle;
   double m_update;
 };

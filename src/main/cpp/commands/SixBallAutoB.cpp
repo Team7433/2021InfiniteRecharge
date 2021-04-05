@@ -11,26 +11,17 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
     //start timer
     frc2::InstantCommand([this] { m_timer.Start(); }),
 
-    frc2::ParallelCommandGroup(
-      SetArmAngle(m_arm, [m_vision] {
-          double distance = 3.5;
-          return 15.5504 + (130.439 / (distance + 2.46224));
-        }), // SetArmAngle
-        RunShooter(m_shooter, [m_vision] {
-          double distance = 3.5;
-          return 10648.9 + 1447.44 * distance;
-        }) // RunShooter
-    ),
+    AutoTarget(4.4_m, m_arm, m_shooter),
 
     UnloadMagazine(m_ballHolder, m_feeder),
 
-    TurnToTarget(m_gyro, m_driveTrain, 90.0),
+    TurnToTarget(m_gyro, m_driveTrain, 90.0_deg),
 
     frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6BCollectBalls"),
       SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.5, 0.3, 0, /* Storing */ true),
       RunShooter(m_shooter, 0.0),
-      SetArmAngle(m_arm, 6)
+      SetArmAngle(m_arm, 6_deg)
     ), //Parallel Deadline Group
 
 
@@ -40,24 +31,16 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
     SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false),
 
-
     frc2::ParallelCommandGroup(
       TurnToTarget(m_vision, m_gyro, m_driveTrain),
-      SetArmAngle(m_arm, [m_vision] {
-          double distance = m_vision->getPortDistance() / 1000;
-          return 15.5504 + (130.439 / (distance + 2.46224));
-        }), // SetArmAngle
-        RunShooter(m_shooter, [m_vision] {
-          double distance = m_vision->getPortDistance() / 1000;
-          return 10648.9 + 1447.44 * distance;
-        }) // RunShooter
+      AutoTarget(m_vision, m_arm, m_shooter)
     ), // Parallel Command Group
 
     UnloadMagazine(m_ballHolder, m_feeder), //unload all balls
     //reset arm position, rampdown shooter, stop floor intake
     frc2::ParallelDeadlineGroup(
       RunShooter(m_shooter, 0.0),
-      SetArmAngle(m_arm, 6),
+      SetArmAngle(m_arm, 6_deg),
       SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false)
     ), // Parallel Deadline Group
     //end timer and print out autonomous length

@@ -51,22 +51,22 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::JoystickButton(&m_driverStick, 8).WhenPressed(RunShooter(&m_shooter, 0.0));
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SetArmAngle(&m_arm, 56));
 
-  frc2::POVButton(&m_operatorController, 0).WhenPressed(SetArmAngle(&m_arm, 29));
-  frc2::POVButton(&m_operatorController, 90).WhenPressed(SetArmAngle(&m_arm, 35));
-  frc2::POVButton(&m_operatorController, 180).WhenPressed(SetArmAngle(&m_arm, 6));
-  frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, 40));
+  frc2::POVButton(&m_operatorController, 0).WhenPressed(SetArmAngle(&m_arm, 29_deg));
+  frc2::POVButton(&m_operatorController, 90).WhenPressed(SetArmAngle(&m_arm, 35_deg));
+  frc2::POVButton(&m_operatorController, 180).WhenPressed(SetArmAngle(&m_arm, 6_deg));
+  frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, 40_deg));
 
-  frc2::POVButton(&m_driverStick, 0).WhenPressed(SetArmAngle(&m_arm, [] {
-    double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) + 1;
-    frc::SmartDashboard::PutNumber("Custom/Angle", newAngle);
-    return newAngle;
-  }));
+  // frc2::POVButton(&m_driverStick, 0).WhenPressed(SetArmAngle(&m_arm, [] {
+  //   double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) + 1;
+  //   frc::SmartDashboard::PutNumber("Custom/Angle", newAngle);
+  //   return newAngle;
+  // }));
 
-  frc2::POVButton(&m_driverStick, 180).WhenPressed(SetArmAngle(&m_arm, [] {
-    double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) - 1;
-    frc::SmartDashboard::PutNumber("Custom/Angle", newAngle);
-    return newAngle;
-  }));
+  // frc2::POVButton(&m_driverStick, 180).WhenPressed(SetArmAngle(&m_arm, [] {
+  //   double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) - 1;
+  //   frc::SmartDashboard::PutNumber("Custom/Angle", newAngle);
+  //   return newAngle;
+  // }));
 
   frc2::POVButton(&m_driverStick, 270).WhenPressed(RunShooter(&m_shooter, [] {
     double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) - 100.0;
@@ -109,32 +109,17 @@ void RobotContainer::ConfigureButtonBindings()
 
   frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
     frc2::InstantCommand([this] {
-      m_startingDistance = m_vision.getPortDistance() / 1000; //Reads starting distance using limelight
+      m_startingDistance = m_vision.getPortDistance().to<double>(); //Reads starting distance using limelight
       m_startingRightEncoder = m_driveTrain.getRightEncoder();
       m_startingLeftEncoder = m_driveTrain.getLeftEncoder();
-      m_targetAngle = (m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle()) - atan(160 / m_vision.getPortDistance()) * (180/kPi); //reads target angle and converting to gyro angle
+      m_targetAngle = m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance());
     }),
     frc2::ParallelCommandGroup(
       GyroDrive(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }, [this] {return -m_driverStick.GetY(); } ),
-      SetArmAngle(&m_arm, [this] { 
-        double currentDistance = m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2;
-        // double currentDistance = m_startingDistance + m_metersPerEncoder*((m_driveTrain.getLeftEncoder() + m_driveTrain.getRightEncoder()) / 2); 
-        double Angle = 15.5504 + (130.439 / (currentDistance + 2.46224));
-        frc::SmartDashboard::PutNumber("AutoArmAngle", Angle);
-        return Angle;
-      }, true),
-      RunShooter(&m_shooter, [this] {
+      AutoTarget([this] {
 
-        // double currentDistance = m_startingDistance + m_metersPerEncoder*((m_driveTrain.getLeftEncoder() + m_driveTrain.getRightEncoder()) / 2);
-        double currentDistance = m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2;
-       
-        double Speed = 10648.9 + 1447.44 * currentDistance;
-
-        frc::SmartDashboard::PutNumber("TargetSpeed", Speed);
-
-        return Speed;
-
-      })
+        return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
+      }, &m_arm, &m_shooter)
 
     )
 

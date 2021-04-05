@@ -22,9 +22,9 @@
 class GyroDrive
     : public frc2::CommandHelper<frc2::CommandBase, GyroDrive> {
  public:
-  GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, std::function<double()> headingAngle, std::function<double()> forwardPower);
-  GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, double headingAngle, double forwardPower);
-  GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, double headingAngle, std::function<double()> forwardPower);
+  GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, std::function<units::degree_t()> headingAngle, std::function<double()> forwardPower);
+  GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, units::degree_t headingAngle, double forwardPower);
+  GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, units::degree_t headingAngle, std::function<double()> forwardPower);
 
   void Initialize() override;
 
@@ -38,14 +38,14 @@ class GyroDrive
   Gyro* m_gyro;
   DriveTrain* m_driveTrain;
 
-  double m_error;
+  units::degree_t m_error;
 
   double m_kp = 0.04;
 
 
-  double m_startError;
+  units::degree_t m_startError;
 
   
-  std::function<double()> m_headingAngle;
+  std::function<units::degree_t()> m_headingAngle;
   std::function<double()> m_forwardPower;
 };

@@ -4,7 +4,7 @@
 
 #include "commands/GyroDrive.h"
 
-GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, std::function<double()> headingAngle, std::function<double()> forwardPower) {
+GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, std::function<units::degree_t()> headingAngle, std::function<double()> forwardPower) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({Gyro, driveTrain});
 
@@ -14,8 +14,8 @@ GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, std::function<double()>
   m_forwardPower = forwardPower;
 
 }
-GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, double headingAngle, double forwardPower) : GyroDrive(Gyro, driveTrain, [headingAngle] {return headingAngle; }, [forwardPower] { return forwardPower; }) {}
-GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, double headingAngle, std::function<double()> forwardPower) : GyroDrive(Gyro, driveTrain, [headingAngle] { return headingAngle; }, forwardPower) {}
+GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, units::degree_t headingAngle, double forwardPower) : GyroDrive(Gyro, driveTrain, [headingAngle] {return headingAngle; }, [forwardPower] { return forwardPower; }) {}
+GyroDrive::GyroDrive(Gyro* Gyro, DriveTrain* driveTrain, units::degree_t headingAngle, std::function<double()> forwardPower) : GyroDrive(Gyro, driveTrain, [headingAngle] { return headingAngle; }, forwardPower) {}
 
 
 
@@ -31,7 +31,7 @@ void GyroDrive::Initialize() {
 void GyroDrive::Execute() {
   
 
-  double outputPower = (m_error*m_kp);
+  double outputPower = (m_error.to<double>()*m_kp);
 
   m_driveTrain->CurvatureDrive(m_forwardPower(), outputPower, false);
   
