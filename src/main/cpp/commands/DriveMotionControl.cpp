@@ -4,6 +4,10 @@
 
 #include "commands/DriveMotionControl.h"
 
+
+// #define angleAdj
+  
+
 DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,  
                                               units::meter_t targetDistance,
                                               units::meters_per_second_t startVelocity,
@@ -21,7 +25,7 @@ DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,
   m_startVelocity = startVelocity;
   m_endVelocity = endVelocity;
   m_maxVelocity = maxVelocity;
-  m_maxAcceleration = maxAcceleration;
+  m_maxAcceleration = units::math::fabs(maxAcceleration);
 
   m_targetAngle = targetAngle;
 
@@ -30,16 +34,53 @@ DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,
 // Called when the command is initially scheduled.
 void DriveMotionControl::Initialize() {
   
-  m_leftStartingEncoder = m_driveTrain->getLeftEncoder();
-  m_rightStartingEncoder = m_driveTrain->getRightEncoder();
+  m_leftStartingEncoder = m_driveTrain->getLeftDistance();
+  m_rightStartingEncoder = m_driveTrain->getRightDistance();
+
+  m_currentVelocity = m_startVelocity;
+  m_currentDistance = 0.0_m;
+  
+  if ( ( ( units::math::pow<2>(m_endVelocity) - units::math::pow<2>(m_startVelocity) ) / ( 2 * m_targetDistance ) ) > m_maxAcceleration ) {
+    Cancel();
+  }
 
 }
 
 // Called repeatedly when this Command is scheduled to run
 void DriveMotionControl::Execute() {
 
+  m_currentDistance = ( ( m_driveTrain->getLeftDistance() - m_leftStartingEncoder ) + ( m_driveTrain->getRightDistance() - m_rightStartingEncoder ) ) / 2;
 
+  units::meters_per_second_t newVelocity = 0.0_mps;
+
+  if (m_maxVelocity > 0.0_mps) {
+    newVelocity = units::math::min(
+      m_maxVelocity,
+      units::math::min(
+        m_currentVelocity + units::meters_per_second_t( m_maxAcceleration * 20_ms),
+        units::math::sqrt(units::math::pow<2>(m_endVelocity) + ( 2 * m_maxAcceleration * ( m_targetDistance - m_currentDistance ) ) )
+      )
+    );
+  } else {
+    newVelocity = units::math::max(
+      m_maxVelocity, //This is negative
+      units::math::max(
+        m_currentVelocity + units::meters_per_second_t( -m_maxAcceleration * 20_ms),
+        -units::math::sqrt(units::math::pow<2>(m_endVelocity) + ( 2 * m_maxAcceleration * ( m_targetDistance - m_currentDistance ) ) )
+      )
+    );
+  }
+
+  #ifdef angleAdj
+  units::radian_t difference = m_targetAngle - m_gyro->GetYaw();
+  units::meters_per_second_t leftVelocity = newVelocity + units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() );
+  units::meters_per_second_t rightVelocity = newVelocity - units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() );
+  m_driveTrain->setVelocity(leftVelocity, rightVelocity);
+  #else
+  m_driveTrain->setVelocity(newVelocity, newVelocity);
   
+  #endif
+  m_currentVelocity = newVelocity;
 }
 
 // Called once the command ends or is interrupted.
@@ -48,4 +89,9 @@ void DriveMotionControl::End(bool interrupted) {}
 // Returns true when the command should end.
 bool DriveMotionControl::IsFinished() {
   return false;
+}
+
+
+units::meters_per_second_squared_t DriveMotionControl::getAccelaration(units::meters_per_second_t startVel, units::meters_per_second_t endVel, units::meter_t distance) {
+  return ( ( units::math::pow<2>(endVel) - units::math::pow<2>(startVel) ) / ( 2 * distance ) );
 }

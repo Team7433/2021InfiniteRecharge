@@ -69,3 +69,25 @@ void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs
 void DriveTrain::CurvatureDrive(double forward, double rotation, bool quickTurn){
     m_robotDrive.CurvatureDrive(forward, rotation, quickTurn);
 }
+
+units::meter_t DriveTrain::getLeftDistance() { 
+    return units::meter_t( m_leftDriveMaster->GetSelectedSensorPosition() * kMetersPerUnit );
+}
+
+units::meter_t DriveTrain::getRightDistance() { 
+    return units::meter_t( m_rightDriveMaster->GetSelectedSensorPosition() * kMetersPerUnit );
+}
+
+units::meters_per_second_t DriveTrain::getLeftVelocity() {
+    return units::meters_per_second_t( m_leftDriveMaster->GetSelectedSensorVelocity() / kUnits100msPerMeterSecond );
+}
+
+units::meters_per_second_t DriveTrain::getRightVelocity() {
+    return units::meters_per_second_t( m_rightDriveMaster->GetSelectedSensorVelocity() / kUnits100msPerMeterSecond );
+}
+
+void DriveTrain::setVelocity(units::meters_per_second_t leftVel, units::meters_per_second_t rightVel) {
+    
+    m_leftDriveMaster->Set(ControlMode::Velocity, leftVel.to<double>() * kUnits100msPerMeterSecond );
+    m_rightDriveMaster->Set(ControlMode::Velocity, rightVel.to<double>() * kUnits100msPerMeterSecond );
+}
