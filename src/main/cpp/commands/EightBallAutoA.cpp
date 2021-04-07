@@ -15,7 +15,7 @@ EightBallAutoA::EightBallAutoA(FloorIntake* floorIntake, DriveTrain* driveTrain,
   
 
   AddCommands(
-
+    //start timer and setup for AutoTarget
     frc2::InstantCommand([this, gyro, driveTrain, vision] {
       m_timer.Start();
       m_startingRightEncoder = driveTrain->getRightEncoder(); //Reads starting Right drivetrain encoder count
@@ -24,6 +24,7 @@ EightBallAutoA::EightBallAutoA(FloorIntake* floorIntake, DriveTrain* driveTrain,
       
        }), // instant command
 
+    //Drive Backward while unloading
     frc2::ParallelDeadlineGroup( 
       DriveMotionControl(driveTrain, gyro, -3.5_m, 0_mps, -2_mps, -2_mps, -3_mps_sq, m_targetAngle),
       AutoTarget([this, driveTrain] {
@@ -45,12 +46,32 @@ EightBallAutoA::EightBallAutoA(FloorIntake* floorIntake, DriveTrain* driveTrain,
       RunShooter(shooter, 0.0),
       SetArmAngle(arm, 6_deg)
     ), // Parallel Command Group
+    
+    DriveMotionControl(driveTrain, gyro, -1_m, -2_mps, 0_mps, -2_mps, 3_mps_sq, 90_deg), //Bring robot to a stop
+    //Setup for autoTarget
+    frc2::InstantCommand([this, driveTrain, gyro, vision] {
+      m_startingRightEncoder = driveTrain->getRightEncoder(); //Reads starting Right drivetrain encoder count
+      m_startingLeftEncoder = driveTrain->getLeftEncoder(); //Reads starting left drivetrain encoder count
+      m_targetAngle = gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance()); //Sets target Gyro angle
 
-    DriveMotionControl(driveTrain, gyro, -1_m, -2_mps, 0_mps, -2_mps, 3_mps_sq, 90_deg),
-    DriveMotionControl(driveTrain, gyro, 1_m, 0_mps, 0_mps, 2_mps, 3_mps_sq, 90_deg),
-    AutoTarget(vision, arm, shooter, gyro, driveTrain),
-    frc2::WaitUntilCommand([arm] { return units::math::fabs(arm->GetArmAngleMotorUnits() - arm->GetTargetPositionUnits()) < 1_deg; }),
-    UnloadMagazine(ballHolder, feeder)
+    }), // Instand Command
+    frc2::ParallelCommandGroup(
+      DriveMotionControl(driveTrain, gyro, 1_m, 0_mps, 0_mps, 2_mps, 3_mps_sq, m_targetAngle),
+      AutoTarget([this, driveTrain] {
+        return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((driveTrain->getRightEncoder() - m_startingRightEncoder) + (driveTrain->getLeftEncoder() - m_startingLeftEncoder)) / 2);
+        }, arm, shooter, true
+      ), // AutoTarget
+
+      frc2::SequentialCommandGroup(
+        frc2::WaitUntilCommand([this, arm, driveTrain] { return units::math::fabs(arm->GetArmAngleMotorUnits() -  arm->CalculateAngleFromDistance(units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((driveTrain->getRightEncoder() - m_startingRightEncoder) + (driveTrain->getLeftEncoder() - m_startingLeftEncoder)) / 2))) < 1_deg; }),
+        UnloadMagazine(ballHolder, feeder)
+      ) // sequential command group
+
+    ), // Parallel Command Group
+
+    DriveMotionControl(driveTrain, gyro, 2_m, 2_mps, 0_mps, 2_mps, -2_mps_sq, m_targetAngle), 
+
+    frc2::InstantCommand([this] { m_timer.Stop(); std::cout << "Autonomous Routine Run time: " << units::time::to_string(m_timer.Get()) << std::endl; m_timer.Reset();}) // Prints out autonomous runtime
 
 
 
