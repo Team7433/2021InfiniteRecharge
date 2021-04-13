@@ -7,7 +7,7 @@
 
 #include "commands/SetArmAngle.h"
 
-SetArmAngle::SetArmAngle(Arm* arm, units::degree_t angle) : SetArmAngle(arm, [angle] { return angle; } ) {}
+SetArmAngle::SetArmAngle(Arm* arm, units::degree_t angle) : SetArmAngle(arm, [angle] { return angle; }, false ) {}
 
 
 SetArmAngle::SetArmAngle(Arm* arm, std::function<units::degree_t()> angle, bool update) {

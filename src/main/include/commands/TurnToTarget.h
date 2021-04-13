@@ -29,6 +29,7 @@ class TurnToTarget
  public:
   TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain);
   TurnToTarget(Gyro* , DriveTrain*, units::degree_t);
+  TurnToTarget(Gyro*, DriveTrain*, std::function<units::degree_t()>);
 
   void Initialize() override;
 
@@ -47,7 +48,7 @@ class TurnToTarget
 
   bool m_done = false;
 
-  units::degree_t m_overideAngle;
+  std::function<units::degree_t()> m_overideAngle;
   bool m_overide = false;
 
   double m_kp = 0.01;

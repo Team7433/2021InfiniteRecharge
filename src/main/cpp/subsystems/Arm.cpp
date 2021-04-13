@@ -47,10 +47,12 @@ Arm::Arm() {
 void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Velocity", GetVelocity());
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
+    // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPosition());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
     frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
     frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
-    frc::SmartDashboard::PutNumber("Arm/EncoderDifference", (GetArmAngleUnits() - GetArmAngleMotorUnits()).to<double>()  );
+    frc::SmartDashboard::PutNumber("Arm/EncoderDifference", (GetArmAngleUnits() - GetArmAngleMotorUnits()).to<double>() );
+
 }
 
 void Arm::ManualControl(double Output) {
@@ -65,9 +67,11 @@ void Arm::SetAngle(units::angle::armEncoderUnits_t Angle) {
     m_armMotor->Set(ControlMode::MotionMagic, Angle.to<double>());
 }
 
-void Arm::SetAngle(double Angle) {
+void Arm::SetAngle(units::degree_t Angle) {
     //some complex math equations ++--++--
-    m_armMotor->Set(ControlMode::MotionMagic, (53.8) * (Angle - armAngleOffset));
+
+    m_armMotor->Set(ControlMode::MotionMagic, (53.8) * (Angle.to<double>() - armAngleOffset));
+
 }
 
 void Arm::SetLock(Lock_Position lock_position) {
@@ -121,8 +125,8 @@ units::degree_t Arm::GetArmAngleMotorUnits() {
 units::degree_t Arm::CalculateAngleFromDistance(units::meter_t distance) {
 
     double distanceMM = distance.to<double>();
-
-    return units::degree_t(15.5504 + (130.439 / (distanceMM) + 2.46224));
+    
+    return units::degree_t(15.5504 + (130.439 / (distanceMM + 2.46224)));
 
 }
 

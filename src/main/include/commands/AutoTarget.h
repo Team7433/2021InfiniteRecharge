@@ -46,4 +46,5 @@ class AutoTarget
  private:
   std::function<units::degree_t()> m_angle;
   std::function<double()> m_velocity;
+  units::degree_t m_targetGyroAngle;
 };
