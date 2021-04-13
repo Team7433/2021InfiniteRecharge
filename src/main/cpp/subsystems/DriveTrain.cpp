@@ -44,6 +44,22 @@ DriveTrain::DriveTrain() {
     m_leftDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, kTimeoutMs);
     m_rightDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, kTimeoutMs);
 
+    //Set P
+    m_leftDriveMaster->Config_kP(1, 0.01, kTimeoutMs);//1
+    m_rightDriveMaster->Config_kP(1, 0.01, kTimeoutMs);
+
+    //Set I
+    m_leftDriveMaster->Config_kI(1, 0, kTimeoutMs);
+    m_rightDriveMaster->Config_kI(1, 0, kTimeoutMs);
+
+    //Set D
+    m_leftDriveMaster->Config_kD(1, 0, kTimeoutMs);//20
+    m_rightDriveMaster->Config_kD(1, 0, kTimeoutMs);
+
+    //Set F
+    m_leftDriveMaster->Config_kF(1, kF_Profiling, kTimeoutMs);
+    m_rightDriveMaster->Config_kF(1, kF_Profiling, kTimeoutMs);
+
     m_leftDriveMaster->ChangeMotionControlFramePeriod(5);
     m_rightDriveMaster->ChangeMotionControlFramePeriod(5);
 
@@ -63,6 +79,8 @@ void DriveTrain::Periodic() {
     frc::SmartDashboard::PutNumber("drive/RightVelocity", getRightVelocity().to<double>());
     frc::SmartDashboard::PutNumber("drive/LeftPosition", getLeftDistance().to<double>());
     frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
+    frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
+    frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
 }
 
 void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs) {

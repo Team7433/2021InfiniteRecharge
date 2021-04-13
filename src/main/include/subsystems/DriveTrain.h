@@ -49,6 +49,13 @@ class DriveTrain : public frc2::SubsystemBase {
     m_leftDriveSlave->SetNeutralMode(NeutralMode::Coast);
     }
 
+  void SetSlot(int slot) {
+
+    m_rightDriveMaster->SelectProfileSlot(slot, 0);
+    m_leftDriveMaster->SelectProfileSlot(slot, 0);
+
+  }
+
   double getLeftEncoder() { return m_leftDriveMaster->GetSelectedSensorPosition(); }
   double getRightEncoder() { return m_rightDriveMaster->GetSelectedSensorPosition(); }
   

@@ -33,7 +33,7 @@ DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,
 
 // Called when the command is initially scheduled.
 void DriveMotionControl::Initialize() {
-  
+  m_driveTrain->SetSlot(1);
   m_leftStartingEncoder = m_driveTrain->getLeftDistance();
   m_rightStartingEncoder = m_driveTrain->getRightDistance();
 
@@ -90,11 +90,15 @@ void DriveMotionControl::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void DriveMotionControl::End(bool interrupted) {}
+void DriveMotionControl::End(bool interrupted) {
+
+  m_driveTrain->SetSlot(0);
+
+}
 
 // Returns true when the command should end.
 bool DriveMotionControl::IsFinished() {
-  return units::math::fabs(m_targetDistance) - units::math::fabs(m_currentDistance) < 1_mm;
+  return units::math::fabs(m_targetDistance) - units::math::fabs(m_currentDistance) < 1_cm;
 }
 
 
