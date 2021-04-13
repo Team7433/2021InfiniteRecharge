@@ -54,7 +54,7 @@ void RobotContainer::ConfigureButtonBindings()
     TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
     frc2::ConditionalCommand(
       frc2::ParallelDeadlineGroup(
-        DriveMotionControl(&m_driveTrain, &m_gyro, -6_m, 0_mps, 0_mps, -2_mps, 1_mps_sq, 0_deg),
+        DriveMotionControl(&m_driveTrain, &m_gyro, -6_m, 0_mps, 0_mps, -2_mps, 1_mps_sq, [this] { return m_targetAngle; }),
         AutoTarget([this] {
           return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
         }, &m_arm, &m_shooter, true),

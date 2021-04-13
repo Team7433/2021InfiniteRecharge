@@ -3,9 +3,10 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "commands/DriveMotionControl.h"
+#include <frc/smartdashboard/SmartDashboard.h>
 
 
-// #define angleAdj
+#define angleAdj
   
 
 DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,  
@@ -14,7 +15,7 @@ DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,
                                               units::meters_per_second_t endVelocity,
                                               units::meters_per_second_t maxVelocity,
                                               units::meters_per_second_squared_t maxAcceleration,
-                                              units::degree_t targetAngle) {
+                                              std::function<units::degree_t()> angleFunc) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements({ driveTrain, gyro });
 
@@ -27,7 +28,8 @@ DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,
   m_maxVelocity = maxVelocity;
   m_maxAcceleration = units::math::fabs(maxAcceleration);
 
-  m_targetAngle = targetAngle;
+  m_AngleFunc = angleFunc;
+  frc::SmartDashboard::PutNumber("DriveMC/AngleFudgeValue", 0.3);
 
 }
 
@@ -39,6 +41,7 @@ void DriveMotionControl::Initialize() {
 
   m_currentVelocity = m_startVelocity;
   m_currentDistance = 0.0_m;
+  m_targetAngle = m_AngleFunc();
   
   if ( ( ( units::math::pow<2>(m_endVelocity) - units::math::pow<2>(m_startVelocity) ) / ( 2 * m_targetDistance ) ) > m_maxAcceleration ) {
     Cancel();
@@ -78,8 +81,10 @@ void DriveMotionControl::Execute() {
 
   #ifdef angleAdj
   units::radian_t difference = m_targetAngle - m_gyro->GetYaw();
-  units::meters_per_second_t leftVelocity = newVelocity + units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() );
-  units::meters_per_second_t rightVelocity = newVelocity - units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() );
+  double fudgeValue = frc::SmartDashboard::GetNumber("DriveMC/AngleFudgeValue", 0.1);
+  frc::SmartDashboard::PutNumber("DriveMC/Difference", difference.convert<units::degree>().to<double>());
+  units::meters_per_second_t leftVelocity = newVelocity + units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() * fudgeValue );
+  units::meters_per_second_t rightVelocity = newVelocity - units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() * fudgeValue );
   m_driveTrain->setVelocity(leftVelocity, rightVelocity);
   #else
   std::cout << "VelocityVel: " << units::velocity::to_string(newVelocity) << "\n";
@@ -105,3 +110,12 @@ bool DriveMotionControl::IsFinished() {
 units::meters_per_second_squared_t DriveMotionControl::getAccelaration(units::meters_per_second_t startVel, units::meters_per_second_t endVel, units::meter_t distance) {
   return ( ( units::math::pow<2>(endVel) - units::math::pow<2>(startVel) ) / ( 2 * distance ) );
 }
+
+
+DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,  
+                                              units::meter_t targetDistance,
+                                              units::meters_per_second_t startVelocity,
+                                              units::meters_per_second_t endVelocity,
+                                              units::meters_per_second_t maxVelocity,
+                                              units::meters_per_second_squared_t maxAcceleration,
+                                              units::degree_t targetAngle) : DriveMotionControl(driveTrain, gyro, targetDistance, startVelocity, endVelocity, maxVelocity, maxAcceleration, [targetAngle] { return targetAngle; } ) {}

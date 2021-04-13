@@ -29,6 +29,14 @@ class DriveMotionControl
                                               units::meters_per_second_squared_t maxAcceleration,
                                               units::degree_t targetAngle);
 
+
+    DriveMotionControl(DriveTrain *, Gyro *,  units::meter_t targetDistance,
+                                              units::meters_per_second_t startVelocity,
+                                              units::meters_per_second_t endVelocity,
+                                              units::meters_per_second_t maxVelocity,
+                                              units::meters_per_second_squared_t maxAcceleration,
+                                              std::function<units::degree_t()> angleFunc);
+
     void Initialize() override;
 
     void Execute() override;
@@ -46,6 +54,8 @@ class DriveMotionControl
     units::meters_per_second_t  m_endVelocity;
     units::meters_per_second_t  m_maxVelocity;
     units::meters_per_second_squared_t  m_maxAcceleration;
+    std::function<units::degree_t()> m_AngleFunc;
+
     units::degree_t m_targetAngle;
 
     units::meter_t m_leftStartingEncoder; 
