@@ -53,6 +53,11 @@ void DriveMotionControl::Execute() {
 
   units::meters_per_second_t newVelocity = 0.0_mps;
 
+  if (units::math::fabs(m_targetDistance) - units::math::fabs(m_currentDistance) < 1_mm) {
+    m_driveTrain->setVelocity(m_endVelocity, m_endVelocity);
+    return;
+  }
+
   if (m_maxVelocity > 0.0_mps) {
     newVelocity = units::math::min(
       m_maxVelocity,
@@ -66,7 +71,7 @@ void DriveMotionControl::Execute() {
       m_maxVelocity, //This is negative
       units::math::max(
         m_currentVelocity + units::meters_per_second_t( -m_maxAcceleration * 20_ms),
-        -units::math::sqrt(units::math::pow<2>(m_endVelocity) + ( 2 * m_maxAcceleration * ( m_targetDistance - m_currentDistance ) ) )
+        -units::math::sqrt(units::math::pow<2>(m_endVelocity) + ( 2 * m_maxAcceleration * ( units::math::fabs(m_targetDistance) - units::math::fabs(m_currentDistance) ) ) )
       )
     );
   }
@@ -77,6 +82,7 @@ void DriveMotionControl::Execute() {
   units::meters_per_second_t rightVelocity = newVelocity - units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() );
   m_driveTrain->setVelocity(leftVelocity, rightVelocity);
   #else
+  std::cout << "VelocityVel: " << units::velocity::to_string(newVelocity) << "\n";
   m_driveTrain->setVelocity(newVelocity, newVelocity);
   
   #endif
@@ -88,7 +94,7 @@ void DriveMotionControl::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool DriveMotionControl::IsFinished() {
-  return false;
+  return units::math::fabs(m_targetDistance) - units::math::fabs(m_currentDistance) < 1_mm;
 }
 
 

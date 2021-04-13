@@ -58,7 +58,12 @@ DriveTrain::DriveTrain() {
 }
 
 // This method will be called once per scheduler run
-void DriveTrain::Periodic() {}
+void DriveTrain::Periodic() {
+    frc::SmartDashboard::PutNumber("drive/LeftVelocity",getLeftVelocity().to<double>());
+    frc::SmartDashboard::PutNumber("drive/RightVelocity", getRightVelocity().to<double>());
+    frc::SmartDashboard::PutNumber("drive/LeftPosition", getLeftDistance().to<double>());
+    frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
+}
 
 void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs) {
 
