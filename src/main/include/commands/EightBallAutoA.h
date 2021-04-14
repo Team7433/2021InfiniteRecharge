@@ -44,12 +44,21 @@ class EightBallAutoA
                                  EightBallAutoA> {
   public:
     EightBallAutoA(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
+    units::meter_t GetStartRightPos() {std::cout << "GetRightInside Function: " << m_rightStartPos << "\n"; return m_rightStartPos;}
+    units::meter_t GetStartLeftPos() {return m_leftStartPos; }
+    units::meter_t GetStartDistance() {return m_startingDistance; }
 
+    void SetStartedRightPos(units::meter_t setPos) {m_rightStartPos = setPos;}
+    void setStartedLeftPos(units::meter_t setPos) {m_leftStartPos = setPos;}
+
+    units::meter_t m_leftStartPos;
+    units::meter_t m_rightStartPos = 6_m;
+    units::meter_t m_startingDistance = 2_m;
+    
   private: 
-    frc2::Timer m_timer;
-    units::meter_t m_startingDistance = 4.4_m;
-    double m_startingRightEncoder;
-    double m_startingLeftEncoder;
-    double m_metersPerEncoder;
-    units::degree_t m_targetAngle;
+    // frc2::Timer m_timer;
+    
+
+    
+   
   };

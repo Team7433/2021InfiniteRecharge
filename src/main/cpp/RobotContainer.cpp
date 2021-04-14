@@ -42,10 +42,10 @@ void RobotContainer::ConfigureButtonBindings()
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SimpleAuto(&m_feeder, &m_ballholder, &m_floorIntake, &m_driveTrain, &m_arm, &m_vision, &m_gyro, &m_shooter));
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm));
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, 0_deg));
-
+  frc2::JoystickButton(&m_driverStick, 11).WhenPressed(EightBallAutoA(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm));
   frc2::JoystickButton(&m_driverStick, 12).WhenPressed(frc2::SequentialCommandGroup(
     frc2::InstantCommand([this] {
-      m_startingDistance = 3.0; //Reads starting distance using limelight
+      m_startingDistance = 3.0_m; //Reads starting distance using limelight
       m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
       m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count
       m_targetAngle = m_gyro.GetYaw(); //units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
@@ -56,10 +56,10 @@ void RobotContainer::ConfigureButtonBindings()
       frc2::ParallelDeadlineGroup(
         DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [this] { return m_targetAngle; }),
         AutoTarget([this] {
-          return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
+          return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
         }, &m_arm, &m_shooter, true),
           frc2::SequentialCommandGroup(
-            frc2::WaitUntilCommand([this] { return units::math::fabs(m_arm.GetArmAngleMotorUnits() -  m_arm.CalculateAngleFromDistance(units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2))) < 1_deg; }),
+            frc2::WaitUntilCommand([this] { return units::math::fabs(m_arm.GetArmAngleMotorUnits() -  m_arm.CalculateAngleFromDistance(units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2))) < 1_deg; }),
             UnloadMagazine(&m_ballholder, &m_feeder, &m_floorIntake,true)
 
           )
@@ -154,7 +154,7 @@ void RobotContainer::ConfigureButtonBindings()
         
         GyroDrive(&m_gyro, &m_driveTrain, [this] {return m_targetAngle; }, [this] { return -m_driverStick.GetY(); }),
         AutoTarget([this] {
-          return units::meter_t(m_startingDistance + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
+          return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
         }, &m_arm, &m_shooter, true)
 
       ),

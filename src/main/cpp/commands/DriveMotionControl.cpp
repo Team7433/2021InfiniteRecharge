@@ -35,6 +35,7 @@ DriveMotionControl::DriveMotionControl(DriveTrain *driveTrain, Gyro *gyro,
 
 // Called when the command is initially scheduled.
 void DriveMotionControl::Initialize() {
+  std::cout << "DriveMotionControl Init\n";
   m_driveTrain->SetSlot(1);
   m_leftStartingEncoder = m_driveTrain->getLeftDistance();
   m_rightStartingEncoder = m_driveTrain->getRightDistance();
