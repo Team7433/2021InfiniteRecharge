@@ -21,6 +21,7 @@ class AutoVaribles : public frc2::SubsystemBase {
   units::meter_t a_leftStartPos = 0.0_m;
   units::meter_t a_rightStartPos = 0.0_m;  
   units::degree_t a_targetAngle = 0.0_deg;
+  units::meter_t a_startingDistance = 0.0_m;
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
