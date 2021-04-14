@@ -46,6 +46,7 @@
 #include "subsystems/Gyro.h"
 #include "subsystems/Vision.h"
 #include "subsystems/Arm.h"
+#include "subsystems/RGBStrip.h"
 
 #include "Constants.h"
 
@@ -66,7 +67,8 @@ class RobotContainer {
 
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
-  void ControlLight(double brightness, CANifier::LEDChannel channel) {m_Canifier->SetLEDOutput(brightness, channel);}
+  void ControlLight(double R, double G, double B) {m_strip.SetRGBStrip(R, G, B);}
+  void RainbowMode() {m_strip.Rainbow();}
   units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
   void zeroOutputDisabled();
   void ResetStartOfTeleop();
@@ -80,8 +82,7 @@ class RobotContainer {
   Gyro m_gyro;
   Vision m_vision;
   Arm m_arm;
-
-  CANifier* m_Canifier = new CANifier{16};
+  RGBStrip m_strip;
 
 
   // ExampleCommand m_autonomousCommand;

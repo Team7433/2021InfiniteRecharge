@@ -6,6 +6,9 @@
 
 #include <frc2/command/SubsystemBase.h>
 
+#include <stdlib.h>     /* srand, rand */
+#include <time.h>       /* time */
+
 #include <ctre/phoenix.h>
 
 class RGBStrip : public frc2::SubsystemBase {
@@ -16,9 +19,15 @@ class RGBStrip : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic() override;
+  void SetRGBStrip(double R, double G, double B);
+  void Rainbow();
   
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
+  CANifier* m_strip = new CANifier{16};
+  double m_R;
+  double m_G;
+  double m_B;
 
 };

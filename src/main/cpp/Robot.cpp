@@ -38,9 +38,11 @@ void Robot::DisabledInit() {
 }
 
 void Robot::DisabledPeriodic() {
-
-    m_container.ControlLight( fabs(m_container.GetTargetError().to<double>() / ) , CANifier::LEDChannelA);
-
+  // m_container.RainbowMode();
+  // m_container.ControlLight(148,0,211);
+  if(0.5 > m_container.GetTargetError().to<double>() && m_container.GetTargetError().to<double>() > -0.5 ) {m_container.ControlLight(0, 255, 0);}
+  else if (m_container.GetTargetError().to<double>() > 0.5) {m_container.ControlLight(0, 0, 255); }
+  else if (m_container.GetTargetError().to<double>() < -0.5) {m_container.ControlLight(255, 0, 0);}
 }
 
 /**
@@ -59,6 +61,7 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
+  m_container.ControlLight(135,206,250)
   // This makes sure that the autonomous stops running when
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
