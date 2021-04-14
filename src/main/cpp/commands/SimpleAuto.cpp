@@ -22,7 +22,7 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
         return 10648.9 + 1447.44 * distance;
       }) // RunShooter
     ), // ParallelCommandGroup - Get into shooting mode
-    UnloadMagazine(m_ballholder, m_feeder),
+    UnloadMagazine(m_ballholder, m_feeder, m_floorIntake),
     frc2::ParallelDeadlineGroup(
       DriveRunProfile(m_driveTrain, "6ACollectBalls"),
       SetBallManipulation(m_feeder, m_ballholder, m_floorIntake, 0.45, 0.3, 0.3, 0, /* Storing */ true),
@@ -52,7 +52,7 @@ SimpleAuto::SimpleAuto(Feeder * m_feeder, BallHolder * m_ballholder, FloorIntake
         return detected;
       } // Conditional Condition
     ), // ConditionalCommand TargetDetected
-    UnloadMagazine(m_ballholder, m_feeder),
+    UnloadMagazine(m_ballholder, m_feeder, m_floorIntake),
     frc2::ParallelDeadlineGroup(
     RunShooter(m_shooter, 0.0),
     SetArmAngle(m_arm, 6_deg),

@@ -95,11 +95,7 @@ void DriveMotionControl::Execute() {
 }
 
 // Called once the command ends or is interrupted.
-void DriveMotionControl::End(bool interrupted) {
-
-  m_driveTrain->SetSlot(0);
-
-}
+void DriveMotionControl::End(bool interrupted) {}
 
 // Returns true when the command should end.
 bool DriveMotionControl::IsFinished() {

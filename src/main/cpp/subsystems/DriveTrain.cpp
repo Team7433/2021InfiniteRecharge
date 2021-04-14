@@ -79,8 +79,8 @@ void DriveTrain::Periodic() {
     frc::SmartDashboard::PutNumber("drive/RightVelocity", getRightVelocity().to<double>());
     frc::SmartDashboard::PutNumber("drive/LeftPosition", getLeftDistance().to<double>());
     frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
-    frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
-    frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
+    // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
+    // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
 }
 
 void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs) {

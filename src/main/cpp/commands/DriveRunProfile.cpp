@@ -13,7 +13,7 @@ DriveRunProfile::DriveRunProfile(DriveTrain * drive, std::string profile) {
 
 // Called when the command is initially scheduled.
 void DriveRunProfile::Initialize() {
-
+  m_drive->SetSlot(0);
   std::cout << "Start Profile " << m_profile << "\n";
   m_drive->MPLoad(m_profile);
   m_drive->MPStart();

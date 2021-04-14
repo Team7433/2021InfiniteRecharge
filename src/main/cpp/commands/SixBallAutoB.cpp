@@ -13,7 +13,7 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
     AutoTarget(4.4_m, m_arm, m_shooter),
 
-    UnloadMagazine(m_ballHolder, m_feeder),
+    UnloadMagazine(m_ballHolder, m_feeder, m_floorIntake),
 
     TurnToTarget(m_gyro, m_driveTrain, 90.0_deg),
 
@@ -36,7 +36,7 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
     AutoTarget(m_vision, m_arm, m_shooter, m_gyro, m_driveTrain),
   
 
-    UnloadMagazine(m_ballHolder, m_feeder), //unload all balls
+    UnloadMagazine(m_ballHolder, m_feeder, m_floorIntake, true), //unload all balls
     //reset arm position, rampdown shooter, stop floor intake
     frc2::ParallelDeadlineGroup(
       RunShooter(m_shooter, 0.0),

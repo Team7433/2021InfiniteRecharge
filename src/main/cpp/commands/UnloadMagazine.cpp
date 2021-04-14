@@ -7,11 +7,13 @@
 
 #include <iostream>
 
-UnloadMagazine::UnloadMagazine(BallHolder* ballHolder, Feeder* feeder) {
+UnloadMagazine::UnloadMagazine(BallHolder* ballHolder, Feeder* feeder, FloorIntake* intake, bool intakePosition) {
   // Use addRequirements() here to declare subsystem dependencies.
-  AddRequirements({ballHolder, feeder});
+  AddRequirements({ballHolder, feeder, intake});
   m_ballHolder = ballHolder;
   m_feeder = feeder;
+  m_intake = intake;
+  m_intakePos = intakePosition;
 }
 
 // Called when the command is initially scheduled.
@@ -20,6 +22,7 @@ void UnloadMagazine::Initialize() {
   m_ballHolder->SetMagazine(0.3);
   m_feeder->SetFeeder(0.5);
   m_ballHolder->SetIndexer(0.3);
+  if(m_intakePos) { m_intake->Set(FloorIntakeConstants::Position::Out, 0.4); }
   m_timer.Reset();
   m_timer.Start();
 
@@ -27,9 +30,6 @@ void UnloadMagazine::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void UnloadMagazine::Execute() {
-
-  std::cout << m_timer.Get() << std::endl;
-
 
   if (m_timer.Get() > AutonmousConstants::kUnloadMagazineTimeout) {
 
@@ -54,6 +54,7 @@ void UnloadMagazine::End(bool interrupted) {
   m_ballHolder->SetMagazine(0.0);
   m_feeder->SetFeeder(0.0);
   m_ballHolder->SetIndexer(0.0);
+  m_intake->Set(FloorIntakeConstants::Position::In, 0.0);
   m_timer.Stop();
   m_timer.Reset();
   m_done = false;
