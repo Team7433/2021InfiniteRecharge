@@ -33,10 +33,15 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 void Robot::DisabledInit() {
   m_container.zeroOutputDisabled();
   m_container.CoastMode(); // Set Drivetrain to Coast Mode
+
   
 }
 
-void Robot::DisabledPeriodic() {}
+void Robot::DisabledPeriodic() {
+
+    m_container.ControlLight( fabs(m_container.GetTargetError().to<double>() / ) , CANifier::LEDChannelA);
+
+}
 
 /**
  * This autonomous runs the autonomous command selected by your {@link

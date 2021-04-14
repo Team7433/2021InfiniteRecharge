@@ -66,6 +66,8 @@ class RobotContainer {
 
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
+  void ControlLight(double brightness, CANifier::LEDChannel channel) {m_Canifier->SetLEDOutput(brightness, channel);}
+  units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
   void zeroOutputDisabled();
   void ResetStartOfTeleop();
  private:
@@ -78,6 +80,9 @@ class RobotContainer {
   Gyro m_gyro;
   Vision m_vision;
   Arm m_arm;
+
+  CANifier* m_Canifier = new CANifier{16};
+
 
   // ExampleCommand m_autonomousCommand;
 
