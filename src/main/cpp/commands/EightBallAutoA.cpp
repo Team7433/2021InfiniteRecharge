@@ -37,7 +37,7 @@ EightBallAutoA::EightBallAutoA(FloorIntake* floorIntake, DriveTrain* driveTrain,
 
     //Drive Backward while unloading
     frc2::ParallelDeadlineGroup( 
-      DriveMotionControl(driveTrain, gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [autoVaribles] { return autoVaribles->a_targetAngle; } ),
+      DriveMotionControl(driveTrain, gyro, 2.3_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [autoVaribles] { return autoVaribles->a_targetAngle; } ),
       AutoTarget([this, driveTrain, autoVaribles] {
           return (3_m + ((driveTrain->getRightDistance() - autoVaribles->a_rightStartPos) + (driveTrain->getLeftDistance() - autoVaribles->a_leftStartPos)) / 2);
           }, arm, shooter, true

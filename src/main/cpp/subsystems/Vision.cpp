@@ -29,7 +29,7 @@ bool Vision::getPowerPortDetected() {
 }
 
 units::degree_t Vision::getPowerPortHorizontalAngle() {
-    std::cout << nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) << "LimeLightTX" << std::endl;
+    // std::cout << nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) << "LimeLightTX" << std::endl;
     return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) );
 }
 
