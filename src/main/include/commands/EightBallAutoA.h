@@ -18,6 +18,7 @@
 #include "subsystems/Gyro.h"
 #include "subsystems/Vision.h"
 #include "subsystems/Arm.h"
+#include "subsystems/AutoVaribles.h"
 
 #include <frc2/command/ParallelCommandGroup.h>
 #include <frc2/command/ParallelDeadlineGroup.h>
@@ -43,7 +44,7 @@ class EightBallAutoA
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
                                  EightBallAutoA> {
   public:
-    EightBallAutoA(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
+    EightBallAutoA(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*, AutoVaribles*);
     units::meter_t GetStartRightPos() {std::cout << "GetRightInside Function: " << m_rightStartPos << "\n"; return m_rightStartPos;}
     units::meter_t GetStartLeftPos() {return m_leftStartPos; }
     units::meter_t GetStartDistance() {return m_startingDistance; }
@@ -51,6 +52,7 @@ class EightBallAutoA
     void SetStartedRightPos(units::meter_t setPos) {m_rightStartPos = setPos;}
     void setStartedLeftPos(units::meter_t setPos) {m_leftStartPos = setPos;}
 
+    double m_numberTest = 0.0;
     units::meter_t m_leftStartPos;
     units::meter_t m_rightStartPos = 6_m;
     units::meter_t m_startingDistance = 2_m;

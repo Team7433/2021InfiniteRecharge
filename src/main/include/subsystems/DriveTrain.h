@@ -77,6 +77,8 @@ class DriveTrain : public frc2::SubsystemBase {
 
   bool MPLoad(std::string path) {return m_profiler->LoadFromFile(path); }
 
+  double m_numberTest = 0.0;
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.

@@ -39,7 +39,7 @@ void Robot::DisabledInit() {
 
 void Robot::DisabledPeriodic() {
 
-    m_container.ControlLight( fabs(m_container.GetTargetError().to<double>() / ) , CANifier::LEDChannelA);
+    // m_container.ControlLight( fabs(m_container.GetTargetError().to<double>() / ) , CANifier::LEDChannelA);
 
 }
 

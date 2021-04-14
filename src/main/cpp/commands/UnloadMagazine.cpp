@@ -54,7 +54,11 @@ void UnloadMagazine::End(bool interrupted) {
   m_ballHolder->SetMagazine(0.0);
   m_feeder->SetFeeder(0.0);
   m_ballHolder->SetIndexer(0.0);
-  m_intake->Set(FloorIntakeConstants::Position::In, 0.0);
+  if (m_intakePos) {
+    m_intake->Set(FloorIntakeConstants::Position::Out, 0.0);
+  } else {
+    m_intake->Set(FloorIntakeConstants::Position::In, 0.0);
+  }
   m_timer.Stop();
   m_timer.Reset();
   m_done = false;

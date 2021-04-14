@@ -46,6 +46,7 @@
 #include "subsystems/Gyro.h"
 #include "subsystems/Vision.h"
 #include "subsystems/Arm.h"
+#include "subsystems/AutoVaribles.h"
 
 #include "Constants.h"
 
@@ -80,6 +81,7 @@ class RobotContainer {
   Gyro m_gyro;
   Vision m_vision;
   Arm m_arm;
+  AutoVaribles m_autoVaribles;
 
   CANifier* m_Canifier = new CANifier{16};
 
