@@ -21,17 +21,19 @@ TurnToTarget::TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain) {
 
 }
 
-TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, units::degree_t overideAngle) {
+TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, units::degree_t overideAngle) : TurnToTarget(gyro, drivetrain, [overideAngle] {return overideAngle;}) {}
+
+
+TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, std::function<units::degree_t()> overideAngle) {
 
   AddRequirements({drivetrain, gyro});
   m_driveTrain = drivetrain;
   m_gyro = gyro;
-  m_overideAngle = overideAngle;
+  m_overideAngle = [overideAngle] {return overideAngle();};
   m_overide = true;
 
-
 }
-
+                                           
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
   //Checks if there is a target if not ends command
@@ -45,11 +47,12 @@ void TurnToTarget::Initialize() {
     m_lastGyroAngle = m_gyro->GetYaw();
     m_startError = m_gyroTarget - m_gyro->GetYaw();
   } else {
-    m_gyroTarget = m_overideAngle;
+    m_gyroTarget = m_overideAngle();
     m_startError = m_gyroTarget - m_gyro->GetYaw();
   }
 
   frc::SmartDashboard::PutString("TTT/Gyro target", units::angle::to_string(m_gyroTarget));
+  std::cout << "Target Angle: " << units::angle::to_string(m_gyroTarget) << std::endl;
 
 
 }

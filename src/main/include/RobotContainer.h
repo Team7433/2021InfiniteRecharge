@@ -32,7 +32,6 @@
 #include "commands/UnloadMagazine.h"
 #include "commands/GyroDrive.h"
 #include "commands/AutoTarget.h"
-
 #include "commands/DriveMotionControl.h"
 
 #include "commands/SimpleAuto.h"

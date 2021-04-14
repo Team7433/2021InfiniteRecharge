@@ -8,12 +8,12 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
 
   // 6B
   AddCommands(
-    //start timer
-    frc2::InstantCommand([this] { m_timer.Start(); }),
+    // //start timer
+    frc2::InstantCommand([this] {std::cout << "Auto Started\n"; }),
 
     AutoTarget(4.4_m, m_arm, m_shooter),
 
-    UnloadMagazine(m_ballHolder, m_feeder),
+    UnloadMagazine(m_ballHolder, m_feeder, m_floorIntake),
 
     TurnToTarget(m_gyro, m_driveTrain, 90.0_deg),
 
@@ -24,26 +24,27 @@ SixBallAutoB::SixBallAutoB(FloorIntake* m_floorIntake, DriveTrain* m_driveTrain,
       SetArmAngle(m_arm, 6_deg)
     ), //Parallel Deadline Group
 
-
+    TurnToTarget(m_gyro, m_driveTrain, 90.0_deg),
     frc2::ParallelDeadlineGroup(
+
       DriveRunProfile(m_driveTrain, "6BToShoot"),
       SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0.45, 0.5, 0.3, 0, /* Storing */ true)),      
 
     SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false),
 
   
-      AutoTarget(m_vision, m_arm, m_shooter, m_gyro, m_driveTrain),
+    AutoTarget(m_vision, m_arm, m_shooter, m_gyro, m_driveTrain),
   
 
-    UnloadMagazine(m_ballHolder, m_feeder), //unload all balls
+    UnloadMagazine(m_ballHolder, m_feeder, m_floorIntake, true), //unload all balls
     //reset arm position, rampdown shooter, stop floor intake
     frc2::ParallelDeadlineGroup(
       RunShooter(m_shooter, 0.0),
       SetArmAngle(m_arm, 6_deg),
       SetBallManipulation(m_feeder, m_ballHolder, m_floorIntake, 0, 0, 0, 0, false)
-    ), // Parallel Deadline Group
+    ) // Parallel Deadline Group
     //end timer and print out autonomous length
-    frc2::InstantCommand([this] { m_timer.Stop(); std::cout << units::time::to_string(m_timer.Get()) << std::endl; m_timer.Reset(); })
+    // frc2::InstantCommand([this] { m_timer.Stop(); std::cout << units::time::to_string(m_timer.Get()) << std::endl; m_timer.Reset(); })
   ); // Add Commands
 
 }

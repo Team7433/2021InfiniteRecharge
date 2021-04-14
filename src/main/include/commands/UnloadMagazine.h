@@ -10,6 +10,7 @@
 
 #include "subsystems/BallHolder.h"
 #include "subsystems/Feeder.h"
+#include "SetFloorIntake.h"
 #include "Constants.h"
 
 /**
@@ -22,7 +23,7 @@
 class UnloadMagazine
     : public frc2::CommandHelper<frc2::CommandBase, UnloadMagazine> {
  public:
-  UnloadMagazine(BallHolder*, Feeder*);
+  UnloadMagazine(BallHolder*, Feeder*, FloorIntake*,bool intakePosition = false);
 
   void Initialize() override;
 
@@ -36,8 +37,10 @@ class UnloadMagazine
 
   BallHolder * m_ballHolder;
   Feeder * m_feeder;
+  FloorIntake * m_intake;
   frc2::Timer m_timer;
 
+  bool m_intakePos;
   bool m_done = false;
 
 };

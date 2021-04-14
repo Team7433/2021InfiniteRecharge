@@ -56,6 +56,8 @@ namespace DriveTrainConstants {
     constexpr int kPIDSlotIdx = 0;
     constexpr int kTimeoutMs = 10;
 
+    constexpr units::meter_t kWheelBaseWidth = 700.0_mm;
+
     constexpr double kF_Profiling = 0.04815;//0.05115
     constexpr double kP_Profiling = 1;//1
     constexpr double kI_Profiling = 0;

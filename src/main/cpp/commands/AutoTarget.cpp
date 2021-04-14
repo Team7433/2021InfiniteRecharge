@@ -18,8 +18,10 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, Arm* arm, Shoo
       frc2::InstantCommand(
         [this, distanceM] {
           //logging this on smartdashboard
-          frc::SmartDashboard::PutNumber("AutoTarget/TargetSpeed", m_velocity());
-          frc::SmartDashboard::PutString("AutoTarget/TargetArmAngle", units::angle::to_string(m_angle()));
+
+          // frc::SmartDashboard::PutNumber("AutoTarget/TargetSpeed", m_velocity());
+          // frc::SmartDashboard::PutString("AutoTarget/TargetArmAngle", units::angle::to_string(m_angle()));
+
         }
       ), // Instand Command
 
@@ -38,12 +40,13 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, std::function<
   m_angle = [this, distanceM] {return 15.5504_deg + (units::degree_t(130.439 / (2.46224 + distanceM().to<double>()))); };
   m_velocity = [this, distanceM] {return 10648.9 + 1447.44 * distanceM().to<double>(); };
 
+
   AddCommands(
     frc2::InstantCommand(
         [this, distanceM] {
           //logging this on smartdashboard
-          frc::SmartDashboard::PutNumber("AutoTarget/TargetSpeed", m_velocity());
-          frc::SmartDashboard::PutString("AutoTarget/TargetArmAngle", units::angle::to_string(m_angle()));
+          // frc::SmartDashboard::PutNumber("AutoTarget/TargetSpeed", m_velocity());
+          // frc::SmartDashboard::PutString("AutoTarget/TargetArmAngle", units::angle::to_string(m_angle()));
         }
       ), // Instand Command
 
@@ -51,7 +54,7 @@ AutoTarget::AutoTarget(std::function<units::meter_t()> distanceM, std::function<
         //setting arm angle and shooter velocity
         SetArmAngle(arm, m_angle),
         RunShooter(shooter, m_velocity),
-        TurnToTarget(gyro, drivetrain, gyroTarget())
+        TurnToTarget(gyro, drivetrain, gyroTarget) 
       ) //Parallel Command Group
 
 
@@ -91,7 +94,7 @@ AutoTarget::AutoTarget(units::meter_t DistanceM, Arm* arm, Shooter* shooter) : A
 AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, bool update) : AutoTarget([vision] { return vision->getPortDistance(); }, arm, shooter, update) {}
 
 //overide for turn to target
-AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain) : AutoTarget([vision] {return vision->getPortDistance();}, [vision, gyro] {return gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance());}, arm, shooter, gyro, drivetrain) {}
+AutoTarget::AutoTarget(Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain) : AutoTarget([vision] {return vision->getPortDistance();}, [vision, gyro] { ; return units::degree_t(gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance()));}, arm, shooter, gyro, drivetrain) {}
 
 //overide for gyrodrive
 // AutoTarget::AutoTarget(std::function<double()> forwardOutput, Vision* vision, Arm* arm, Shooter* shooter, Gyro* gyro, DriveTrain* drivetrain) : AutoTarget([vision] {return vision->getPortDistance();}, [vision, gyro] {return gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance());}, forwardOutput, arm, shooter, gyro, drivetrain) {}

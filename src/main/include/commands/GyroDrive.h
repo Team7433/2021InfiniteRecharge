@@ -40,7 +40,7 @@ class GyroDrive
 
   units::degree_t m_error;
 
-  double m_kp = 0.04;
+  double m_kp = 0.05;
 
 
   units::degree_t m_startError;

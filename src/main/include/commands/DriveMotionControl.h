@@ -14,6 +14,10 @@
 #include <units/acceleration.h>
 #include <units/length.h>
 #include <units/angle.h>
+#include <units/math.h>
+#include <units/time.h>
+
+#include "Constants.h"
 
 class DriveMotionControl
     : public frc2::CommandHelper<frc2::CommandBase, DriveMotionControl> {
@@ -24,6 +28,14 @@ class DriveMotionControl
                                               units::meters_per_second_t maxVelocity,
                                               units::meters_per_second_squared_t maxAcceleration,
                                               units::degree_t targetAngle);
+
+
+    DriveMotionControl(DriveTrain *, Gyro *,  units::meter_t targetDistance,
+                                              units::meters_per_second_t startVelocity,
+                                              units::meters_per_second_t endVelocity,
+                                              units::meters_per_second_t maxVelocity,
+                                              units::meters_per_second_squared_t maxAcceleration,
+                                              std::function<units::degree_t()> angleFunc);
 
     void Initialize() override;
 
@@ -41,11 +53,18 @@ class DriveMotionControl
     units::meters_per_second_t  m_startVelocity;
     units::meters_per_second_t  m_endVelocity;
     units::meters_per_second_t  m_maxVelocity;
-    units::meters_per_second_t  m_maxAcceleration;
+    units::meters_per_second_squared_t  m_maxAcceleration;
+    std::function<units::degree_t()> m_AngleFunc;
+
     units::degree_t m_targetAngle;
 
-    double m_leftStartingEncoder; 
-    double m_rightStartingEncoder;
+    units::meter_t m_leftStartingEncoder; 
+    units::meter_t m_rightStartingEncoder;
 
+    units::meter_t m_currentDistance = 0.0_m;
+    units::meters_per_second_t m_currentVelocity = 0.0_mps;
+
+    units::meters_per_second_squared_t getAccelaration(units::meters_per_second_t startVel, units::meters_per_second_t endVel, units::meter_t distance);
+    
   
 };

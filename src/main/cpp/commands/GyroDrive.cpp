@@ -25,11 +25,14 @@ void GyroDrive::Initialize() {
   m_error = m_headingAngle() - m_gyro->GetYaw();
   m_startError = m_error;
 
+  frc::SmartDashboard::PutNumber("GyroDrive/TargetAngle", m_headingAngle().to<double>());
+
 }
 
 // Called repeatedly when this Command is scheduled to run
 void GyroDrive::Execute() {
   
+  frc::SmartDashboard::PutNumber("GyroDrive/Error", m_error.to<double>());
 
   double outputPower = (m_error.to<double>()*m_kp);
 

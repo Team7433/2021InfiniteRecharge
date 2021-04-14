@@ -30,7 +30,7 @@ class Arm : public frc2::SubsystemBase {
   void Periodic();
   void ManualControl(double Output);
   void SetPosition(double Position);
-  void SetAngle(double Angle);
+  void SetAngle(units::degree_t Angle);
   void SetAngle(units::angle::armEncoderUnits_t Angle);
   void SetLock(Lock_Position lock_position);
   double GetPosition();
@@ -52,7 +52,7 @@ class Arm : public frc2::SubsystemBase {
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
 
-
+  
   WPI_TalonSRX* m_armMotor = new WPI_TalonSRX{kArmMotorID};
   WPI_TalonSRX* m_armEncoder = new WPI_TalonSRX{11};
   frc::DoubleSolenoid m_lockSolenoid{kSolonoidPortAid, kSolonoidPortBid};

@@ -10,6 +10,11 @@
 #include <frc2/command/SubsystemBase.h>
 #include <ctre/Phoenix.h>
 #include <frc/drive/DifferentialDrive.h>
+#include <frc/smartdashboard/SmartDashboard.h>
+
+#include <units/length.h>
+#include <units/velocity.h>
+
 #include "Constants.h"
 
 #include "util/MotionProfileRunner.h"
@@ -44,8 +49,23 @@ class DriveTrain : public frc2::SubsystemBase {
     m_leftDriveSlave->SetNeutralMode(NeutralMode::Coast);
     }
 
+  void SetSlot(int slot) {
+
+    m_rightDriveMaster->SelectProfileSlot(slot, 0);
+    m_leftDriveMaster->SelectProfileSlot(slot, 0);
+
+  }
+
   double getLeftEncoder() { return m_leftDriveMaster->GetSelectedSensorPosition(); }
   double getRightEncoder() { return m_rightDriveMaster->GetSelectedSensorPosition(); }
+  
+  units::meter_t getLeftDistance();
+  units::meter_t getRightDistance();
+
+  units::meters_per_second_t getLeftVelocity();
+  units::meters_per_second_t getRightVelocity();
+
+  void setVelocity(units::meters_per_second_t left, units::meters_per_second_t right);
 
   void MPStart() { m_profiler->Start(kMPStartBuffer); }
 
