@@ -33,6 +33,20 @@ void RGBStrip::Rainbow() {
     randomR = randomR/1000;
     randomR = randomR/1000;
     randomR = randomR/1000;
+    
+     if (rand() %3 == 1 && m_countR > rand() %10000 + 10000) {
+
+        m_countR = 0;
+        if (m_signR == -1) {
+            m_signR = 1;
+        } else {m_signR = -1;}
+     } else {m_countR++;}
+     if(m_R + (randomR*sign) > 255) {
+        m_signR = -1;
+     } else if (m_R + (randomR*m_signR) < 0) {
+        m_signR = +1;
+       }
+            m_R = m_R + (randomR*m_signR);
 
 
 //     if (m_R + randomR > 255) {
