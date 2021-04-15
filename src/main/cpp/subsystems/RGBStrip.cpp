@@ -24,9 +24,9 @@ void RGBStrip::SetRGBStrip(double R, double G, double B) {
 
 void RGBStrip::Rainbow() {
     srand (time(NULL));
-    double randomR = 1 - rand() % 3;
-    double randomG = 1 - rand() % 3;
-    double randomB = 1 - rand() % 3;
+    double randomR = 2 - rand() % 6;
+    double randomG = 2 - rand() % 6;
+    double randomB = 2 - rand() % 6;
 
     m_R = m_R - randomR;
     m_G = m_G - randomG;

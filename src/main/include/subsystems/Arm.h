@@ -30,7 +30,7 @@ class Arm : public frc2::SubsystemBase {
   void Periodic();
   void ManualControl(double Output);
   void SetPosition(double Position);
-  void SetAngle(units::degree_t Angle);
+  void SetAngle(units::degree_t Angle, double);
   void SetAngle(units::angle::armEncoderUnits_t Angle);
   void SetLock(Lock_Position lock_position);
   double GetPosition();

@@ -46,7 +46,8 @@ class TurnToTarget
 
   units::degree_t m_gyroTarget;
 
-  bool m_done = false;
+  bool m_done;
+  int m_counter = 0;
 
   std::function<units::degree_t()> m_overideAngle;
   bool m_overide = false;

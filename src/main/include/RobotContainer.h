@@ -37,6 +37,7 @@
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"
 #include "commands/SixBallAutoB.h"
+#include "commands/SixBallAutoC.h"
 
 #include "subsystems/FloorIntake.h"
 #include "subsystems/DriveTrain.h"
@@ -69,7 +70,9 @@ class RobotContainer {
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
   void ControlLight(double R, double G, double B) {m_strip.SetRGBStrip(R, G, B);}
+  units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); }
   void RainbowMode() {m_strip.Rainbow();}
+  Vision GetVisionSubsystem() { return m_vision; }
   units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
   void zeroOutputDisabled();
   void ResetStartOfTeleop();

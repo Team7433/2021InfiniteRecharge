@@ -6,6 +6,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "commands/SetArmAngle.h"
+#include <cmath>
 
 SetArmAngle::SetArmAngle(Arm* arm, units::degree_t angle) : SetArmAngle(arm, [angle] { return angle; }, false ) {}
 
@@ -20,21 +21,21 @@ SetArmAngle::SetArmAngle(Arm* arm, std::function<units::degree_t()> angle, bool 
 
 // Called when the command is initially scheduled.
 void SetArmAngle::Initialize() {
-  if (m_update == false) {
-    m_setAngle = m_angle();
-    m_arm->SetAngle(m_setAngle);
-  }
 
+  m_setAngle = m_angle();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void SetArmAngle::Execute() {
 
-  if (m_update) {
-    m_setAngle = m_angle();
-    m_arm->SetAngle(m_setAngle);
-
-  }
+    if (m_update == true) {
+      m_setAngle = m_angle();
+    }
+    if (m_setAngle > 7.5_deg) {
+      m_arm->SetAngle(m_setAngle, 0.1*cos(m_arm->GetArmAngle()));
+    } else {
+       m_arm->SetAngle(m_setAngle, 0.0);
+    }
 
 }
 

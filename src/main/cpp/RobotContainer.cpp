@@ -42,46 +42,53 @@ void RobotContainer::ConfigureButtonBindings()
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SimpleAuto(&m_feeder, &m_ballholder, &m_floorIntake, &m_driveTrain, &m_arm, &m_vision, &m_gyro, &m_shooter));
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm));
   // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, 0_deg));
-  frc2::JoystickButton(&m_driverStick, 11).WhenPressed(EightBallAutoA(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles));
-  frc2::JoystickButton(&m_driverStick, 12).WhenPressed(frc2::SequentialCommandGroup(
-    frc2::InstantCommand([this] {
-      m_startingDistance = 3.0_m; //Reads starting distance using limelight
-      m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
-      m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count
-      m_targetAngle = m_gyro.GetYaw(); //units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
-      frc::SmartDashboard::PutNumber("ShootOnTheRun/targetAngle", m_targetAngle.to<double>());
-    }),
-    // TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
-    // frc2::ConditionalCommand(
-      frc2::ParallelDeadlineGroup(
-        DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [this] { return m_targetAngle; }),
-        AutoTarget([this] {
-          return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-        }, &m_arm, &m_shooter, true),
-          frc2::SequentialCommandGroup(
-            frc2::WaitUntilCommand([this] { return units::math::fabs(m_arm.GetArmAngleMotorUnits() -  m_arm.CalculateAngleFromDistance(units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2))) < 1_deg; }),
-            UnloadMagazine(&m_ballholder, &m_feeder, &m_floorIntake,true)
+  // frc2::JoystickButton(&m_driverStick, 11).WhenPressed(EightBallAutoA(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles));
+  frc2::JoystickButton(&m_driverStick, 11).WhenPressed(SixBallAutoC(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles));
+  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(frc2::SequentialCommandGroup(
+  //   frc2::InstantCommand([this] {
+  //     m_startingDistance = 3.0_m; //Reads starting distance using limelight
+  //     m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
+  //     m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count
+  //     m_targetAngle = m_gyro.GetYaw(); //units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
+  //     frc::SmartDashboard::PutNumber("ShootOnTheRun/targetAngle", m_targetAngle.to<double>());
+  //   }),
+  //   // TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
+  //   // frc2::ConditionalCommand(
+  //     frc2::ParallelDeadlineGroup(
+  //       DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [this] { return m_targetAngle; }),
+  //       AutoTarget([this] {
+  //         return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
+  //       }, &m_arm, &m_shooter, true),
+  //         frc2::SequentialCommandGroup(
+  //           frc2::WaitUntilCommand([this] { return units::math::fabs(m_arm.GetArmAngleMotorUnits() -  m_arm.CalculateAngleFromDistance(units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2))) < 1_deg; }),
+  //           UnloadMagazine(&m_ballholder, &m_feeder, &m_floorIntake,true)
 
-          )
+  //         )
         
-      ), // parallen Deadline
-    //   frc2::InstantCommand([] {std::cout << "No Target Detected \n";}),
-    //   [this] {return m_vision.getPowerPortDetected();}
-    // ), // conditional command
-    frc2::ParallelDeadlineGroup(
-      RunShooter(&m_shooter, 0.0),
-      SetArmAngle(&m_arm, 6_deg),
-      SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false)
-    ) // Parallel Deadline Group
+  //     ), // parallen Deadline
+  //   //   frc2::InstantCommand([] {std::cout << "No Target Detected \n";}),
+  //   //   [this] {return m_vision.getPowerPortDetected();}
+  //   // ), // conditional command
+  //   frc2::ParallelDeadlineGroup(
+  //     RunShooter(&m_shooter, 0.0),
+  //     SetArmAngle(&m_arm, 6_deg),
+  //     SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false)
+  //   ) // Parallel Deadline Group
 
-  )); // Sequential command group
+  // )); // Sequential command group
+
+  frc2::JoystickButton(&m_driverStick, 12).WhenPressed(frc2::SequentialCommandGroup(
+    DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 1_mps, 2_mps, 3_mps_sq, [this] { return m_gyro.GetYaw(); }),
+    DriveMotionControl(&m_driveTrain, &m_gyro, 0.8_m, 1_mps, 0_mps, 1_mps, 1_mps_sq, [this] { return m_gyro.GetYaw(); })
+  )); 
 
   frc2::JoystickButton(&m_driverStick, 7).WhenPressed(RunShooter(&m_shooter, 17000.00));
-  frc2::JoystickButton(&m_driverStick, 9).WhenPressed(RunShooter(&m_shooter, [] { return frc::SmartDashboard::GetNumber("Shooter/Custom Speed", 0); }));
+  // frc2::JoystickButton(&m_driverStick, 9).WhenPressed(RunShooter(&m_shooter, [] { return frc::SmartDashboard::GetNumber("Shooter/Custom Speed", 0); }));
+  frc2::JoystickButton(&m_driverStick, 9).WhenPressed(frc2::InstantCommand([this] {m_gyro.Reset();}));
   frc2::JoystickButton(&m_driverStick, 8).WhenPressed(RunShooter(&m_shooter, 0.0));
 
   frc2::POVButton(&m_operatorController, 0).WhenPressed(SetArmAngle(&m_arm, 29_deg));
-  frc2::POVButton(&m_operatorController, 90).WhenPressed(SetArmAngle(&m_arm, 35_deg));
+  frc2::POVButton(&m_operatorController, 90).WhenPressed(SetArmAngle(&m_arm, 24_deg));
   frc2::POVButton(&m_operatorController, 180).WhenPressed(SetArmAngle(&m_arm, 6_deg));
   frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, 40_deg));
 
@@ -132,8 +139,8 @@ void RobotContainer::ConfigureButtonBindings()
   [this] {
     return m_vision.getPowerPortDetected();
   }));
-  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(AutoTarget(&m_vision, &m_arm, &m_shooter, &m_gyro, &m_driveTrain), frc2::InstantCommand([] {std::cout << "no target detected\n";}), [this] { return m_vision.getPowerPortDetected(); }));
- 
+  // frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(AutoTarget(&m_vision, &m_arm, &m_shooter, &m_gyro, &m_driveTrain), frc2::InstantCommand([] {std::cout << "no target detected\n";}), [this] { return m_vision.getPowerPortDetected(); }));
+  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, -177_deg));
     // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(GyroDrive(&m_gyro, &m_driveTrain, 90.0, [this] {return -m_driverStick.GetY(); } ));
 
 
@@ -141,7 +148,7 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::JoystickButton(&m_driverStick, 4).WhenPressed(SetArmAngle(&m_arm, 10_deg));
 
   frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
-    frc2::InstantCommand([this] {
+    frc2::InstantCommand([this] { 
       m_startingDistance = m_vision.getPortDistance(); //Reads starting distance using limelight
       m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
       m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count

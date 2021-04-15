@@ -48,6 +48,8 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Velocity", GetVelocity());
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
     // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPosition());
+    frc::SmartDashboard::PutNumber("Arm/Accumulator", m_armMotor->GetIntegralAccumulator());
+    frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
     frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
     frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
@@ -67,10 +69,9 @@ void Arm::SetAngle(units::angle::armEncoderUnits_t Angle) {
     m_armMotor->Set(ControlMode::MotionMagic, Angle.to<double>());
 }
 
-void Arm::SetAngle(units::degree_t Angle) {
+void Arm::SetAngle(units::degree_t Angle, double feedForward) {
     //some complex math equations ++--++--
-
-    m_armMotor->Set(ControlMode::MotionMagic, (53.8) * (Angle.to<double>() - armAngleOffset));
+        m_armMotor->Set(ControlMode::MotionMagic, (53.8) * (Angle.to<double>() - armAngleOffset), DemandType::DemandType_ArbitraryFeedForward, feedForward);
 
 }
 

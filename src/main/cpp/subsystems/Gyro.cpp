@@ -7,6 +7,7 @@
 
 #include "subsystems/Gyro.h"
 #include <frc/DriverStation.h>
+#include <units/math.h>
 
 Gyro::Gyro() {
     try {
@@ -49,4 +50,23 @@ units::degree_t Gyro::GetPitch() {
 
 units::degree_t Gyro::GetRoll() {
     return units::degree_t( m_gyro->GetRoll() );
+}
+
+units::degree_t Gyro::GetClosestError(units::degree_t target) {
+
+    units::degree_t error = target - GetYaw();
+
+    if (units::math::fabs(error) > 180_deg ) {
+        if (units::math::fabs( error + 360_deg ) < 180_deg) {
+            return error + 360_deg;
+
+        } else {
+
+            return error - 360_deg;
+
+        }
+    }
+    return error;
+
+
 }

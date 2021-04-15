@@ -28,6 +28,7 @@ class Gyro : public frc2::SubsystemBase {
   units::degree_t GetYaw();
   units::degree_t GetPitch();
   units::degree_t GetRoll();
+  units::degree_t GetClosestError(units::degree_t target);
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be

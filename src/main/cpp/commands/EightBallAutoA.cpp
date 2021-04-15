@@ -40,7 +40,7 @@ EightBallAutoA::EightBallAutoA(FloorIntake* floorIntake, DriveTrain* driveTrain,
       DriveMotionControl(driveTrain, gyro, 2.3_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [autoVaribles] { return autoVaribles->a_targetAngle; } ),
       AutoTarget([this, driveTrain, autoVaribles] {
           return (3_m + ((driveTrain->getRightDistance() - autoVaribles->a_rightStartPos) + (driveTrain->getLeftDistance() - autoVaribles->a_leftStartPos)) / 2);
-          }, arm, shooter, true
+          }, arm, shooter, true, true, driveTrain
       ), // AutoTarget
       
       frc2::SequentialCommandGroup(
@@ -57,29 +57,39 @@ EightBallAutoA::EightBallAutoA(FloorIntake* floorIntake, DriveTrain* driveTrain,
       RunShooter(shooter, 0.0),
       SetArmAngle(arm, 6_deg)
     ), // Parallel Command Group
-    
   //   DriveMotionControl(driveTrain, gyro, -1_m, -2_mps, 0_mps, -2_mps, 3_mps_sq, 90_deg), //Bring robot to a stop
   //   //Setup for autoTarget
     TurnToTarget(vision, gyro, driveTrain),
     frc2::InstantCommand([this, driveTrain, gyro, vision, autoVaribles] {
       autoVaribles->a_leftStartPos = driveTrain->getLeftDistance();
       autoVaribles->a_rightStartPos = driveTrain->getRightDistance();
-      autoVaribles->a_targetAngle = units::degree_t(gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance())); //Sets target Gyro angle
+      // autoVaribles->a_targetAngle = units::degree_t(gyro->GetYaw() + vision->getPowerPortHorizontalAngle() - units::math::atan(160_mm / vision->getPortDistance())); //Sets target Gyro angle
+      autoVaribles->a_targetAngle = gyro->GetYaw();
       autoVaribles->a_startingDistance = vision->getPortDistance();
     }), // Instand Command
     frc2::ParallelCommandGroup(
-      DriveMotionControl(driveTrain, gyro, -3_m, 0_mps, 0_mps, -2_mps, -1_mps_sq, [autoVaribles] {return autoVaribles->a_targetAngle;}),
+      DriveMotionControl(driveTrain, gyro, -3.0_m, 0_mps, 0_mps, -2_mps, -1_mps_sq, [autoVaribles] {return autoVaribles->a_targetAngle;}),
       AutoTarget([this, driveTrain, autoVaribles] {
         return units::meter_t(autoVaribles->a_startingDistance + ((driveTrain->getRightDistance() - autoVaribles->a_rightStartPos) + (driveTrain->getLeftDistance() - autoVaribles->a_leftStartPos)) / 2);
-        }, arm, shooter, true
+        }, arm, shooter, true, true, driveTrain
       ), // AutoTarget
+      // frc2::SequentialCommandGroup(
+        frc2::SequentialCommandGroup(
+          frc2::WaitUntilCommand([this, arm, driveTrain, autoVaribles] {
+            
+            return units::math::fabs(arm->GetArmAngleMotorUnits() - arm->CalculateAngleFromDistance((autoVaribles->a_startingDistance + ((driveTrain->getRightDistance() - autoVaribles->a_rightStartPos) + (driveTrain->getLeftDistance() - autoVaribles->a_leftStartPos)) / 2))) < 1_deg;
+          }), // wait until command group
+          UnloadMagazine(ballHolder, feeder, floorIntake, true)
 
-      frc2::SequentialCommandGroup(
-        frc2::WaitUntilCommand([this, arm, driveTrain, autoVaribles] { return units::math::fabs(arm->GetArmAngleMotorUnits() -  arm->CalculateAngleFromDistance(units::meter_t(autoVaribles->a_startingDistance + ((driveTrain->getRightDistance() - autoVaribles->a_rightStartPos) + (driveTrain->getLeftDistance() - autoVaribles->a_leftStartPos)) / 2))) < 1_deg; }),
-        UnloadMagazine(ballHolder, feeder, floorIntake)
-      ) // sequential command group
-
+        )// sequential command group
+      //   RunShooter(shooter, 0.0),
+      //   SetArmAngle(arm, 6_deg),
+      //   SetBallManipulation(feeder, ballHolder, floorIntake, 0, 0, 0, 0, false)
+      // )
     ) // Parallel Command Group
+
+   
+    
 
   //   DriveMotionControl(driveTrain, gyro, 2_m, 2_mps, 0_mps, 2_mps, -2_mps_sq, m_targetAngle), 
 

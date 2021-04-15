@@ -62,7 +62,8 @@ void TurnToTarget::Execute() {
   
 
   //Sets the error
-  m_error = (m_gyroTarget - m_gyro->GetYaw());
+  // m_error = (m_gyroTarget - m_gyro->GetYaw());
+  m_error = m_gyro->GetClosestError(m_gyroTarget);
   
   // if (fabs(m_gyro->GetYaw() - m_lastGyroAngle) > 0.5) {
 
@@ -108,6 +109,7 @@ void TurnToTarget::Execute() {
 void TurnToTarget::End(bool interrupted) {
   m_driveTrain->ArcadeDrive(0, 0, false);
   m_accumulator = 0.0;
+  m_counter = 0;
   m_done = false;
   m_timer.Stop();
   m_timer.Reset();
@@ -136,8 +138,14 @@ bool TurnToTarget::IsFinished() {
   // }
 
   // return (m_timer.Get() > 0.5_s);
-
-  return (units::math::fabs(m_error) < 0.5_deg);
+  if (units::math::fabs(m_error) < 0.5_deg) {
+    m_counter++;
+  } else {
+    m_counter = 0;
+  }
+  if (m_counter >= 3 ) {return true;}
+  return false;
+  // return (units::math::fabs(m_error) < 0.5_deg);
 
 
   }
