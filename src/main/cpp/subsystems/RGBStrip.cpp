@@ -24,28 +24,34 @@ void RGBStrip::SetRGBStrip(double R, double G, double B) {
 
 void RGBStrip::Rainbow() {
     srand (time(NULL));
-    double randomR = rand() % 6;
-    double randomG = rand() % 6;
-    double randomB = rand() % 6;
+    double randomR = (rand() % 9 + 1);
+    srand (time(NULL)-20);
+    double randomG = (rand() % 9 + 1);
+    srand (time(NULL)-40);
+    double randomB = (rand() % 9 + 1);
+    
+    randomR = randomR/1000;
+    randomR = randomR/1000;
+    randomR = randomR/1000;
 
 
-    if (m_R + randomR > 255) {
-        if (m_R - randomR < 0) {
-            m_R = m_R + randomR;
-        } else {m_R = m_R - randomR;}
-    } else {m_R = m_R + randomR;}
+//     if (m_R + randomR > 255) {
+//         if (m_R - randomR < 0) {
+//             m_R = m_R + randomR;
+//         } else {m_R = m_R - randomR;}
+//     } else {m_R = m_R + randomR;}
 
-    if (m_G + randomG > 255) {
-        if (m_G - randomR < 0) {
-            m_G = m_G + randomG;
-        } else {m_G = m_G - randomG;}
-    } else {m_G = m_G + randomG;}
+//     if (m_G + randomG > 255) {
+//         if (m_G - randomR < 0) {
+//             m_G = m_G + randomG;
+//         } else {m_G = m_G - randomG;}
+//     } else {m_G = m_G + randomG;}
 
-    if (m_B + randomB > 255) {
-        if (m_B - randomB < 0) {
-            m_B = m_B + randomB;
-        } else {m_B = m_B - randomB;}
-    } else {m_B = m_B + randomB;}
+//     if (m_B + randomB > 255) {
+//         if (m_B - randomB < 0) {
+//             m_B = m_B + randomB;
+//         } else {m_B = m_B - randomB;}
+//     } else {m_B = m_B + randomB;}
 
 
 
