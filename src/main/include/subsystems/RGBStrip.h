@@ -29,5 +29,13 @@ class RGBStrip : public frc2::SubsystemBase {
   double m_R;
   double m_G;
   double m_B;
+ 
+  double m_countR;
+  double m_countG;
+  double m_countB;
+ 
+  double m_signR;
+  double m_signG;
+  double m_signB;
 
 };
