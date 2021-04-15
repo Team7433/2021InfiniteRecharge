@@ -12,6 +12,7 @@
 #include <frc/XboxController.h>
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/ConditionalCommand.h>
+#include <frc/smartdashboard/SendableChooser.h>
 #include <POVButton.h>
 
 #include <units/angle.h>
@@ -38,6 +39,7 @@
 #include "commands/SimpleAuto.h"
 #include "commands/SixBallAutoB.h"
 #include "commands/SixBallAutoC.h"
+#include "commands/ThreeBallAuto.h"
 
 #include "subsystems/FloorIntake.h"
 #include "subsystems/DriveTrain.h"
@@ -88,6 +90,8 @@ class RobotContainer {
   Arm m_arm;
   RGBStrip m_strip;
   AutoVaribles m_autoVaribles;
+
+  frc::SendableChooser<int> m_autoChooser;
 
 
   // ExampleCommand m_autonomousCommand;

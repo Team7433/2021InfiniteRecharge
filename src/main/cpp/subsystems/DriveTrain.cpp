@@ -45,8 +45,8 @@ DriveTrain::DriveTrain() {
     m_rightDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, kTimeoutMs);
 
     //Set P
-    m_leftDriveMaster->Config_kP(1, 0.01, kTimeoutMs);//1
-    m_rightDriveMaster->Config_kP(1, 0.01, kTimeoutMs);
+    m_leftDriveMaster->Config_kP(1, 0.05, kTimeoutMs);//1
+    m_rightDriveMaster->Config_kP(1, 0.05, kTimeoutMs);
 
     //Set I
     m_leftDriveMaster->Config_kI(1, 0, kTimeoutMs);

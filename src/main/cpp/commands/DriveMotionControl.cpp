@@ -84,6 +84,8 @@ void DriveMotionControl::Execute() {
   units::radian_t difference = m_targetAngle - m_gyro->GetYaw();
   double fudgeValue = frc::SmartDashboard::GetNumber("DriveMC/AngleFudgeValue", 0.1);
   frc::SmartDashboard::PutNumber("DriveMC/Difference", difference.convert<units::degree>().to<double>());
+  frc::SmartDashboard::PutNumber("DriveMC/Target", m_targetDistance.to<double>());
+  frc::SmartDashboard::PutString("DriveMC/rightvelocity", units::velocity::to_string(m_driveTrain->getRightVelocity()));
   units::meters_per_second_t leftVelocity = newVelocity + units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() * fudgeValue );
   units::meters_per_second_t rightVelocity = newVelocity - units::meters_per_second_t( ( (DriveTrainConstants::kWheelBaseWidth / 2) / 20_ms ) * difference.to<double>() * fudgeValue );
   m_driveTrain->setVelocity(leftVelocity, rightVelocity);

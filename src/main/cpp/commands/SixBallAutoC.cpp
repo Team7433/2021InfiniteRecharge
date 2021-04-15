@@ -47,8 +47,8 @@ SixBallAutoC::SixBallAutoC(FloorIntake* floorIntake, DriveTrain* driveTrain, Sho
     TurnToTarget(gyro, driveTrain, -168_deg),
     frc2::ParallelDeadlineGroup(
       frc2::SequentialCommandGroup(
-        DriveMotionControl(driveTrain, gyro, 2_m, 0_mps, 1_mps, 2_mps, 3_mps_sq, [gyro] { return gyro->GetYaw(); }),
-        DriveMotionControl(driveTrain, gyro, 0.8_m, 1_mps, 0_mps, 1_mps, 1_mps_sq, [gyro] { return gyro->GetYaw(); })
+        DriveMotionControl(driveTrain, gyro, 1.9_m, 0_mps, 1_mps, 2_mps, 3_mps_sq, [gyro] { return gyro->GetYaw(); }),
+        DriveMotionControl(driveTrain, gyro, 1.0_m, 1_mps, 0_mps, 1_mps, 1_mps_sq, [gyro] { return gyro->GetYaw(); })
       ),
       SetBallManipulation(feeder, ballHolder, floorIntake, 0.45, 0.5, 0.3, 0, /* Storing */ true),
       RunShooter(shooter, 0.0),

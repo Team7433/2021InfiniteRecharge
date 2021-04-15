@@ -20,10 +20,15 @@ RobotContainer::RobotContainer() : m_vision(&m_arm)
 {
   // Initialize all of your commands and subsystems here
   m_driveTrain.SetDefaultCommand(DriveWithJoystick(&m_driverStick, &m_driveTrain));
+
+  m_autoChooser.SetDefaultOption("SixBallAutoC", 0);
+  m_autoChooser.AddOption("SixBallAutoB", 1);
+  m_autoChooser.AddOption("ThreeBallAuto", 2);
   //m_arm.SetDefaultCommand(ManualArmControl(&m_arm, &m_operatorController));
   // Configure the button bindings
   ConfigureButtonBindings();
 
+  frc::SmartDashboard::PutData(&m_autoChooser);
   frc::SmartDashboard::PutNumber("Custom/Speed", 16000);
   frc::SmartDashboard::PutNumber("Custom/Angle", 29);
 }
@@ -139,8 +144,8 @@ void RobotContainer::ConfigureButtonBindings()
   [this] {
     return m_vision.getPowerPortDetected();
   }));
-  // frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(AutoTarget(&m_vision, &m_arm, &m_shooter, &m_gyro, &m_driveTrain), frc2::InstantCommand([] {std::cout << "no target detected\n";}), [this] { return m_vision.getPowerPortDetected(); }));
-  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, -177_deg));
+  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(AutoTarget(&m_vision, &m_arm, &m_shooter, &m_gyro, &m_driveTrain), frc2::InstantCommand([] {std::cout << "no target detected\n";}), [this] { return m_vision.getPowerPortDetected(); }));
+    // frc2::JoystickButton(&m_driverStick, 2).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, -177_deg));
     // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(GyroDrive(&m_gyro, &m_driveTrain, 90.0, [this] {return -m_driverStick.GetY(); } ));
 
 
@@ -182,7 +187,19 @@ void RobotContainer::ConfigureButtonBindings()
 
 frc2::Command *RobotContainer::GetAutonomousCommand()
 {
-  // An example command will be run in autonomous
+  switch (m_autoChooser.GetSelected())
+  {
+  case 0 : //SixBallAutoC
+    return new SixBallAutoC(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles);
+    break;
+  
+  case 1: //SixBallAutoB
+    return new SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm);
+    break;
+  case 2: 
+    return new ThreeBallAuto(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles);
+    break;
+  }
   return nullptr;
 }
 

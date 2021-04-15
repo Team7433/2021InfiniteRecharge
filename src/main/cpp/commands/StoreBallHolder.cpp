@@ -99,16 +99,16 @@ void StoreBallHolder::Execute() {
 
   }
 
-  // if (m_overloaded == true) {
-  //   m_intake->Set(Position::Out, -0.65);
-  //   if (m_timer2.Get() > BallHolderConstants::kOverloadReverseLength) {
+  if (m_overloaded == true) {
+    m_intake->Set(Position::Out, -0.65);
+    if (m_timer2.Get() > BallHolderConstants::kOverloadReverseLength) {
           
-  //         m_intake->Set(Position::Out, m_intakeSpeed);
-  //         m_overloaded = false;
-  //         m_currentAverage = 0.0;
-  //         m_timer2.Stop();
-  //         }
-  // }
+          m_intake->Set(Position::Out, m_intakeSpeed);
+          m_overloaded = false;
+          m_currentAverage = 0.0;
+          m_timer2.Stop();
+          }
+  }
 
     
 }
