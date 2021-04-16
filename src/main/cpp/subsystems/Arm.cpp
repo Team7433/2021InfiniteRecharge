@@ -49,7 +49,7 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
     // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPositionUnits().to<double>());
     frc::SmartDashboard::PutNumber("Arm/Accumulator", m_armMotor->GetIntegralAccumulator());
-    frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
+    // frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
     frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
     frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
