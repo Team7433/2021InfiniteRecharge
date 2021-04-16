@@ -23,30 +23,30 @@ void RGBStrip::SetRGBStrip(double R, double G, double B) {
 }
 
 void RGBStrip::Rainbow() {
-    srand (time(NULL));
-    double randomR = (rand() % 9 + 1);
-    srand (time(NULL)-20);
-    double randomG = (rand() % 9 + 1);
-    srand (time(NULL)-40);
-    double randomB = (rand() % 9 + 1);
+    // srand (time(NULL));
+    // double randomR = (rand() % 9 + 1);
+    // srand (time(NULL)-20);
+    // double randomG = (rand() % 9 + 1);
+    // srand (time(NULL)-40);
+    // double randomB = (rand() % 9 + 1);
     
-    randomR = randomR/1000;
-    randomR = randomR/1000;
-    randomR = randomR/1000;
+    // randomR = randomR/1000;
+    // randomR = randomR/1000;
+    // randomR = randomR/1000;
     
-     if (rand() %3 == 1 && m_countR > rand() %10000 + 10000) {
+    //  if (rand() %3 == 1 && m_countR > rand() %10000 + 10000) {
 
-        m_countR = 0;
-        if (m_signR == -1) {
-            m_signR = 1;
-        } else {m_signR = -1;}
-     } else {m_countR++;}
-     if(m_R + (randomR*sign) > 255) {
-        m_signR = -1;
-     } else if (m_R + (randomR*m_signR) < 0) {
-        m_signR = +1;
-       }
-            m_R = m_R + (randomR*m_signR);
+    //     m_countR = 0;
+    //     if (m_signR == -1) {
+    //         m_signR = 1;
+    //     } else {m_signR = -1;}
+    //  } else {m_countR++;}
+    //  if(m_R + (randomR*sign) > 255) {
+    //     m_signR = -1;
+    //  } else if (m_R + (randomR*m_signR) < 0) {
+    //     m_signR = +1;
+    //    }
+    //         m_R = m_R + (randomR*m_signR);
 
 
 //     if (m_R + randomR > 255) {
@@ -70,12 +70,12 @@ void RGBStrip::Rainbow() {
 
 
 
-    m_R = m_R - randomR;
-    m_G = m_G - randomG;
-    m_B = m_B - randomB;
+    // m_R = m_R - randomR;
+    // m_G = m_G - randomG;
+    // m_B = m_B - randomB;
 
-    m_strip->SetLEDOutput(m_R/255.0, CANifier::LEDChannelB);
-    m_strip->SetLEDOutput(m_G/255.0, CANifier::LEDChannelA);
-    m_strip->SetLEDOutput(m_B/255.0, CANifier::LEDChannelC);
+    // m_strip->SetLEDOutput(m_R/255.0, CANifier::LEDChannelB);
+    // m_strip->SetLEDOutput(m_G/255.0, CANifier::LEDChannelA);
+    // m_strip->SetLEDOutput(m_B/255.0, CANifier::LEDChannelC);
 
 }

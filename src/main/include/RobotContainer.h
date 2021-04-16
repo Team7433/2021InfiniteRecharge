@@ -52,6 +52,8 @@
 #include "subsystems/AutoVaribles.h"
 #include "subsystems/RGBStrip.h"
 
+#include "util/ConfigImport.h"
+
 #include "Constants.h"
 
 using namespace DriverControls;

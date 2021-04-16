@@ -21,6 +21,8 @@ RobotContainer::RobotContainer() : m_vision(&m_arm)
   // Initialize all of your commands and subsystems here
   m_driveTrain.SetDefaultCommand(DriveWithJoystick(&m_driverStick, &m_driveTrain));
 
+  ConfigImport::GetInstance().LoadConfig("home/lvuser/config.csv");
+
   m_autoChooser.SetDefaultOption("SixBallAutoC", 0);
   m_autoChooser.AddOption("SixBallAutoB", 1);
   m_autoChooser.AddOption("ThreeBallAuto", 2);
