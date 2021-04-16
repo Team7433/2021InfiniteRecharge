@@ -3,12 +3,17 @@
 // the WPILib BSD license file in the root directory of this project.
 
 #include "subsystems/RGBStrip.h"
-
+#include <frc/smartdashboard/SmartDashboard.h>
 
 RGBStrip::RGBStrip() = default;
 
 // This method will be called once per scheduler run
-void RGBStrip::Periodic() {}
+void RGBStrip::Periodic() {
+
+    frc::SmartDashboard::PutNumber("strip/Red", m_R);
+    frc::SmartDashboard::PutNumber("strip/Green", m_G);
+
+}
 
 void RGBStrip::SetRGBStrip(double R, double G, double B) {
 
@@ -32,8 +37,8 @@ void RGBStrip::Rainbow() {
     double randomB = (rand() % 9 + 1);
     
     randomR = randomR/1000;
-    randomR = randomR/1000;
-    randomR = randomR/1000;
+    randomG = randomG/1000;
+    // randomR = randomR/1000;
     
     if (rand() %3 == 1 && m_countR > rand() %10000 + 10000) {
 
@@ -50,6 +55,21 @@ void RGBStrip::Rainbow() {
         }
     m_R = m_R + (randomR*m_signR);
 
+    if (rand() %3 == 1 && m_countG > rand() %10000 + 10000) {
+
+        m_countG = 0;
+        if (m_signG == -1) {
+            m_signG = 1;
+        } else {m_signG = -1;}
+
+    } else {m_countG++;}
+    if(m_G + (randomG*m_signG) > 255) {
+        m_signG = -1;
+    } else if (m_G + (randomG*m_signG) < 0) {
+        m_signG = +1;
+        }
+
+    m_G = m_G + (randomG*m_signG);
 
 //     if (m_R + randomR > 255) {
 //         if (m_R - randomR < 0) {
@@ -71,7 +91,7 @@ void RGBStrip::Rainbow() {
 
 
     m_strip->SetLEDOutput(m_R/255.0, CANifier::LEDChannelB);
-    // m_strip->SetLEDOutput(m_G/255.0, CANifier::LEDChannelA);
+    m_strip->SetLEDOutput(m_G/255.0, CANifier::LEDChannelA);
     // m_strip->SetLEDOutput(m_B/255.0, CANifier::LEDChannelC);
 
 }

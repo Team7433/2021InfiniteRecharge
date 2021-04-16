@@ -27,6 +27,7 @@ class Feeder : public frc2::SubsystemBase {
 
   void SetFeeder(double value);
   void SetFeederVelocity(double velocity);
+  void RunRevolutions(double revolutions, double maxAccel, double maxVelo);
 
  private:
 

@@ -123,16 +123,17 @@ namespace BallHolderConstants {
     constexpr units::time::second_t kTimerMagazineDelay = 0.1_s;
     constexpr units::time::second_t kOverloadReverseLength = 0.2_s;
 
-}
+}       
 
 namespace FeederConstants {
 
 
     constexpr int kPIDslotID = 0;
-    constexpr double kfeederP = 0.0;
-    constexpr double kfeederI = 0.0;
-    constexpr double kfeederD = 0.0;
-    constexpr double kfeederIzone = 0.0;
+    constexpr double kfeederP = 0.4;
+    constexpr double kfeederI = 0.001;
+    constexpr double kfeederD = 1.0;
+    constexpr double kfeederF = 0.06017647058823529411764705882353;
+    constexpr double kfeederIzone = 1000.0;
     constexpr double kfeederMaxAccumulator = 0.0;
 
     constexpr int kFeederMotorId = 15;
