@@ -161,14 +161,14 @@ void RobotContainer::ConfigureButtonBindings()
       m_targetAngle = units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
       frc::SmartDashboard::PutNumber("ShootOnTheRun/targetAngle", m_targetAngle.to<double>());
     }),
-    TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
+    // TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
     frc2::ConditionalCommand(
       frc2::ParallelCommandGroup(
         
         GyroDrive(&m_gyro, &m_driveTrain, [this] {return m_targetAngle; }, [this] { return -m_driverStick.GetY(); }),
         AutoTarget([this] {
           return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-        }, &m_arm, &m_shooter, true)
+        }, &m_arm, &m_shooter, true, true, &m_driveTrain)
 
       ),
       frc2::InstantCommand([] {std::cout << "No Target Detected \n";}),
