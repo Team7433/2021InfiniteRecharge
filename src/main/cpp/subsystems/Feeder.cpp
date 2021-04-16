@@ -11,8 +11,7 @@ Feeder::Feeder() {
     m_feederMotor->ConfigFactoryDefault();
 
     m_feederMotor->SetInverted(true);
-
-    
+   
 
 }
 
