@@ -11,6 +11,9 @@ Feeder::Feeder() {
     m_feederMotor->ConfigFactoryDefault();
 
     m_feederMotor->SetInverted(true);
+
+    
+
 }
 
 // This method will be called once per scheduler run
@@ -20,10 +23,9 @@ void Feeder::SetFeeder(double value) {
     m_feederMotor->Set(ControlMode::PercentOutput, value);
 }
 
-void Feeder::SetPosition(BeltPosition position) {
-    if (position == 1) {
-        m_engagerSolonoid.Set(frc::DoubleSolenoid::Value::kForward);
-    } else {
-        m_engagerSolonoid.Set(frc::DoubleSolenoid::Value::kReverse);
-    }
+void Feeder::SetFeederVelocity(double velocity) {
+
+    m_feederMotor->Set(ControlMode::Velocity, velocity);
+
 }
+

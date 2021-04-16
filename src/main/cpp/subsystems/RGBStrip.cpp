@@ -70,12 +70,6 @@ void RGBStrip::Rainbow() {
 //     } else {m_B = m_B + randomB;}
 
 
-
-
-    m_R = m_R - randomR;
-    // m_G = m_G - randomG;
-    // m_B = m_B - randomB;
-
     m_strip->SetLEDOutput(m_R/255.0, CANifier::LEDChannelB);
     // m_strip->SetLEDOutput(m_G/255.0, CANifier::LEDChannelA);
     // m_strip->SetLEDOutput(m_B/255.0, CANifier::LEDChannelC);

@@ -14,14 +14,14 @@ Arm::Arm() {
     m_armMotor->ConfigFactoryDefault();
 
 
-    m_armMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, Ktimeout);
-    m_armEncoder->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute, 0, Ktimeout);
+    m_armMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::QuadEncoder, 0, ktimeoutMs);
+    m_armEncoder->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute, 0, ktimeoutMs);
 
 
     m_armMotor->SetNeutralMode(NeutralMode::Brake);
 
-    m_armMotor->ConfigForwardLimitSwitchSource(LimitSwitchSource::LimitSwitchSource_FeedbackConnector, LimitSwitchNormal::LimitSwitchNormal_NormallyClosed, Ktimeout);
-    m_armMotor->ConfigReverseLimitSwitchSource(LimitSwitchSource::LimitSwitchSource_FeedbackConnector, LimitSwitchNormal::LimitSwitchNormal_NormallyOpen, Ktimeout);
+    m_armMotor->ConfigForwardLimitSwitchSource(LimitSwitchSource::LimitSwitchSource_FeedbackConnector, LimitSwitchNormal::LimitSwitchNormal_NormallyClosed, ktimeoutMs);
+    m_armMotor->ConfigReverseLimitSwitchSource(LimitSwitchSource::LimitSwitchSource_FeedbackConnector, LimitSwitchNormal::LimitSwitchNormal_NormallyOpen, ktimeoutMs);
     
     m_armMotor->SetSensorPhase(true);
     m_armEncoder->SetSensorPhase(true);
@@ -30,16 +30,16 @@ Arm::Arm() {
     
 
     // configures motors PID
-    m_armMotor->Config_kF(0, Kf, Ktimeout);
-    m_armMotor->Config_kP(0, Kp, Ktimeout);
-    m_armMotor->Config_kI(0, Ki, Ktimeout);
-    m_armMotor->Config_kD(0, Kd, Ktimeout);
-    m_armMotor->ConfigMotionSCurveStrength(4, Ktimeout);
+    m_armMotor->Config_kF(0, Kf, ktimeoutMs);
+    m_armMotor->Config_kP(0, Kp, ktimeoutMs);
+    m_armMotor->Config_kI(0, Ki, ktimeoutMs);
+    m_armMotor->Config_kD(0, Kd, ktimeoutMs);
+    m_armMotor->ConfigMotionSCurveStrength(4, ktimeoutMs);
 
-    m_armMotor->ConfigMotionAcceleration(KmotionAcceleration, Ktimeout);
-    m_armMotor->ConfigMotionCruiseVelocity(KmotionCruiseVelocity, Ktimeout);  
+    m_armMotor->ConfigMotionAcceleration(KmotionAcceleration, ktimeoutMs);
+    m_armMotor->ConfigMotionCruiseVelocity(KmotionCruiseVelocity, ktimeoutMs);  
 
-    m_armMotor->ConfigClearPositionOnLimitR(true, Ktimeout);
+    m_armMotor->ConfigClearPositionOnLimitR(true, ktimeoutMs);
 
 }
 
@@ -47,7 +47,7 @@ Arm::Arm() {
 void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Velocity", GetVelocity());
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
-    // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPosition());
+    // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPositionUnits().to<double>());
     frc::SmartDashboard::PutNumber("Arm/Accumulator", m_armMotor->GetIntegralAccumulator());
     frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());

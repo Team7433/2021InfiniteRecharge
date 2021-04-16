@@ -17,7 +17,6 @@ SetFeeder::SetFeeder(Feeder * feeder, FeederConstants::BeltPosition positon, dou
 // Called when the command is initially scheduled.
 void SetFeeder::Initialize() {
   m_feeder->SetFeeder(m_output);
-  m_feeder->SetPosition(m_beltPositon);
 }
 
 // Called repeatedly when this Command is scheduled to run

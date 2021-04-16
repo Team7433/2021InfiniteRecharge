@@ -20,6 +20,7 @@ RobotContainer::RobotContainer() : m_vision(&m_arm)
 {
   // Initialize all of your commands and subsystems here
   m_driveTrain.SetDefaultCommand(DriveWithJoystick(&m_driverStick, &m_driveTrain));
+  m_strip.SetDefaultCommand(StatusLight(&m_strip, [this] { return m_arm.GetArmAngleMotorUnits(); }, [this] { return m_arm.GetTargetPositionUnits(); }, [this] { return m_vision.getPowerPortDetected();}, [this] { return m_shooter.GetVelocityLoopTarget(); } ));
 
   m_autoChooser.SetDefaultOption("SixBallAutoC", 0);
   m_autoChooser.AddOption("SixBallAutoB", 1);

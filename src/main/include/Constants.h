@@ -19,6 +19,7 @@
  */         
 
 constexpr double kPi = 3.1415926545897;
+constexpr int ktimeoutMs = 10;
 
 #include <ctre/Phoenix.h>
 #include <units/time.h>
@@ -54,7 +55,7 @@ namespace DriveTrainConstants {
     //constexpr double KangleKp = 0.01;
 
     constexpr int kPIDSlotIdx = 0;
-    constexpr int kTimeoutMs = 10;
+
 
     constexpr units::meter_t kWheelBaseWidth = 700.0_mm;
 
@@ -95,7 +96,7 @@ namespace ShooterConstants {
     constexpr int kShooterAID = 5;
     constexpr int kShooterBID = 6;
 
-    constexpr int ktimeoutMs = 30;
+
     constexpr double kshooterP = 0.0;
     constexpr double kshooterI = 0.0001;
     constexpr double kshooterD = 0.0;
@@ -126,6 +127,14 @@ namespace BallHolderConstants {
 
 namespace FeederConstants {
 
+
+    constexpr int kPIDslotID = 0;
+    constexpr double kfeederP = 0.0;
+    constexpr double kfeederI = 0.0;
+    constexpr double kfeederD = 0.0;
+    constexpr double kfeederIzone = 0.0;
+    constexpr double kfeederMaxAccumulator = 0.0;
+
     constexpr int kFeederMotorId = 15;
     constexpr int kFeederSolonoidPortAId = 2;
     constexpr int kFeederSolonoidPortBId = 3;
@@ -142,8 +151,6 @@ namespace ArmConstants {
 
     constexpr int kArmMotorID = 9;
 
-
-    constexpr int Ktimeout = 30;
 
     constexpr double Kp = 100;
     constexpr double Ki = 0.0;
@@ -192,7 +199,18 @@ namespace VisionConstants {
     // angle from pivot to camera
     constexpr units::degree_t kangleOffsetCamera = 20.21_deg;
     
-    
+    enum LEDState {
+        // 0	use the LED Mode set in the current pipeline
+        // 1	force off
+        // 2	force blink
+        // 3	force on
+
+        currentPipeline = 0,
+        forceOff = 1,
+        forceBlink = 2,
+        forceOn = 3
+
+    };
     
 
 

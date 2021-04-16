@@ -39,6 +39,7 @@ class Vision : public frc2::SubsystemBase {
   double getCamMode();
 
   void changeCamMode(int mode);
+  void SetLED(VisionConstants::LEDState state);
 
   units::meter_t getPortDistance();
 

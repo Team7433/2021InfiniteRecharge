@@ -41,13 +41,14 @@ void Robot::DisabledPeriodic() {
   // m_container.RainbowMode();
   // m_container.ControlLight(148,0,211);
   if (m_container.GetArmAngle() < 54_deg) {
+    m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
     if(m_container.GetVisionSubsystem().getPowerPortDetected() == false) {m_container.ControlLight(140, 0, 128);} 
       else {
       if(0.5 > m_container.GetTargetError().to<double>() && m_container.GetTargetError().to<double>() > -0.5 ) {m_container.ControlLight(0, 255, 0);}
       else if (m_container.GetTargetError().to<double>() > 0.5) {m_container.ControlLight(0, 0, 255); }
       else if (m_container.GetTargetError().to<double>() < -0.5) {m_container.ControlLight(255, 0, 0);}
       }
-  } else {m_container.ControlLight(0, 0, 0);}
+  } else {m_container.SetLimelightLED(VisionConstants::LEDState::forceOff); m_container.ControlLight(0, 0, 0);}
 }
 
 /**
@@ -57,6 +58,7 @@ void Robot::DisabledPeriodic() {
 void Robot::AutonomousInit() {
   m_autonomousCommand = m_container.GetAutonomousCommand();
   m_container.BrakeMode(); // Set Drivetrain to Brake Mode
+  m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
 
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
@@ -71,6 +73,7 @@ void Robot::TeleopInit() {
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
   // this line or comment it out.
+  m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
   m_container.BrakeMode(); // Set Drivetrain to Brake Mode
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
@@ -84,7 +87,6 @@ void Robot::TeleopInit() {
  */
 void Robot::TeleopPeriodic() {
   m_container.RainbowMode();
-
 }
 
 /**

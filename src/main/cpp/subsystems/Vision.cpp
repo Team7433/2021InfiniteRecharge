@@ -71,3 +71,13 @@ units::meter_t Vision::getPortDistanceBumper() {
 
 
 }
+
+void Vision::SetLED(VisionConstants::LEDState state) {
+    // 0	use the LED Mode set in the current pipeline
+    // 1	force off
+    // 2	force blink
+    // 3	force on
+
+    nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("ledMode",state);
+
+}

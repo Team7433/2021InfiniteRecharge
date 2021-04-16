@@ -34,6 +34,7 @@
 #include "commands/GyroDrive.h"
 #include "commands/AutoTarget.h"
 #include "commands/DriveMotionControl.h"
+#include "commands/StatusLight.h"
 
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"
@@ -71,9 +72,10 @@ class RobotContainer {
 
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
-  void ControlLight(double R, double G, double B) {m_strip.SetRGBStrip(R, G, B);}
-  units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); }
   void RainbowMode() {m_strip.Rainbow();}
+  void ControlLight(double R, double G, double B) {m_strip.SetRGBStrip(R, G, B);}
+  void SetLimelightLED(VisionConstants::LEDState state) {m_vision.SetLED(state); }
+  units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); }
   Vision GetVisionSubsystem() { return m_vision; }
   units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
   void zeroOutputDisabled();

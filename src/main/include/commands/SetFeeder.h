@@ -32,6 +32,8 @@ class SetFeeder
 
   bool IsFinished() override;
  private:
+
+
   Feeder* m_feeder;
   FeederConstants::BeltPosition m_beltPositon;
   double m_output;

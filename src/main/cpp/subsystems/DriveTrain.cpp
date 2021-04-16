@@ -29,44 +29,44 @@ DriveTrain::DriveTrain() {
     m_robotDrive.SetRightSideInverted(false);
 
     //Set P
-    m_leftDriveMaster->Config_kP(kPIDSlotIdx, kP_Profiling, kTimeoutMs);//1
-    m_rightDriveMaster->Config_kP(kPIDSlotIdx, kP_Profiling, kTimeoutMs);
+    m_leftDriveMaster->Config_kP(kPIDSlotIdx, kP_Profiling, ktimeoutMs);//1
+    m_rightDriveMaster->Config_kP(kPIDSlotIdx, kP_Profiling, ktimeoutMs);
 
     //Set I
-    m_leftDriveMaster->Config_kI(kPIDSlotIdx, kI_Profiling, kTimeoutMs);
-    m_rightDriveMaster->Config_kI(kPIDSlotIdx, kI_Profiling, kTimeoutMs);
+    m_leftDriveMaster->Config_kI(kPIDSlotIdx, kI_Profiling, ktimeoutMs);
+    m_rightDriveMaster->Config_kI(kPIDSlotIdx, kI_Profiling, ktimeoutMs);
 
     //Set D
-    m_leftDriveMaster->Config_kD(kPIDSlotIdx, kD_Profiling, kTimeoutMs);//20
-    m_rightDriveMaster->Config_kD(kPIDSlotIdx, kD_Profiling, kTimeoutMs);
+    m_leftDriveMaster->Config_kD(kPIDSlotIdx, kD_Profiling, ktimeoutMs);//20
+    m_rightDriveMaster->Config_kD(kPIDSlotIdx, kD_Profiling, ktimeoutMs);
 
     //Set F
-    m_leftDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, kTimeoutMs);
-    m_rightDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, kTimeoutMs);
+    m_leftDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, ktimeoutMs);
+    m_rightDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, ktimeoutMs);
 
     //Set P
-    m_leftDriveMaster->Config_kP(1, 0.05, kTimeoutMs);//1
-    m_rightDriveMaster->Config_kP(1, 0.05, kTimeoutMs);
+    m_leftDriveMaster->Config_kP(1, 0.05, ktimeoutMs);//1
+    m_rightDriveMaster->Config_kP(1, 0.05, ktimeoutMs);
 
     //Set I
-    m_leftDriveMaster->Config_kI(1, 0, kTimeoutMs);
-    m_rightDriveMaster->Config_kI(1, 0, kTimeoutMs);
+    m_leftDriveMaster->Config_kI(1, 0, ktimeoutMs);
+    m_rightDriveMaster->Config_kI(1, 0, ktimeoutMs);
 
     //Set D
-    m_leftDriveMaster->Config_kD(1, 0, kTimeoutMs);//20
-    m_rightDriveMaster->Config_kD(1, 0, kTimeoutMs);
+    m_leftDriveMaster->Config_kD(1, 0, ktimeoutMs);//20
+    m_rightDriveMaster->Config_kD(1, 0, ktimeoutMs);
 
     //Set F
-    m_leftDriveMaster->Config_kF(1, kF_Profiling, kTimeoutMs);
-    m_rightDriveMaster->Config_kF(1, kF_Profiling, kTimeoutMs);
+    m_leftDriveMaster->Config_kF(1, kF_Profiling, ktimeoutMs);
+    m_rightDriveMaster->Config_kF(1, kF_Profiling, ktimeoutMs);
 
     m_leftDriveMaster->ChangeMotionControlFramePeriod(5);
     m_rightDriveMaster->ChangeMotionControlFramePeriod(5);
 
     m_robotDrive.SetSafetyEnabled(false);
 
-    m_leftDriveMaster->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic,10,kTimeoutMs);
-    m_rightDriveMaster->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic,10,kTimeoutMs);
+    m_leftDriveMaster->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic,10,ktimeoutMs);
+    m_rightDriveMaster->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic,10,ktimeoutMs);
 
     m_profiler->SetMetersToUnits((1/kMetersPerUnit));
     m_profiler->SetmpsToUnit100ms(kUnits100msPerMeterSecond);
