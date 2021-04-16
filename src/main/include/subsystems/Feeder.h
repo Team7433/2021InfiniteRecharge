@@ -25,12 +25,19 @@ class Feeder : public frc2::SubsystemBase {
    */
   void Periodic();
 
-  void SetPosition(BeltPosition position);
-
   void SetFeeder(double value);
+  void SetFeederVelocity(double velocity);
 
  private:
+
+  void configPID(double P, double I, double D, double Izone, double MaxAccumulator) {
+    m_feederMotor->Config_kP(kPIDslotID, P, ktimeoutMs);
+    m_feederMotor->Config_kI(kPIDslotID, I, ktimeoutMs);
+    m_feederMotor->Config_kD(kPIDslotID, D, ktimeoutMs);
+    m_feederMotor->Config_IntegralZone(kPIDslotID, Izone, ktimeoutMs);
+    m_feederMotor->ConfigMaxIntegralAccumulator(kPIDslotID, MaxAccumulator, ktimeoutMs);
+
+  }
   TalonSRX * m_feederMotor = new TalonSRX{kFeederMotorId};
-  frc::DoubleSolenoid m_engagerSolonoid{kFeederSolonoidPortAId, kFeederSolonoidPortBId};
-  
+
 };

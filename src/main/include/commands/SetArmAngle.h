@@ -12,6 +12,8 @@
 
 #include "subsystems/Arm.h"
 
+#include <units/angle.h>
+
 /**
  * An example command.
  *
@@ -22,9 +24,9 @@
 class SetArmAngle
     : public frc2::CommandHelper<frc2::CommandBase, SetArmAngle> {
  public:
-  SetArmAngle(Arm* arm, double angle);
+  SetArmAngle(Arm* arm, units::degree_t angle);
 
-  SetArmAngle(Arm* arm, std::function<double()> angle);
+  SetArmAngle(Arm* arm, std::function<units::degree_t()> angle, bool update = false);
 
   void Initialize() override;
 
@@ -35,5 +37,7 @@ class SetArmAngle
   bool IsFinished() override;
 
   Arm* m_arm;
-  std::function<double()> m_angle;
+  std::function<units::degree_t()> m_angle;
+  units::degree_t m_setAngle;
+  double m_update;
 };

@@ -25,9 +25,9 @@ void FloorIntake::Set(Position position, double roller) {
     //Change the following in constants file
     if (position == FloorIntakeConstants::Position::Out) {
         m_positionSolenoid.Set(frc::DoubleSolenoid::Value::kForward);
-        frc::SmartDashboard::PutBoolean("Intake Arm", true);
+        frc::SmartDashboard::PutBoolean("FI/Intake Arm", true);
     } else {
         m_positionSolenoid.Set(frc::DoubleSolenoid::Value::kReverse);
-        frc::SmartDashboard::PutBoolean("Intake Arm", false);
+        frc::SmartDashboard::PutBoolean("FI/Intake Arm", false);
     }
 }

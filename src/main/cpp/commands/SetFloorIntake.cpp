@@ -36,4 +36,4 @@ void SetFloorIntake::End(bool interrupted) {
 }
 
 // Returns true when the command should end.
-bool SetFloorIntake::IsFinished() { return false; }
+bool SetFloorIntake::IsFinished() { return true; }

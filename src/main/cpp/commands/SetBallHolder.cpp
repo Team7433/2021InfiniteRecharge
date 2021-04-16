@@ -27,4 +27,4 @@ void SetBallHolder::Execute() {}
 void SetBallHolder::End(bool interrupted) {}
 
 // Returns true when the command should end.
-bool SetBallHolder::IsFinished() { return false; }
+bool SetBallHolder::IsFinished() { return true; }

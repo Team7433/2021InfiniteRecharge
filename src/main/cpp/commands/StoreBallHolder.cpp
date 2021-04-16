@@ -84,8 +84,9 @@ void StoreBallHolder::Execute() {
     m_currentAverage = m_currentAverage - (m_currentAverage/5) + (abs(current)/5);
     frc::SmartDashboard::PutNumber("CurrentAverageFloorIntake", m_currentAverage);
     frc::SmartDashboard::PutNumber("currentFloorIntake", current);
+    frc::SmartDashboard::PutBoolean("StalldetectedFloorIntake", m_overloaded);
 
-    if (m_currentAverage > 20.0) {
+    if (m_currentAverage > 18.0) {
 
       if (m_overloaded == false) {
         m_overloaded = true;

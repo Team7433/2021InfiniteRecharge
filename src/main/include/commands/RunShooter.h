@@ -31,7 +31,7 @@ class RunShooter
     : public frc2::CommandHelper<frc2::CommandBase, RunShooter> {
  public:
   RunShooter(Shooter* shooter, double Velocity);
-  RunShooter(Shooter* shooter, std::function<double()> Velocity);
+  RunShooter(Shooter* shooter, std::function<double()> Velocity, bool update = false);
 
   void Initialize() override;
 
@@ -44,6 +44,7 @@ class RunShooter
  private:
   Shooter* m_shooter;
   std::function<double()>  m_velocity;
-  double m_actualVelocity;
+  double m_targetVelocity;
   bool m_done = false;
+  bool m_update;
 };

@@ -9,24 +9,79 @@
 
 DriveTrain::DriveTrain() {
 
-    m_leftDrive2->Follow(*m_leftDrive1);
-    m_rightDrive2->Follow(*m_rightDrive1);
+    m_leftDriveSlave->Follow(*m_leftDriveMaster);
+    m_rightDriveSlave->Follow(*m_rightDriveMaster);
 
-    m_rightDrive1->SetInverted(true);
-    m_rightDrive2->SetInverted(true);
+    m_rightDriveMaster->SetInverted(true);
+    m_rightDriveSlave->SetInverted(true);
 
-    m_rightDrive1->SetNeutralMode(NeutralMode::Brake);
-    m_rightDrive2->SetNeutralMode(NeutralMode::Brake);
-    m_leftDrive1->SetNeutralMode(NeutralMode::Brake);
-    m_leftDrive2->SetNeutralMode(NeutralMode::Brake);
+    m_rightDriveMaster->SetNeutralMode(NeutralMode::Brake);
+    m_rightDriveSlave->SetNeutralMode(NeutralMode::Brake);
+    m_leftDriveMaster->SetNeutralMode(NeutralMode::Brake);
+    m_leftDriveSlave->SetNeutralMode(NeutralMode::Brake);
     
+    m_leftDriveMaster->ConfigVoltageCompSaturation(12);
+    m_leftDriveMaster->EnableVoltageCompensation(true);
+  
+    m_rightDriveMaster->ConfigVoltageCompSaturation(12);
+    m_rightDriveMaster->EnableVoltageCompensation(true);
 
     m_robotDrive.SetRightSideInverted(false);
+
+    //Set P
+    m_leftDriveMaster->Config_kP(kPIDSlotIdx, kP_Profiling, ktimeoutMs);//1
+    m_rightDriveMaster->Config_kP(kPIDSlotIdx, kP_Profiling, ktimeoutMs);
+
+    //Set I
+    m_leftDriveMaster->Config_kI(kPIDSlotIdx, kI_Profiling, ktimeoutMs);
+    m_rightDriveMaster->Config_kI(kPIDSlotIdx, kI_Profiling, ktimeoutMs);
+
+    //Set D
+    m_leftDriveMaster->Config_kD(kPIDSlotIdx, kD_Profiling, ktimeoutMs);//20
+    m_rightDriveMaster->Config_kD(kPIDSlotIdx, kD_Profiling, ktimeoutMs);
+
+    //Set F
+    m_leftDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, ktimeoutMs);
+    m_rightDriveMaster->Config_kF(kPIDSlotIdx, kF_Profiling, ktimeoutMs);
+
+    //Set P
+    m_leftDriveMaster->Config_kP(1, 0.05, ktimeoutMs);//1
+    m_rightDriveMaster->Config_kP(1, 0.05, ktimeoutMs);
+
+    //Set I
+    m_leftDriveMaster->Config_kI(1, 0, ktimeoutMs);
+    m_rightDriveMaster->Config_kI(1, 0, ktimeoutMs);
+
+    //Set D
+    m_leftDriveMaster->Config_kD(1, 0, ktimeoutMs);//20
+    m_rightDriveMaster->Config_kD(1, 0, ktimeoutMs);
+
+    //Set F
+    m_leftDriveMaster->Config_kF(1, kF_Profiling, ktimeoutMs);
+    m_rightDriveMaster->Config_kF(1, kF_Profiling, ktimeoutMs);
+
+    m_leftDriveMaster->ChangeMotionControlFramePeriod(5);
+    m_rightDriveMaster->ChangeMotionControlFramePeriod(5);
+
+    m_robotDrive.SetSafetyEnabled(false);
+
+    m_leftDriveMaster->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic,10,ktimeoutMs);
+    m_rightDriveMaster->SetStatusFramePeriod(StatusFrameEnhanced::Status_10_MotionMagic,10,ktimeoutMs);
+
+    m_profiler->SetMetersToUnits((1/kMetersPerUnit));
+    m_profiler->SetmpsToUnit100ms(kUnits100msPerMeterSecond);
 
 }
 
 // This method will be called once per scheduler run
-void DriveTrain::Periodic() {}
+void DriveTrain::Periodic() {
+    frc::SmartDashboard::PutNumber("drive/LeftVelocity",getLeftVelocity().to<double>());
+    frc::SmartDashboard::PutNumber("drive/RightVelocity", getRightVelocity().to<double>());
+    frc::SmartDashboard::PutNumber("drive/LeftPosition", getLeftDistance().to<double>());
+    frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
+    // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
+    // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
+}
 
 void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs) {
 
@@ -36,4 +91,26 @@ void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs
 
 void DriveTrain::CurvatureDrive(double forward, double rotation, bool quickTurn){
     m_robotDrive.CurvatureDrive(forward, rotation, quickTurn);
+}
+
+units::meter_t DriveTrain::getLeftDistance() { 
+    return units::meter_t( m_leftDriveMaster->GetSelectedSensorPosition() * kMetersPerUnit );
+}
+
+units::meter_t DriveTrain::getRightDistance() { 
+    return units::meter_t( m_rightDriveMaster->GetSelectedSensorPosition() * kMetersPerUnit );
+}
+
+units::meters_per_second_t DriveTrain::getLeftVelocity() {
+    return units::meters_per_second_t( m_leftDriveMaster->GetSelectedSensorVelocity() / kUnits100msPerMeterSecond );
+}
+
+units::meters_per_second_t DriveTrain::getRightVelocity() {
+    return units::meters_per_second_t( m_rightDriveMaster->GetSelectedSensorVelocity() / kUnits100msPerMeterSecond );
+}
+
+void DriveTrain::setVelocity(units::meters_per_second_t leftVel, units::meters_per_second_t rightVel) {
+    
+    m_leftDriveMaster->Set(ControlMode::Velocity, leftVel.to<double>() * kUnits100msPerMeterSecond );
+    m_rightDriveMaster->Set(ControlMode::Velocity, rightVel.to<double>() * kUnits100msPerMeterSecond );
 }

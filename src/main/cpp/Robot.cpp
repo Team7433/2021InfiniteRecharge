@@ -11,7 +11,8 @@
 #include <frc2/command/CommandScheduler.h>
 
 void Robot::RobotInit() {
-  frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  // frc::CameraServer::GetInstance()->StartAutomaticCapture();
+  m_container.CoastMode(); // Set DriveTrain to Coast Mode
 }
 
 /**
@@ -31,9 +32,24 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
  */
 void Robot::DisabledInit() {
   m_container.zeroOutputDisabled();
+  m_container.CoastMode(); // Set Drivetrain to Coast Mode
+
+  
 }
 
-void Robot::DisabledPeriodic() {}
+void Robot::DisabledPeriodic() {
+  // m_container.RainbowMode();
+  // m_container.ControlLight(148,0,211);
+  if (m_container.GetArmAngle() < 54_deg) {
+    m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
+    if(m_container.GetVisionSubsystem().getPowerPortDetected() == false) {m_container.ControlLight(140, 0, 128);} 
+      else {
+      if(0.5 > m_container.GetTargetError().to<double>() && m_container.GetTargetError().to<double>() > -0.5 ) {m_container.ControlLight(0, 255, 0);}
+      else if (m_container.GetTargetError().to<double>() > 0.5) {m_container.ControlLight(0, 0, 255); }
+      else if (m_container.GetTargetError().to<double>() < -0.5) {m_container.ControlLight(255, 0, 0);}
+      }
+  } else {m_container.SetLimelightLED(VisionConstants::LEDState::forceOff); m_container.ControlLight(0, 0, 0);}
+}
 
 /**
  * This autonomous runs the autonomous command selected by your {@link
@@ -41,6 +57,8 @@ void Robot::DisabledPeriodic() {}
  */
 void Robot::AutonomousInit() {
   m_autonomousCommand = m_container.GetAutonomousCommand();
+  m_container.BrakeMode(); // Set Drivetrain to Brake Mode
+  m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
 
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Schedule();
@@ -50,10 +68,13 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
+  // m_container.ControlLight(135,206,250);
   // This makes sure that the autonomous stops running when
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove
   // this line or comment it out.
+  m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
+  m_container.BrakeMode(); // Set Drivetrain to Brake Mode
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
@@ -64,7 +85,9 @@ void Robot::TeleopInit() {
 /**
  * This function is called periodically during operator control.
  */
-void Robot::TeleopPeriodic() {}
+void Robot::TeleopPeriodic() {
+  m_container.RainbowMode();
+}
 
 /**
  * This function is called periodically during test mode.

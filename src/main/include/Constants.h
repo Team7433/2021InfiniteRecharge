@@ -19,9 +19,24 @@
  */         
 
 constexpr double kPi = 3.1415926545897;
+constexpr int ktimeoutMs = 10;
 
 #include <ctre/Phoenix.h>
 #include <units/time.h>
+#include <units/angle.h>
+#include <units/length.h>
+
+// #define ButtonBox
+
+
+namespace AutonmousConstants {
+
+    constexpr units::time::second_t kUnloadMagazineTimeout = 1.0_s;
+
+
+}
+
+
 
 namespace DriverControls {
 
@@ -38,6 +53,26 @@ namespace DriveTrainConstants {
     constexpr int kRightDrive2ID = 4;
 
     //constexpr double KangleKp = 0.01;
+
+    constexpr int kPIDSlotIdx = 0;
+
+
+    constexpr units::meter_t kWheelBaseWidth = 700.0_mm;
+
+    constexpr double kF_Profiling = 0.04815;//0.05115
+    constexpr double kP_Profiling = 1;//1
+    constexpr double kI_Profiling = 0;
+    constexpr double kD_Profiling = 0;//20
+
+    constexpr double kUnitsPerRotations = 2048 * 10.71;
+    constexpr double kMetersPerRotation = 3.14159265359 * 0.15565;
+    constexpr double kMetersPerUnit = kMetersPerRotation / kUnitsPerRotations;
+
+    constexpr double kUnits100msPerMeterSecond = ( 2048 * 10.71 ) / ( 10 * 0.4790928797);
+
+
+ 
+    constexpr double kMPStartBuffer = 5;
 
 }
 
@@ -61,14 +96,14 @@ namespace ShooterConstants {
     constexpr int kShooterAID = 5;
     constexpr int kShooterBID = 6;
 
-    constexpr int ktimeoutMs = 30;
+
     constexpr double kshooterP = 0.0;
     constexpr double kshooterI = 0.0001;
     constexpr double kshooterD = 0.0;
     constexpr double kshooterIZone = 1000;
     constexpr double kshooterMaxAccumulator = 0;
 
-    constexpr double kshooterRampSpeed = 300;
+    constexpr double kshooterRampSpeed = 600;
 
     constexpr ctre::phoenix::motorcontrol::InvertType kbMotorInvert = InvertType::FollowMaster;
 
@@ -92,6 +127,14 @@ namespace BallHolderConstants {
 
 namespace FeederConstants {
 
+
+    constexpr int kPIDslotID = 0;
+    constexpr double kfeederP = 0.0;
+    constexpr double kfeederI = 0.0;
+    constexpr double kfeederD = 0.0;
+    constexpr double kfeederIzone = 0.0;
+    constexpr double kfeederMaxAccumulator = 0.0;
+
     constexpr int kFeederMotorId = 15;
     constexpr int kFeederSolonoidPortAId = 2;
     constexpr int kFeederSolonoidPortBId = 3;
@@ -109,15 +152,13 @@ namespace ArmConstants {
     constexpr int kArmMotorID = 9;
 
 
-    constexpr int Ktimeout = 30;
-
     constexpr double Kp = 100;
     constexpr double Ki = 0.0;
     constexpr double Kd = 0.0;
     constexpr double Kf = 4.7142;
 
-    constexpr double KmotionCruiseVelocity = 150.0;
-    constexpr double KmotionAcceleration = 100.0;
+    constexpr double KmotionCruiseVelocity = 300.0;
+    constexpr double KmotionAcceleration = 300.0;
 
     constexpr int kSolonoidPortAid = 0;
     constexpr int kSolonoidPortBid = 7;
@@ -133,24 +174,43 @@ namespace ArmConstants {
 
 } 
 
+// UNIT_ADD(units::angle, armSensorUnit, armSensorUnits, armUnits, unit<std::ratio<381, 1250>, units::degree>)
+namespace units::angle {
+
+    using armEncoderUnits = units::unit<std::ratio<10, 538>, degree, std::ratio<0>, std::ratio<553, 100>>;
+    using armEncoderUnits_t = units::unit_t<units::angle::armEncoderUnits>;
+    
+}
+
 namespace VisionConstants {
 
     constexpr int klidarPort = 0;
     //Port height
-    constexpr int kheightOfTarget = 2012;
+    constexpr units::millimeter_t kheightOfTarget = 2012_mm;
 
     //Ground to pivot point
-    constexpr double kheightOfRobot = 242.405;
+    constexpr units::millimeter_t kheightOfRobot = 242.405_mm;
     //Pivot to center of camera
-    constexpr int klengthOfArm = 818.195;
+    constexpr units::millimeter_t klengthOfArm = 818.195_mm;
     //Pivot to edge of bumper
-    constexpr int klengthPivotToBumper = 617;
+    constexpr units::millimeter_t klengthPivotToBumper = 617_mm;
 
-    constexpr double kangleOfCamera = 5.47;
+    constexpr units::degree_t kangleOfCamera = 5.47_deg;
     // angle from pivot to camera
-    constexpr double kangleOffsetCamera = 20.21;
+    constexpr units::degree_t kangleOffsetCamera = 20.21_deg;
     
-    
+    enum LEDState {
+        // 0	use the LED Mode set in the current pipeline
+        // 1	force off
+        // 2	force blink
+        // 3	force on
+
+        currentPipeline = 0,
+        forceOff = 1,
+        forceBlink = 2,
+        forceOn = 3
+
+    };
     
 
 

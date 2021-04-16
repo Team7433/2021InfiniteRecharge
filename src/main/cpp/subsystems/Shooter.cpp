@@ -26,10 +26,11 @@ Shooter::Shooter() {
 
 // This method will be called once per scheduler run
 void Shooter::Periodic() {
-   // frc::SmartDashboard::PutNumber("I Accumulator", GetIAccumulator());
-   // frc::SmartDashboard::PutNumber("Percentage Output", GetPercentageOutput());
-   // frc::SmartDashboard::PutNumber("Target velocity", GetVelocityLoopTarget());
-   frc::SmartDashboard::PutNumber("Shooter/Velocity", GetVelocity());
+    // frc::SmartDashboard::PutNumber("I Accumulator", GetIAccumulator());
+    // frc::SmartDashboard::PutNumber("Percentage Output", GetPercentageOutput());
+    // frc::SmartDashboard::PutNumber("Target velocity", GetVelocityLoopTarget());
+    // frc::SmartDashboard::PutNumber("Shooter/Velocity", GetVelocity());
+    // frc::SmartDashboard::PutNumber("")
 
 
 }
@@ -41,7 +42,7 @@ void Shooter::ManualControl(double Output) {
 void Shooter::SetVelocity(double Velocity) {
 
     m_shooterA->Set(ControlMode::Velocity, int(Velocity));
-    std::cout << "SetVelcoity: " << Velocity << "\n";
+    // std::cout << "SetVelcoity: " << Velocity << "\n";
 
 }
 
