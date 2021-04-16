@@ -12,12 +12,16 @@ Feeder::Feeder() {
 
     m_feederMotor->SetInverted(true);
 
-    
+    configPID(kfeederP, kfeederI, kfeederD, kfeederIzone, kfeederMaxAccumulator);
 
 }
 
 // This method will be called once per scheduler run
-void Feeder::Periodic() {}
+void Feeder::Periodic() {
+
+    std::cout << m_feederMotor->GetSelectedSensorVelocity() << std::endl;
+
+}
 
 void Feeder::SetFeeder(double value) {
     m_feederMotor->Set(ControlMode::PercentOutput, value);
