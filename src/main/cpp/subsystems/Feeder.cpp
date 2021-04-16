@@ -11,9 +11,7 @@ Feeder::Feeder() {
     m_feederMotor->ConfigFactoryDefault();
 
     m_feederMotor->SetInverted(true);
-
     configPID(kfeederP, kfeederI, kfeederD, kfeederIzone, kfeederMaxAccumulator);
-
 }
 
 // This method will be called once per scheduler run
