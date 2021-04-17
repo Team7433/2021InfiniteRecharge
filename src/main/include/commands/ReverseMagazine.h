@@ -14,6 +14,7 @@
 #include "subsystems/FloorIntake.h"
 #include "subsystems/Feeder.h"
 #include <frc/GenericHID.h>
+#include <frc2/Timer.h>
 /**
  * An example command.
  *
@@ -24,7 +25,7 @@
 class ReverseMagazine
     : public frc2::CommandHelper<frc2::CommandBase, ReverseMagazine> {
  public:
-  ReverseMagazine(BallHolder*, FloorIntake*, Feeder*, std::function<bool()> LeftTrig, std::function<bool()> RightTrig);
+  ReverseMagazine(BallHolder*, FloorIntake*, Feeder*, std::function<RobotContainerConstants::IntakeState()>, std::function<bool()> LeftTrig, std::function<bool()> RightTrig);
 
   void Initialize() override;
 
@@ -39,6 +40,10 @@ class ReverseMagazine
  FloorIntake* m_floorIntake;
  Feeder* m_feeder;
 
+ frc2::Timer m_timer;
+
+ std::function<RobotContainerConstants::IntakeState()> m_intakeState;
+
  std::function <bool()> m_leftTrig;
  std::function <bool()> m_rightTrig;
 
@@ -46,6 +51,13 @@ class ReverseMagazine
  double m_startingFeeder;
  double m_startingIndexer;
  double m_startingIntake;
+
+ bool m_lastSensorBeltIn = false;
+
+ double m_intakeSpeed = 0.5;
+ double m_indexRunSpeed = 0.3;
+ double m_magazineRunSpeed = 0.3;
+
  FloorIntakeConstants::Position m_startingIntakePos;
 
 };
