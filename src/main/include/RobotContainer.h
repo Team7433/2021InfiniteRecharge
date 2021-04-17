@@ -55,6 +55,7 @@
 #include "subsystems/Arm.h"
 #include "subsystems/AutoVaribles.h"
 #include "subsystems/RGBStrip.h"
+#include "subsystems/Climber.h"
 
 #include "Constants.h"
 
@@ -96,6 +97,7 @@ class RobotContainer {
   Arm m_arm;
   RGBStrip m_strip;
   AutoVaribles m_autoVaribles;
+  Climber m_climber;
 
   frc::SendableChooser<int> m_autoChooser;
 

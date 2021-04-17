@@ -228,3 +228,25 @@ namespace RobotContainerConstants {
     };
 
 }
+
+namespace ClimberConstants {
+
+    constexpr int kMasterMotorID = 7;
+    constexpr int kSlaveMotorID = 8;
+
+    constexpr int KslotID = 0;
+    constexpr double Kp = 0.0;
+    constexpr double Ki = 0.0;
+    constexpr double Kd = 0.0;
+    constexpr double Kf = 0.0;
+
+    constexpr int kClimberSolenoidPortAID = 2;
+    constexpr int kClimberSolenoidPortBID = 5;
+
+    enum ClimberLock_Position {
+        //0 = reverse, 1 = forward
+        Lock = 1, 
+        Unlock = 0
+    };
+
+}
