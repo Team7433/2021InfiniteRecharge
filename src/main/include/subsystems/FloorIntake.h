@@ -29,7 +29,7 @@ class FloorIntake : public frc2::SubsystemBase {
   double GetCurrent() const { return m_RollerMotor->GetOutputCurrent(); }
 
   double GetPercentageOutput() const { return m_percentOutput; }
-  
+  Position GetIntakePosition() { if (m_positionSolenoid.Get() == frc::DoubleSolenoid::Value::kForward) {return Position::Out;} else {return Position::In; } }
 
  private:
   

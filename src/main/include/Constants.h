@@ -216,3 +216,15 @@ namespace VisionConstants {
 
 
 }
+
+namespace RobotContainerConstants {
+
+    enum IntakeState {
+
+        storing = 0,
+        shooting = 1,
+        stop = 3
+
+    };
+
+}

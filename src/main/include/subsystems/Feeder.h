@@ -24,7 +24,7 @@ class Feeder : public frc2::SubsystemBase {
    * Will be called periodically whenever the CommandScheduler runs.
    */
   void Periodic();
-
+  double GetFeederPercentageOutput() {return m_feederMotor->GetMotorOutputPercent();}
   void SetFeeder(double value);
   void SetFeederVelocity(double velocity);
   void RunRevolutions(double revolutions, double maxAccel, double maxVelo);

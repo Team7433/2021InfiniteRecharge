@@ -15,6 +15,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <POVButton.h>
 #include "util/AxisButton.h"
+#include "util/TriggerButton.h"
 
 #include <units/angle.h>
 #include <units/length.h>
@@ -36,6 +37,7 @@
 #include "commands/AutoTarget.h"
 #include "commands/DriveMotionControl.h"
 #include "commands/StatusLight.h"
+#include "commands/ReverseMagazine.h"
 
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"
@@ -70,6 +72,7 @@ class RobotContainer {
   RobotContainer();
 
   frc2::Command* GetAutonomousCommand();
+  frc2::ParallelCommandGroup& GetIntakeCommand();
 
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
@@ -97,6 +100,7 @@ class RobotContainer {
   frc::SendableChooser<int> m_autoChooser;
 
 
+
   // ExampleCommand m_autonomousCommand;
 
 
@@ -108,6 +112,19 @@ class RobotContainer {
   frc::Joystick m_buttonBox{kButtonBoxId};
 #endif //ButtonBox
 
+
+  frc2::ParallelCommandGroup m_storing{SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true), frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::storing;}}};
+  frc2::ParallelCommandGroup m_stop{
+    SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false),
+    RunShooter(&m_shooter, 0.0), 
+    frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::stop;}}
+  }; //Stopy
+  frc2::ParallelCommandGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
+
+
+
+
+  RobotContainerConstants::IntakeState m_intakeState;
 
   units::meter_t m_startingDistance;
   double m_startingRightEncoder;
