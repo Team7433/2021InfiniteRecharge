@@ -54,7 +54,7 @@ void Climber::SetTarget(double targetEncoderCount, double maxAccel, double maxVe
     } else {
 
         std::cout << "Climber Locked unable to enable motors\n";
-
+        m_masterMotor->Set(ControlMode::PercentOutput, 0.0);
     }
 }
 
@@ -75,6 +75,7 @@ void Climber::RunRevolutions(double revolutions, double maxAccel, double maxVel)
     } else {
 
         std::cout << "Climber Locked unable to enable motors\n";
+        m_masterMotor->Set(ControlMode::PercentOutput, 0.0);
 
     }
 
@@ -91,7 +92,7 @@ void Climber::RunDynamicRevoltions(std::function<double()> revolutionTarget) {
     } else {
 
         std::cout << "Climber Locked unable to enable motors\n";
-
+        m_masterMotor->Set(ControlMode::PercentOutput, 0.0);
     }
 
 }
