@@ -9,6 +9,10 @@
 
 DriveTrain::DriveTrain() {
 
+    m_orchestra->AddInstrument(*m_rightDriveMaster);
+    m_orchestra->AddInstrument(*m_leftDriveMaster);
+    m_orchestra->LoadMusic("song1.chrp");
+
     m_leftDriveSlave->Follow(*m_leftDriveMaster);
     m_rightDriveSlave->Follow(*m_rightDriveMaster);
 

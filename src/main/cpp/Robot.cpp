@@ -33,6 +33,7 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 void Robot::DisabledInit() {
   m_container.zeroOutputDisabled();
   m_container.CoastMode(); // Set Drivetrain to Coast Mode
+  m_container.PlaySong();
 
   
 }

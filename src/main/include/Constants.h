@@ -26,7 +26,7 @@ constexpr int ktimeoutMs = 10;
 #include <units/angle.h>
 #include <units/length.h>
 
-// #define ButtonBox
+#define ButtonBox
 
 
 namespace AutonmousConstants {
@@ -235,10 +235,11 @@ namespace ClimberConstants {
     constexpr int kSlaveMotorID = 8;
 
     constexpr int KslotID = 0;
-    constexpr double Kp = 0.0;
-    constexpr double Ki = 0.0;
+    constexpr double Kp = 0.1;
+    constexpr double Ki = 0.0001;
     constexpr double Kd = 0.0;
-    constexpr double Kf = 0.0;
+    constexpr double Kf = 0.04815;
+    constexpr double kfeederIzone = 1000.0;
 
     constexpr int kClimberSolenoidPortAID = 2;
     constexpr int kClimberSolenoidPortBID = 5;
@@ -250,3 +251,4 @@ namespace ClimberConstants {
     };
 
 }
+

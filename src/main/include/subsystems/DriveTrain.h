@@ -77,17 +77,21 @@ class DriveTrain : public frc2::SubsystemBase {
 
   bool MPLoad(std::string path) {return m_profiler->LoadFromFile(path); }
 
+  void playSong() {m_orchestra->Play();}
+
   double m_numberTest = 0.0;
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
-
+  Orchestra* m_orchestra = new Orchestra();
 
   WPI_TalonFX * m_leftDriveMaster = new WPI_TalonFX{kLeftDrive1ID};
   WPI_TalonFX * m_leftDriveSlave = new WPI_TalonFX{kLeftDrive2ID};
   WPI_TalonFX * m_rightDriveMaster = new WPI_TalonFX{kRightDrive1ID};
   WPI_TalonFX * m_rightDriveSlave = new WPI_TalonFX{kRightDrive2ID};
+
+  
 
   frc::DifferentialDrive m_robotDrive{*m_leftDriveMaster, *m_rightDriveMaster};
   

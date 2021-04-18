@@ -83,6 +83,7 @@ class RobotContainer {
   units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); }
   Vision GetVisionSubsystem() { return m_vision; }
   units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
+  void PlaySong() {m_driveTrain.playSong();}
   void zeroOutputDisabled();
   void ResetStartOfTeleop();
  private:

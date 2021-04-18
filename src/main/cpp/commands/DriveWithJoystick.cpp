@@ -18,7 +18,11 @@ DriveWithJoystick::DriveWithJoystick(frc::Joystick* joystick, DriveTrain* drivet
 }
 
 // Called when the command is initially scheduled.
-void DriveWithJoystick::Initialize() {}
+void DriveWithJoystick::Initialize() {
+
+  // m_driveTrain->playSong();
+
+}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
