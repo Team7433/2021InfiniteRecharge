@@ -34,11 +34,11 @@ void Climber::Periodic() {
 
     frc::SmartDashboard::PutNumber("Climber/PercetangeOutput", m_masterMotor->GetMotorOutputPercent());
     frc::SmartDashboard::PutNumber("Climber/Error", m_masterMotor->GetClosedLoopError());
-
+    frc::SmartDashboard::PutNumber("Climber/TargetEncoder", m_masterMotor->GetClosedLoopTarget());
+    frc::SmartDashboard::PutBoolean("Climber/Locked", GetLockPosition() == ClimberLock_Position::Lock);
+    
     if (GetLockPosition() == ClimberConstants::ClimberLock_Position::Lock) {
-
-        SetOutput([] {return 0.0;});
-
+        m_masterMotor->Set(ControlMode::PercentOutput, 0.0);
     }
 
 }
@@ -87,7 +87,6 @@ void Climber::RunDynamicRevoltions(std::function<double()> revolutionTarget) {
     if (GetLockPosition() == ClimberConstants::ClimberLock_Position::Unlock) {
 
         m_masterMotor->Set(ControlMode::MotionMagic, (revolutionTarget()*(2048*11.431)));
-
 
     } else {
 

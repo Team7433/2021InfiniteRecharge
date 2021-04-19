@@ -197,10 +197,11 @@ void RobotContainer::ConfigureButtonBox() {
   #ifdef ButtonBox
 
     frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
-      m_gyro.Reset(); 
+      // m_gyro.Reset(); 
+      m_arm.SetAngle(75_deg);
       // m_climber.RunRevolutions(5.0, 1, 2);
     });
-    frc2::JoystickButton(&m_buttonBox, 2).WhileHeld(frc2::InstantCommand([this] {m_climber.RunDynamicRevoltions([this] {return 2.5*(-(m_buttonBox.GetRawAxis(3)+2));});}));
+    frc2::JoystickButton(&m_buttonBox, 2).WhileHeld(frc2::InstantCommand([this] {std::cout << (4.53/2)*(-(m_buttonBox.GetRawAxis(3))+1)-1.75 << std::endl;   m_climber.RunDynamicRevoltions([this] {return (4.53/2)*(-(m_buttonBox.GetRawAxis(3))+1)-1.75;});}));
 
     // frc2::JoystickButton(&m_driverStick, 5).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput(0.0);} ));
     // frc2::JoystickButton(&m_driverStick, 4).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput(0.6);} ));
@@ -209,6 +210,9 @@ void RobotContainer::ConfigureButtonBox() {
     frc2::JoystickButton(&m_buttonBox, 6).WhenPressed(frc2::InstantCommand([this] {m_arm.SetLock(ArmConstants::Lock_Position::Unlock);}));
     frc2::JoystickButton(&m_buttonBox, 3).WhileHeld(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput([this] {return m_buttonBox.GetY();}); }));
     frc2::JoystickButton(&m_buttonBox, 4).WhenPressed(frc2::InstantCommand([this] {m_climber.SetOutput([] {return 0.0;});} ) );
+    frc2::JoystickButton(&m_buttonBox, 11).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Lock);} ));
+    frc2::JoystickButton(&m_buttonBox, 12).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock);} ));
+   
     // frc2::JoystickButton(&m_buttonBox, 1).WhenPressed(frc2::InstantCommand([this] {m_driveTrain.playSong(); });
     // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {
     //   double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;

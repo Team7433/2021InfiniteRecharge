@@ -235,8 +235,8 @@ namespace ClimberConstants {
     constexpr int kSlaveMotorID = 8;
 
     constexpr int KslotID = 0;
-    constexpr double Kp = 0.1;
-    constexpr double Ki = 0.0001;
+    constexpr double Kp = 0.12;
+    constexpr double Ki = 0.000;
     constexpr double Kd = 0.0;
     constexpr double Kf = 0.04815;
     constexpr double kfeederIzone = 1000.0;

@@ -122,7 +122,7 @@ class RobotContainer {
     RunShooter(&m_shooter, 0.0), 
     frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::stop;}}
   }; //Stopy
-  frc2::ParallelDeadlineGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
+  frc2::ParallelCommandGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
 
 
 
