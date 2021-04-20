@@ -74,7 +74,7 @@ class RobotContainer {
   RobotContainer();
 
   frc2::Command* GetAutonomousCommand();
-  frc2::ParallelCommandGroup& GetIntakeCommand();
+  frc2::Command& GetIntakeCommand();
 
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
@@ -123,7 +123,7 @@ class RobotContainer {
     RunShooter(&m_shooter, 0.0), 
     frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::stop;}}
   }; //Stopy
-  frc2::ParallelCommandGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
+  frc2::ParallelDeadlineGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
 
 
 

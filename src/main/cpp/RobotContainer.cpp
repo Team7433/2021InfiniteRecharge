@@ -163,7 +163,7 @@ frc2::Command *RobotContainer::GetAutonomousCommand()
 }
 
 
-frc2::ParallelCommandGroup& RobotContainer::GetIntakeCommand() {
+frc2::Command& RobotContainer::GetIntakeCommand() {
 
   switch (m_intakeState)
   {
