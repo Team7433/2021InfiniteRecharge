@@ -37,10 +37,11 @@ class Arm : public frc2::SubsystemBase {
   double GetVelocity();
   double GetMotorOutput();
   double GetError();
-  units::degree_t GetTargetPositionUnits();
   double GetTargetPosition();
   double GetArmAngle();
   double GetArmAngleMotor();
+  bool GetArrived();
+  units::degree_t GetTargetPositionUnits();
   units::degree_t GetArmAngleUnits();
   units::degree_t GetArmAngleMotorUnits();
 

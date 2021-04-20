@@ -6,7 +6,9 @@
 
 #include <frc2/command/SubsystemBase.h>
 #include <frc/DoubleSolenoid.h>
+#include <frc/DriverStation.h>
 #include <ctre/Phoenix.h>
+
 #include <functional>
 
 #include "Constants.h"

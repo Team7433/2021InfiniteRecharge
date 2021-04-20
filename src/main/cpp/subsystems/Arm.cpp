@@ -8,6 +8,7 @@
 #include "subsystems/Arm.h"
 #include <units/length.h>
 #include <units/angle.h>
+#include <units/math.h>
 
 Arm::Arm() {
 
@@ -135,6 +136,13 @@ units::degree_t Arm::CalculateAngleFromDistance(units::meter_t distance) {
     double distanceMM = distance.to<double>();
     
     return units::degree_t(15.5504 + (130.439 / (distanceMM + 2.46224)));
+
+}
+
+bool Arm::GetArrived() {
+
+
+    return units::math::fabs(GetArmAngleMotorUnits() - GetTargetPositionUnits()) < 0.5_deg;
 
 }
 

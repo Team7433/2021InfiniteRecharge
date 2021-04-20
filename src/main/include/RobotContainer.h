@@ -38,6 +38,7 @@
 #include "commands/DriveMotionControl.h"
 #include "commands/StatusLight.h"
 #include "commands/ReverseMagazine.h"
+#include "commands/ClimbMode.h"
 
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"
