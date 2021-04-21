@@ -21,6 +21,9 @@ class RGBStrip : public frc2::SubsystemBase {
   void Periodic() override;
   void SetRGBStrip(double R, double G, double B);
   void Rainbow();
+  double GetR() { return m_R; }
+  double GetG() { return m_G; }
+  double GetB() { return m_B; }
   
  private:
   // Components (e.g. motor controllers and sensors) should generally be

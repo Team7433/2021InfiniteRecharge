@@ -13,7 +13,13 @@
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/ConditionalCommand.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <frc2/command/PrintCommand.h>
+#include <frc2/command/ScheduleCommand.h>
+
 #include <POVButton.h>
+#include "util/AxisButton.h"
+#include "util/TriggerButton.h"
+#include "util/NetworkButton.h"
 
 #include <units/angle.h>
 #include <units/length.h>
@@ -35,6 +41,8 @@
 #include "commands/AutoTarget.h"
 #include "commands/DriveMotionControl.h"
 #include "commands/StatusLight.h"
+#include "commands/ReverseMagazine.h"
+#include "commands/ClimbMode.h"
 
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"
@@ -52,6 +60,7 @@
 #include "subsystems/Arm.h"
 #include "subsystems/AutoVaribles.h"
 #include "subsystems/RGBStrip.h"
+#include "subsystems/Climber.h"
 
 #include "Constants.h"
 
@@ -69,6 +78,7 @@ class RobotContainer {
   RobotContainer();
 
   frc2::Command* GetAutonomousCommand();
+  frc2::Command& GetIntakeCommand();
 
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
@@ -78,6 +88,7 @@ class RobotContainer {
   units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); }
   Vision GetVisionSubsystem() { return m_vision; }
   units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
+  void PlaySong() {m_driveTrain.playSong();}
   void zeroOutputDisabled();
   void ResetStartOfTeleop();
  private:
@@ -92,8 +103,10 @@ class RobotContainer {
   Arm m_arm;
   RGBStrip m_strip;
   AutoVaribles m_autoVaribles;
+  Climber m_climber;
 
   frc::SendableChooser<int> m_autoChooser;
+
 
 
   // ExampleCommand m_autonomousCommand;
@@ -107,6 +120,20 @@ class RobotContainer {
   frc::Joystick m_buttonBox{kButtonBoxId};
 #endif //ButtonBox
 
+
+  frc2::ParallelCommandGroup m_storing{SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true), frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::storing;}}};
+  frc2::ParallelCommandGroup m_stop{
+    SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false),
+    // RunShooter(&m_shooter, 0.0), 
+    frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::stop;}}
+  }; //Stopy
+  frc2::ParallelDeadlineGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
+
+
+
+
+  RobotContainerConstants::IntakeState m_intakeState;
+  bool m_autoTargeting;
 
   units::meter_t m_startingDistance;
   double m_startingRightEncoder;

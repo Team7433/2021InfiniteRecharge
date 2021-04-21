@@ -37,51 +37,32 @@ RobotContainer::RobotContainer() : m_vision(&m_arm)
 void RobotContainer::ConfigureButtonBindings()
 {
   // Configure your button bindings here
-  frc2::JoystickButton(&m_operatorController, 1).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true)); //Story
-  frc2::JoystickButton(&m_operatorController, 2).WhenPressed(frc2::ParallelCommandGroup(
-    SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false),
-    RunShooter(&m_shooter, 0.0)
-  )); //Stopy
-  frc2::JoystickButton(&m_operatorController, 3).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false)); //Shooty
-  frc2::JoystickButton(&m_operatorController, 4).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, -0.5, -0.3, -0.3, -0.3, false)); //Reversy
+  // frc2::JoystickButton(&m_operatorController, 1).WhenPressed(frc2::ParallelCommandGroup(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true); , frc2::InstantCommand([this] {m_intakeState = RobotContainerConstants::storing;}))); //Story
+  frc2::JoystickButton(&m_operatorController, 1).WhenPressed(&m_storing); //Story
+  frc2::JoystickButton(&m_operatorController, 2).WhenPressed(&m_stop); //stoppy
+  frc2::JoystickButton(&m_operatorController, 4).WhenPressed(&m_shooting);
+  // frc2::JoystickButton(&m_operatorController, 3).WhenPressed(frc2::ConditionalCommand(
+
+  //   frc2::ParallelCommandGroup(
+  //     SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false), 
+  //     frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}
+  //     ),
+  //   frc2::InstantCommand([] {}),
+  //   [this] {return !m_autoTargeting;}
+
+  // )); //shooty
+  // frc2::JoystickButton(&m_operatorController, 4).WhenPressed(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, -0.5, -0.3, -0.3, -0.3, false)); //Reversy
+  // frc2::JoystickButton(&m_operatorController, 4).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } )); //Reversy
+  // frc2::JoystickButton(&m_operatorController, 4).WhenReleased(frc2::InstantCommand([this] { GetIntakeCommand().Schedule();}));
+  // frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; }), false);
+  // frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; }), false);
   
-  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SimpleAuto(&m_feeder, &m_ballholder, &m_floorIntake, &m_driveTrain, &m_arm, &m_vision, &m_gyro, &m_shooter));
-  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm));
-  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, 0_deg));
-  // frc2::JoystickButton(&m_driverStick, 11).WhenPressed(EightBallAutoA(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles));
+  frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_intakeState; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } ), false);
+  frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_intakeState; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } ), false);
+  frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhenReleased(frc2::InstantCommand([this] { GetIntakeCommand().Schedule();}));
+  frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhenReleased(frc2::InstantCommand([this] { GetIntakeCommand().Schedule();}));
+
   frc2::JoystickButton(&m_driverStick, 11).WhenPressed(SixBallAutoC(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles));
-  // frc2::JoystickButton(&m_driverStick, 12).WhenPressed(frc2::SequentialCommandGroup(
-  //   frc2::InstantCommand([this] {
-  //     m_startingDistance = 3.0_m; //Reads starting distance using limelight
-  //     m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
-  //     m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count
-  //     m_targetAngle = m_gyro.GetYaw(); //units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
-  //     frc::SmartDashboard::PutNumber("ShootOnTheRun/targetAngle", m_targetAngle.to<double>());
-  //   }),
-  //   // TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
-  //   // frc2::ConditionalCommand(
-  //     frc2::ParallelDeadlineGroup(
-  //       DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 0_mps, 1_mps, 1_mps_sq, [this] { return m_targetAngle; }),
-  //       AutoTarget([this] {
-  //         return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-  //       }, &m_arm, &m_shooter, true),
-  //         frc2::SequentialCommandGroup(
-  //           frc2::WaitUntilCommand([this] { return units::math::fabs(m_arm.GetArmAngleMotorUnits() -  m_arm.CalculateAngleFromDistance(units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2))) < 1_deg; }),
-  //           UnloadMagazine(&m_ballholder, &m_feeder, &m_floorIntake,true)
-
-  //         )
-        
-  //     ), // parallen Deadline
-  //   //   frc2::InstantCommand([] {std::cout << "No Target Detected \n";}),
-  //   //   [this] {return m_vision.getPowerPortDetected();}
-  //   // ), // conditional command
-  //   frc2::ParallelDeadlineGroup(
-  //     RunShooter(&m_shooter, 0.0),
-  //     SetArmAngle(&m_arm, 6_deg),
-  //     SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false)
-  //   ) // Parallel Deadline Group
-
-  // )); // Sequential command group
 
   frc2::JoystickButton(&m_driverStick, 12).WhenPressed(frc2::SequentialCommandGroup(
     DriveMotionControl(&m_driveTrain, &m_gyro, 2_m, 0_mps, 1_mps, 2_mps, 3_mps_sq, [this] { return m_gyro.GetYaw(); }),
@@ -95,8 +76,21 @@ void RobotContainer::ConfigureButtonBindings()
 
   frc2::POVButton(&m_operatorController, 0).WhenPressed(SetArmAngle(&m_arm, 29_deg));
   frc2::POVButton(&m_operatorController, 90).WhenPressed(SetArmAngle(&m_arm, 24_deg));
-  frc2::POVButton(&m_operatorController, 180).WhenPressed(SetArmAngle(&m_arm, 6_deg));
+  frc2::POVButton(&m_operatorController, 180).WhenPressed(frc2::ParallelCommandGroup(SetArmAngle(&m_arm, 6_deg), RunShooter(&m_shooter, 0.0)));
   frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, 40_deg));
+
+  
+  frc2::AxisButton(&m_operatorController, true, frc::XboxController::JoystickHand::kLeftHand).WhenPressed(frc2::InstantCommand( [this] { m_feeder.RunRevolutions(1, 5, 5); } ));
+  frc2::AxisButton(&m_operatorController, false, frc::XboxController::JoystickHand::kLeftHand).WhenPressed(frc2::InstantCommand( [this] { m_feeder.RunRevolutions(-1, 5, 5); } ));
+
+  // frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhenPressed(frc2::InstantCommand( [this] {m_feeder.SetFeeder(-0.3); m_ballholder.SetMagazine(-0.3); m_ballholder.SetIndexer(-0.3);} ));
+  // frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhenReleased(frc2::InstantCommand( [this] {m_feeder.SetFeeder(0.0); m_ballholder.SetMagazine(0.0); m_ballholder.SetIndexer(0.0);} ));
+  // frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhenPressed(frc2::InstantCommand([this] {m_floorIntake.Set(FloorIntakeConstants::Out, -0.65);} ));
+  // frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhenReleased(frc2::InstantCommand([this] {m_floorIntake.Set(FloorIntakeConstants::Out, 0.0);} ));
+ 
+  
+  frc2::NetworkButton("Arm/LockButton").WhenPressed(frc2::InstantCommand([this] {m_arm.SetLock(ArmConstants::Lock_Position::Lock); } ));
+  frc2::NetworkButton("Arm/LockButton").WhenReleased(frc2::InstantCommand([this] {m_arm.SetLock(ArmConstants::Lock_Position::Unlock); } ));
 
   // frc2::POVButton(&m_driverStick, 0).WhenPressed(SetArmAngle(&m_arm, [] {
   //   double newAngle = frc::SmartDashboard::GetNumber("Custom/Angle", 0) + 1;
@@ -110,29 +104,37 @@ void RobotContainer::ConfigureButtonBindings()
   //   return newAngle;
   // }));
 
-  frc2::POVButton(&m_driverStick, 270).WhenPressed(RunShooter(&m_shooter, [] {
-    double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) - 100.0;
-    frc::SmartDashboard::PutNumber("Custom/Speed", newSpeed);
-    return newSpeed;
-  }));
+  // frc2::POVButton(&m_driverStick, 270).WhenPressed(RunShooter(&m_shooter, [] {
+  //   double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) - 100.0;
+  //   frc::SmartDashboard::PutNumber("Custom/Speed", newSpeed);
+  //   return newSpeed;
+  // }));
 
-  frc2::POVButton(&m_driverStick, 90).WhenPressed(RunShooter(&m_shooter, [] {
-    double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) + 100.0;
-    frc::SmartDashboard::PutNumber("Custom/Speed", newSpeed);
-    return newSpeed;
-  }));
-
-
-
-  //frc2::POVButton(&m_operatorController, 270).WhenPressed(SetArmAngle(&m_arm, [] { return frc::SmartDashboard::GetNumber("ArmAngle", 0); }));
+  // frc2::POVButton(&m_driverStick, 90).WhenPressed(RunShooter(&m_shooter, [] {
+  //   double newSpeed = frc::SmartDashboard::GetNumber("Custom/Speed", 0) + 100.0;
+  //   frc::SmartDashboard::PutNumber("Custom/Speed", newSpeed);
+  //   return newSpeed;
+  // }));
 
   // auto set angle and speed of arm and shooter
+  frc2::JoystickButton(&m_driverStick, 5).WhenPressed(frc2::InstantCommand([this] {m_feeder.RunRevolutions(32.6, 5, 40);}));
+  
+  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(
+            frc2::SequentialCommandGroup(
+              frc2::InstantCommand([this] {m_autoTargeting = true; } ),
+              AutoTarget(&m_vision, &m_arm, &m_shooter, &m_gyro, &m_driveTrain),
+              frc2::InstantCommand([this] {m_autoTargeting = false; } ),
 
-  frc2::JoystickButton(&m_driverStick, 2).WhenPressed(frc2::ConditionalCommand(AutoTarget(&m_vision, &m_arm, &m_shooter, &m_gyro, &m_driveTrain), frc2::InstantCommand([] {std::cout << "no target detected\n";}), [this] { return m_vision.getPowerPortDetected(); }));
-    // frc2::JoystickButton(&m_driverStick, 2).WhenPressed(TurnToTarget(&m_gyro, &m_driveTrain, -177_deg));
-    // frc2::JoystickButton(&m_driverStick, 2).WhileHeld(GyroDrive(&m_gyro, &m_driveTrain, 90.0, [this] {return -m_driverStick.GetY(); } ));
+              frc2::ConditionalCommand(
+                frc2::ScheduleCommand(&m_shooting),
+                frc2::PrintCommand("You don't need to shoot\n"),
+                [this] { return m_operatorController.GetRawButton(3); }     
+              )
+            )
+            , frc2::InstantCommand([] {std::cout << "no target detected\n";}), [this] { return m_vision.getPowerPortDetected(); }));
 
   frc2::JoystickButton(&m_driverStick, 4).WhenPressed(SetArmAngle(&m_arm, 10_deg));
+
 
   frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
     frc2::InstantCommand([this] { 
@@ -142,14 +144,14 @@ void RobotContainer::ConfigureButtonBindings()
       m_targetAngle = units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
       frc::SmartDashboard::PutNumber("ShootOnTheRun/targetAngle", m_targetAngle.to<double>());
     }),
-    TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
+    // TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
     frc2::ConditionalCommand(
       frc2::ParallelCommandGroup(
         
         GyroDrive(&m_gyro, &m_driveTrain, [this] {return m_targetAngle; }, [this] { return -m_driverStick.GetY(); }),
         AutoTarget([this] {
           return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-        }, &m_arm, &m_shooter, true)
+        }, &m_arm, &m_shooter, true, true, &m_driveTrain)
 
       ),
       frc2::InstantCommand([] {std::cout << "No Target Detected \n";}),
@@ -174,15 +176,34 @@ frc2::Command *RobotContainer::GetAutonomousCommand()
   case 0 : //SixBallAutoC
     return new SixBallAutoC(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles);
     break;
-  
   case 1: //SixBallAutoB
     return new SixBallAutoB(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm);
     break;
-  case 2: 
+  case 2:  //three ball auto
     return new ThreeBallAuto(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles);
     break;
   }
   return nullptr;
+}
+
+
+frc2::Command& RobotContainer::GetIntakeCommand() {
+
+  switch (m_intakeState)
+  {
+  case RobotContainerConstants::IntakeState::shooting:
+    return m_shooting;
+    break;
+  
+  case RobotContainerConstants::IntakeState::stop:
+    return m_stop;
+    break;
+
+  case RobotContainerConstants::IntakeState::storing:
+    return m_storing;
+    break;
+  }
+
 }
 
 void RobotContainer::zeroOutputDisabled()
@@ -192,16 +213,32 @@ void RobotContainer::zeroOutputDisabled()
 
 void RobotContainer::ResetStartOfTeleop()
 {
-
   m_arm.SetLock(ArmConstants::Unlock);
 }
 
 void RobotContainer::ConfigureButtonBox() {
   #ifdef ButtonBox
 
-    frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
-      m_gyro.Reset(); 
-    });
+    // frc2::JoystickButton(&m_buttonBox, 1).WhenPressed([this] { 
+    //   // m_gyro.Reset(); 
+    //   m_arm.SetAngle(75_deg);
+    //   // m_climber.RunRevolutions(5.0, 1, 2);
+    // });
+
+    frc2::JoystickButton(&m_buttonBox, 1).WhenPressed(ClimbMode(&m_arm, &m_climber, &m_driveTrain, &m_buttonBox));
+    frc2::JoystickButton(&m_buttonBox, 2).WhileHeld(frc2::InstantCommand([this] {std::cout << (4.53/2)*((m_buttonBox.GetRawAxis(3))+1)-1.75 << std::endl;   m_climber.RunDynamicRevoltions([this] {return (4.53/2)*(-(m_buttonBox.GetRawAxis(3))+1)-1.75;});}));
+
+    // frc2::JoystickButton(&m_driverStick, 5).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput(0.0);} ));
+    // frc2::JoystickButton(&m_driverStick, 4).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput(0.6);} ));
+
+    frc2::JoystickButton(&m_buttonBox , 5).WhenPressed(frc2::InstantCommand([this] {m_arm.SetLock(ArmConstants::Lock_Position::Lock);}));
+    frc2::JoystickButton(&m_buttonBox, 6).WhenPressed(frc2::InstantCommand([this] {m_arm.SetLock(ArmConstants::Lock_Position::Unlock);}));
+    frc2::JoystickButton(&m_buttonBox, 3).WhileHeld(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput([this] {return m_buttonBox.GetY();}); }));
+    frc2::JoystickButton(&m_buttonBox, 4).WhenPressed(frc2::InstantCommand([this] {m_climber.SetOutput([] {return 0.0;});} ) );
+    frc2::JoystickButton(&m_buttonBox, 11).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Lock);} ));
+    frc2::JoystickButton(&m_buttonBox, 12).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock);} ));
+   
+    // frc2::JoystickButton(&m_buttonBox, 1).WhenPressed(frc2::InstantCommand([this] {m_driveTrain.playSong(); });
     // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {
     //   double newSpeed = frc::SmartDashboard::GetNumber("ShooterSpeed", 0) - 100.0;
     //   frc::SmartDashboard::PutNumber("ShooterSpeed", newSpeed);

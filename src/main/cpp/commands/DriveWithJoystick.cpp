@@ -18,16 +18,20 @@ DriveWithJoystick::DriveWithJoystick(frc::Joystick* joystick, DriveTrain* drivet
 }
 
 // Called when the command is initially scheduled.
-void DriveWithJoystick::Initialize() {}
+void DriveWithJoystick::Initialize() {
+
+
+}
 
 // Called repeatedly when this Command is scheduled to run
 void DriveWithJoystick::Execute() {
-  if (m_joystick->GetRawButton(1)) {
-    m_driveTrain->CurvatureDrive(-m_joystick->GetY() , m_joystick->GetZ() * 0.6, m_joystick->GetRawButton(1));
-  } else {
-    m_driveTrain->CurvatureDrive(-m_joystick->GetY() , m_joystick->GetZ(), m_joystick->GetRawButton(1));
-  }
-
+  // if (!m_driveTrain->SongFinished()) {
+    if (m_joystick->GetRawButton(1)) {
+      m_driveTrain->CurvatureDrive(-m_joystick->GetY() , m_joystick->GetZ() * 0.6, m_joystick->GetRawButton(1));
+    } else {
+      m_driveTrain->CurvatureDrive(-m_joystick->GetY() , m_joystick->GetZ(), m_joystick->GetRawButton(1));
+    }
+  // }
   // m_driveTrain->ArcadeDrive(-m_joystick->GetY() * 0.75 , m_joystick->GetZ() * 0.6, true);
 
   

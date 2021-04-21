@@ -10,10 +10,16 @@
 #include <functional>
 
 #include <frc2/Timer.h>
+#include <frc/smartdashboard/SmartDashboard.h>
 
 #include <subsystems/RGBStrip.h>
 #include <subsystems/Arm.h>
 #include <subsystems/Vision.h>
+
+#include <stdlib.h>
+#include <time.h>
+
+
 
 
 /**
@@ -43,4 +49,12 @@ class StatusLight
   std::function<bool()> m_targetDetected;
 
   frc2::Timer m_timer;
+
+  double m_countR;
+  double m_countG;
+  double m_countB;
+ 
+  double m_signR;
+  double m_signG;
+  double m_signB;
 };

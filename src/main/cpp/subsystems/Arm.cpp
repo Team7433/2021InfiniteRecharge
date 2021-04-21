@@ -8,6 +8,7 @@
 #include "subsystems/Arm.h"
 #include <units/length.h>
 #include <units/angle.h>
+#include <units/math.h>
 
 Arm::Arm() {
 
@@ -40,6 +41,7 @@ Arm::Arm() {
     m_armMotor->ConfigMotionCruiseVelocity(KmotionCruiseVelocity, ktimeoutMs);  
 
     m_armMotor->ConfigClearPositionOnLimitR(true, ktimeoutMs);
+    frc::SmartDashboard::PutBoolean("Arm/LockButton", false);
 
 }
 
@@ -49,7 +51,7 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
     // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPositionUnits().to<double>());
     frc::SmartDashboard::PutNumber("Arm/Accumulator", m_armMotor->GetIntegralAccumulator());
-    frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
+    // frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
     frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
     frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
@@ -135,6 +137,13 @@ units::degree_t Arm::CalculateAngleFromDistance(units::meter_t distance) {
     double distanceMM = distance.to<double>();
     
     return units::degree_t(15.5504 + (130.439 / (distanceMM + 2.46224)));
+
+}
+
+bool Arm::GetArrived() {
+
+
+    return units::math::fabs(GetArmAngleMotorUnits() - GetTargetPositionUnits()) < 0.5_deg;
 
 }
 
