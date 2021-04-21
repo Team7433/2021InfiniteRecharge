@@ -46,7 +46,7 @@ class ClimbMode
 
   bool m_armLocked = false;
   bool m_sliderSaftey = true;
-  bool m_climbMode = true;
+  bool m_climbMode = false;
   bool m_matchTriggered = false;
 
 };

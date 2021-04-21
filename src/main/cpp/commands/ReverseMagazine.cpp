@@ -46,7 +46,7 @@ void ReverseMagazine::Execute() {
 
     if (m_rightTrig()) {
 
-      m_floorIntake->Set(Position::Out, -0.5);
+      m_floorIntake->Set(Position::Out, -0.65);
 
     } else {
 
@@ -117,7 +117,7 @@ void ReverseMagazine::Execute() {
 
     if (m_rightTrig()) {
 
-      m_floorIntake->Set(Position::Out, -0.5);
+      m_floorIntake->Set(Position::Out, -0.65);
 
     }
 

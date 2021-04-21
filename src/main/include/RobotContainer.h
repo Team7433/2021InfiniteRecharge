@@ -13,9 +13,13 @@
 #include <frc2/command/button/JoystickButton.h>
 #include <frc2/command/ConditionalCommand.h>
 #include <frc/smartdashboard/SendableChooser.h>
+#include <frc2/command/PrintCommand.h>
+#include <frc2/command/ScheduleCommand.h>
+
 #include <POVButton.h>
 #include "util/AxisButton.h"
 #include "util/TriggerButton.h"
+#include "util/NetworkButton.h"
 
 #include <units/angle.h>
 #include <units/length.h>
@@ -120,7 +124,7 @@ class RobotContainer {
   frc2::ParallelCommandGroup m_storing{SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true), frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::storing;}}};
   frc2::ParallelCommandGroup m_stop{
     SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false),
-    RunShooter(&m_shooter, 0.0), 
+    // RunShooter(&m_shooter, 0.0), 
     frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::stop;}}
   }; //Stopy
   frc2::ParallelDeadlineGroup m_shooting{SetBallManipulation{&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0.5, false}, frc2::InstantCommand{[this] {m_intakeState = RobotContainerConstants::shooting;}}};
@@ -129,6 +133,7 @@ class RobotContainer {
 
 
   RobotContainerConstants::IntakeState m_intakeState;
+  bool m_autoTargeting;
 
   units::meter_t m_startingDistance;
   double m_startingRightEncoder;

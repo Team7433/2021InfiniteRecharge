@@ -41,6 +41,7 @@ Arm::Arm() {
     m_armMotor->ConfigMotionCruiseVelocity(KmotionCruiseVelocity, ktimeoutMs);  
 
     m_armMotor->ConfigClearPositionOnLimitR(true, ktimeoutMs);
+    frc::SmartDashboard::PutBoolean("Arm/LockButton", false);
 
 }
 

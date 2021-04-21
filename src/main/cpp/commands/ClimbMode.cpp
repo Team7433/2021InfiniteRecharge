@@ -37,7 +37,8 @@ void ClimbMode::Execute() {
 
     if (m_armLocked && !m_sliderSaftey) {
       m_climber->SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock);
-      m_climber->RunDynamicRevoltions([this] {return (4.53/2)*((m_joystick->GetRawAxis(3)+1) -1.75); });
+      m_driveTrain->SetCoastMode();
+      m_climber->RunDynamicRevoltions([this] {return (4.53/2.0)*(m_joystick->GetRawAxis(3)+1.0) -1.75; });
     }
   } else { // if climbDode
 
@@ -52,12 +53,12 @@ void ClimbMode::Execute() {
 
   }
   //toggles to lock mode when match time reaches less than 2
-  if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {
+  // if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {
     
-    m_climbMode = false;
-    m_matchTriggered = true;
+  //   m_climbMode = false;
+  //   m_matchTriggered = true;
 
-  }
+  // }
 
 
 

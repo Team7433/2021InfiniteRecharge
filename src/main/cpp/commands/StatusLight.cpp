@@ -17,12 +17,16 @@ StatusLight::StatusLight(RGBStrip* rgbStrip, std::function<units::degree_t()> ta
 }
 
 // Called when the command is initially scheduled.
-void StatusLight::Initialize() {}
+void StatusLight::Initialize() {
+
+  frc::SmartDashboard::PutBoolean("strip/RainbowMode", false);
+
+}
 
 // Called repeatedly when this Command is scheduled to run
 void StatusLight::Execute() {
 
-  frc::SmartDashboard::PutBoolean("strip/RainbowMode", false);
+
 
   if(!frc::SmartDashboard::GetBoolean("strip/RainbowMode", false)) {
     if (units::math::fabs(m_currentAngle() - m_targetAngle()) < 1_deg) {

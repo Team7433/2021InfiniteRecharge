@@ -56,6 +56,8 @@ class DriveTrain : public frc2::SubsystemBase {
 
   }
 
+  bool SongFinished() {return m_orchestra->IsPlaying();}
+
   double getLeftEncoder() { return m_leftDriveMaster->GetSelectedSensorPosition(); }
   double getRightEncoder() { return m_rightDriveMaster->GetSelectedSensorPosition(); }
   
