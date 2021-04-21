@@ -28,6 +28,8 @@ class BallHolder : public frc2::SubsystemBase {
 
   void SetIndexer(double value);
   void SetMagazine(double value);
+  double GetMagazineOutputPercent() {return m_magazineMotor->GetMotorOutputPercent();}
+  double GetIndexerOutputPercent() {return m_indexerMotor->GetMotorOutputPercent();}
 
   bool GetSensorBeltIn();
   bool GetSensorBeltFull();

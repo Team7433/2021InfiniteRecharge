@@ -19,7 +19,7 @@ UnloadMagazine::UnloadMagazine(BallHolder* ballHolder, Feeder* feeder, FloorInta
 // Called when the command is initially scheduled.
 void UnloadMagazine::Initialize() {
 
-  m_ballHolder->SetMagazine(0.35);
+  m_ballHolder->SetMagazine(0.3);
   m_feeder->SetFeeder(0.55);
   m_ballHolder->SetIndexer(0.3);
   if(m_intakePos) { m_intake->Set(FloorIntakeConstants::Position::Out, 0.4); }

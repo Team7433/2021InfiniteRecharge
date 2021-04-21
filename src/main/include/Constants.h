@@ -26,7 +26,7 @@ constexpr int ktimeoutMs = 10;
 #include <units/angle.h>
 #include <units/length.h>
 
-// #define ButtonBox
+#define ButtonBox
 
 
 namespace AutonmousConstants {
@@ -123,16 +123,17 @@ namespace BallHolderConstants {
     constexpr units::time::second_t kTimerMagazineDelay = 0.1_s;
     constexpr units::time::second_t kOverloadReverseLength = 0.2_s;
 
-}
+}       
 
 namespace FeederConstants {
 
 
     constexpr int kPIDslotID = 0;
-    constexpr double kfeederP = 0.0;
-    constexpr double kfeederI = 0.0;
-    constexpr double kfeederD = 0.0;
-    constexpr double kfeederIzone = 0.0;
+    constexpr double kfeederP = 0.4;
+    constexpr double kfeederI = 0.001;
+    constexpr double kfeederD = 1.0;
+    constexpr double kfeederF = 0.06017647058823529411764705882353;
+    constexpr double kfeederIzone = 1000.0;
     constexpr double kfeederMaxAccumulator = 0.0;
 
     constexpr int kFeederMotorId = 15;
@@ -215,3 +216,39 @@ namespace VisionConstants {
 
 
 }
+
+namespace RobotContainerConstants {
+
+    enum IntakeState {
+
+        storing = 0,
+        shooting = 1,
+        stop = 3
+
+    };
+
+}
+
+namespace ClimberConstants {
+
+    constexpr int kMasterMotorID = 7;
+    constexpr int kSlaveMotorID = 8;
+
+    constexpr int KslotID = 0;
+    constexpr double Kp = 0.12;
+    constexpr double Ki = 0.000;
+    constexpr double Kd = 0.0;
+    constexpr double Kf = 0.04815;
+    constexpr double kfeederIzone = 1000.0;
+
+    constexpr int kClimberSolenoidPortAID = 2;
+    constexpr int kClimberSolenoidPortBID = 5;
+
+    enum ClimberLock_Position {
+        //0 = reverse, 1 = forward
+        Lock = 1, 
+        Unlock = 0
+    };
+
+}
+

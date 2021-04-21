@@ -33,6 +33,7 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 void Robot::DisabledInit() {
   m_container.zeroOutputDisabled();
   m_container.CoastMode(); // Set Drivetrain to Coast Mode
+  m_container.PlaySong();
 
   
 }
@@ -75,6 +76,7 @@ void Robot::TeleopInit() {
   // this line or comment it out.
   m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
   m_container.BrakeMode(); // Set Drivetrain to Brake Mode
+  
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
@@ -86,13 +88,15 @@ void Robot::TeleopInit() {
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-  m_container.RainbowMode();
+    // m_container.RainbowMode();
 }
 
 /**
  * This function is called periodically during test mode.
  */
-void Robot::TestPeriodic() {}
+void Robot::TestPeriodic() {
+
+}
 
 #ifndef RUNNING_FRC_TESTS
 int main() { return frc::StartRobot<Robot>(); }
