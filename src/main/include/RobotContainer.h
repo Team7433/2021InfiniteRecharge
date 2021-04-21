@@ -80,17 +80,16 @@ class RobotContainer {
   frc2::Command* GetAutonomousCommand();
   frc2::Command& GetIntakeCommand();
 
+  void ResetStartOfTeleop();
+  Vision GetVisionSubsystem() { return m_vision; }
   void CoastMode() { m_driveTrain.SetCoastMode(); } // set drivetrain to coast mode
   void BrakeMode() { m_driveTrain.SetBrakeMode(); } // set drivetrain to brake mode
-  void RainbowMode() {m_strip.Rainbow();}
-  void ControlLight(double R, double G, double B) {m_strip.SetRGBStrip(R, G, B);}
-  void SetLimelightLED(VisionConstants::LEDState state) {m_vision.SetLED(state); }
-  units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); }
-  Vision GetVisionSubsystem() { return m_vision; }
+  void zeroOutputDisabled() {m_shooter.ManualControl(0.0); } // ramp down shooter
+  units::degree_t GetArmAngle() {return m_arm.GetArmAngleUnits(); } // return current arm angle (motor encoder)
+  void ControlLight(double R, double G, double B) { m_strip.SetRGBStrip(R, G, B); } // set RGB colour
+  void SetLimelightLED(VisionConstants::LEDState state) { m_vision.SetLED(state); } // set vision LED
   units::degree_t GetTargetError() {return units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())) - m_gyro.GetYaw();}
-  void PlaySong() {m_driveTrain.playSong();}
-  void zeroOutputDisabled();
-  void ResetStartOfTeleop();
+
  private:
   // The robot's subsystems and commands are defined here...
   FloorIntake m_floorIntake;
@@ -106,11 +105,6 @@ class RobotContainer {
   Climber m_climber;
 
   frc::SendableChooser<int> m_autoChooser;
-
-
-
-  // ExampleCommand m_autonomousCommand;
-
 
   //Joysticks
   frc::Joystick m_driverStick{kMainDriverStickId};

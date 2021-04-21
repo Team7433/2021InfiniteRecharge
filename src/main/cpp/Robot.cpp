@@ -33,9 +33,7 @@ void Robot::RobotPeriodic() { frc2::CommandScheduler::GetInstance().Run(); }
 void Robot::DisabledInit() {
   m_container.zeroOutputDisabled();
   m_container.CoastMode(); // Set Drivetrain to Coast Mode
-  m_container.PlaySong();
 
-  
 }
 
 void Robot::DisabledPeriodic() {
@@ -88,7 +86,7 @@ void Robot::TeleopInit() {
  * This function is called periodically during operator control.
  */
 void Robot::TeleopPeriodic() {
-    // m_container.RainbowMode();
+
 }
 
 /**
