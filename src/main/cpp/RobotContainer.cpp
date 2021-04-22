@@ -46,7 +46,7 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::JoystickButton(&m_operatorController, 4).WhenPressed(&m_shooting); // shooting
 
   frc2::JoystickButton(&m_operatorController, 6).WhenReleased(frc2::ParallelCommandGroup(
-    frc2::InstantCommand([this] {m_shooting.Schedule();}),
+    frc2::InstantCommand([this] {m_storing.Schedule();}),
     SetArmAngle(&m_arm, 6_deg),
     RunShooter(&m_shooter, 0.0)
   ));

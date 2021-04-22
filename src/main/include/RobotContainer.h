@@ -15,6 +15,7 @@
 #include <frc/smartdashboard/SendableChooser.h>
 #include <frc2/command/PrintCommand.h>
 #include <frc2/command/ScheduleCommand.h>
+#include <frc2/command/ParallelCommandGroup.h>
 
 #include <POVButton.h>
 #include "util/AxisButton.h"

@@ -41,7 +41,7 @@ void ClimbMode::Execute() {
     if (m_armLocked && !m_sliderSaftey) {
       m_climber->SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock);
       m_driveTrain->SetCoastMode();
-      m_climber->RunDynamicRevoltions([this] {return (4.53/2.0)*(m_joystick->GetRawAxis(3)+1.0) -1.75; });
+      m_climber->RunDynamicRevoltions([this] {return (((m_joystick->GetRawAxis(3)+1.0)/2)*4.3) -2.50; });
     }
   } else { 
     // locks climber
