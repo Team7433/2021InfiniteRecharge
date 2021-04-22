@@ -25,40 +25,41 @@ void ClimbMode::Initialize() {
 void ClimbMode::Execute() {
 
   if (m_climbMode) { 
-    if(m_arm->GetArrived() && !m_armLocked) {
 
+    //lock arm position
+    if(m_arm->GetArrived() && !m_armLocked) {
       m_arm->SetLock(ArmConstants::Lock_Position::Lock);
       m_armLocked = true;
-
     }
+
+    // slider saftey
     if ((m_joystick->GetRawAxis(3)+1) < 0.2) {
       m_sliderSaftey = false;
     }
 
+    // if slider saftey and arm is locked is clear then enable climb
     if (m_armLocked && !m_sliderSaftey) {
       m_climber->SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock);
       m_driveTrain->SetCoastMode();
       m_climber->RunDynamicRevoltions([this] {return (4.53/2.0)*(m_joystick->GetRawAxis(3)+1.0) -1.75; });
     }
-  } else { // if climbDode
-
+  } else { 
+    // locks climber
     m_climber->SetLockPosition(ClimberConstants::ClimberLock_Position::Lock); // locks climb
 
   }
 
   //toggle climbMode
   if (m_joystick->GetRawButtonPressed(1)) {
-
     m_climbMode = !m_climbMode;
-
   }
   //toggles to lock mode when match time reaches less than 2
-  // if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {
+  if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {
     
-  //   m_climbMode = false;
-  //   m_matchTriggered = true;
+    m_climbMode = false;
+    m_matchTriggered = true;
 
-  // }
+  }
 
 
 

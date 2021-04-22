@@ -17,8 +17,8 @@ Vision::Vision(Arm* arm) {
 // This method will be called once per scheduler run
 void Vision::Periodic() {
     frc::SmartDashboard::PutBoolean("Vision/TargetDetected", getPowerPortDetected());
-    frc::SmartDashboard::PutNumber("Vision/Target Distance Bumper", getPortDistanceBumper().to<double>());
     frc::SmartDashboard::PutNumber("Vision/Target Distance", getPortDistance().to<double>());
+    frc::SmartDashboard::PutNumber("Vision/Target Distance Bumper", getPortDistanceBumper().to<double>());
 }
 
 bool Vision::getPowerPortDetected() {
@@ -30,7 +30,7 @@ bool Vision::getPowerPortDetected() {
 
 units::degree_t Vision::getPowerPortHorizontalAngle() {
     // std::cout << nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) << "LimeLightTX" << std::endl;
-    return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) );
+    return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0)) + ktxOffset;
 }
 
 units::degree_t Vision::getPowerPortVerticalAngle() {

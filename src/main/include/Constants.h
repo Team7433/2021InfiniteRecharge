@@ -185,6 +185,8 @@ namespace units::angle {
 
 namespace VisionConstants {
 
+    constexpr units::degree_t ktxOffset = 0_deg;
+
     constexpr int klidarPort = 0;
     //Port height
     constexpr units::millimeter_t kheightOfTarget = 2012_mm;

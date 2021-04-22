@@ -37,8 +37,7 @@ void Robot::DisabledInit() {
 }
 
 void Robot::DisabledPeriodic() {
-  // m_container.RainbowMode();
-  // m_container.ControlLight(148,0,211);
+
   if (m_container.GetArmAngle() < 54_deg) {
     m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
     if(m_container.GetVisionSubsystem().getPowerPortDetected() == false) {m_container.ControlLight(140, 0, 128);} 
@@ -67,7 +66,6 @@ void Robot::AutonomousInit() {
 void Robot::AutonomousPeriodic() {}
 
 void Robot::TeleopInit() {
-  // m_container.ControlLight(135,206,250);
   // This makes sure that the autonomous stops running when
   // teleop starts running. If you want the autonomous to
   // continue until interrupted by another command, remove

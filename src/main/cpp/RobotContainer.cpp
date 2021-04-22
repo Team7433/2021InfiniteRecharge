@@ -23,9 +23,10 @@ RobotContainer::RobotContainer() : m_vision(&m_arm)
   m_strip.SetDefaultCommand(StatusLight(&m_strip, [this] { return m_arm.GetArmAngleMotorUnits(); }, [this] { return m_arm.GetTargetPositionUnits(); }, [this] { return m_vision.getPowerPortDetected();}, [this] { return m_shooter.GetVelocityLoopTarget(); } ));
 
   // Sets up autonomous chooser
-  m_autoChooser.SetDefaultOption("SixBallAutoC", 0);
-  m_autoChooser.AddOption("SixBallAutoB", 1);
-  m_autoChooser.AddOption("ThreeBallAuto", 2);
+  m_autoChooser.SetDefaultOption("SixBall AutoC", 0);
+  m_autoChooser.AddOption("SixBall AutoB", 1);
+  m_autoChooser.AddOption("ThreeBall Auto", 2);
+  m_autoChooser.AddOption("No Auto", 3);
 
   // Configure the button bindings
   ConfigureButtonBindings();
@@ -42,7 +43,13 @@ void RobotContainer::ConfigureButtonBindings()
   // frc2::JoystickButton(&m_operatorController, 1).WhenPressed(frc2::ParallelCommandGroup(SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0.5, 0.3, 0.3, 0, /* Storing */ true); , frc2::InstantCommand([this] {m_intakeState = RobotContainerConstants::storing;}))); //Story
   frc2::JoystickButton(&m_operatorController, 1).WhenPressed(&m_storing); //Story
   frc2::JoystickButton(&m_operatorController, 2).WhenPressed(&m_stop); //stoppy
-  frc2::JoystickButton(&m_operatorController, 4).WhenPressed(&m_shooting);
+  frc2::JoystickButton(&m_operatorController, 4).WhenPressed(&m_shooting); // shooting
+
+  frc2::JoystickButton(&m_operatorController, 6).WhenReleased(frc2::ParallelCommandGroup(
+    frc2::InstantCommand([this] {m_shooting.Schedule();}),
+    SetArmAngle(&m_arm, 6_deg),
+    RunShooter(&m_shooter, 0.0)
+  ));
 
   frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_intakeState; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } ), false);
   frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_intakeState; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } ), false);
@@ -124,6 +131,8 @@ frc2::Command *RobotContainer::GetAutonomousCommand()
   case 2:  //three ball auto
     return new ThreeBallAuto(&m_floorIntake, &m_driveTrain, &m_shooter, &m_ballholder, &m_feeder, &m_gyro, &m_vision, &m_arm, &m_autoVaribles);
     break;
+  case 3: //No Auto
+    return nullptr;
   }
   return nullptr;
 }

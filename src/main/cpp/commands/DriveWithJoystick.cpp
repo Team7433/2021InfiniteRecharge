@@ -32,8 +32,6 @@ void DriveWithJoystick::Execute() {
       m_driveTrain->CurvatureDrive(-m_joystick->GetY() , m_joystick->GetZ(), m_joystick->GetRawButton(1));
     }
   // }
-  // m_driveTrain->ArcadeDrive(-m_joystick->GetY() * 0.75 , m_joystick->GetZ() * 0.6, true);
-
   
 }
 
