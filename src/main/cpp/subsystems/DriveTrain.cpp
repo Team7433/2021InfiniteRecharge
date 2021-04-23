@@ -81,6 +81,11 @@ void DriveTrain::Periodic() {
     frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
     // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
     // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
+
+    frc::SmartDashboard::PutNumber("Ultra/DistanceA", ultrasonicA.GetValue() * 0.125);
+    frc::SmartDashboard::PutNumber("Ultra/DistanceB", ultrasonicB.GetValue() * 0.125);
+    frc::SmartDashboard::PutNumber("Ultra/DistanceC", ultrasonicC.GetValue() * 0.125);
+    frc::SmartDashboard::PutNumber("Ultra/DistanceD", ultrasonicD.GetValue() * 0.125);
 }
 
 void DriveTrain::ArcadeDrive(double forward, double rotation, bool squaredInputs) {
@@ -114,3 +119,8 @@ void DriveTrain::setVelocity(units::meters_per_second_t leftVel, units::meters_p
     m_leftDriveMaster->Set(ControlMode::Velocity, leftVel.to<double>() * kUnits100msPerMeterSecond );
     m_rightDriveMaster->Set(ControlMode::Velocity, rightVel.to<double>() * kUnits100msPerMeterSecond );
 }
+
+units::meter_t DriveTrain::getUltrasonicDistanceA() { return units::centimeter_t(ultrasonicA.GetValue() * 0.125); }
+units::meter_t DriveTrain::getUltrasonicDistanceB() { return units::centimeter_t(ultrasonicB.GetValue() * 0.125); }
+units::meter_t DriveTrain::getUltrasonicDistanceC() { return units::centimeter_t(ultrasonicC.GetValue() * 0.125); }
+units::meter_t DriveTrain::getUltrasonicDistanceD() { return units::centimeter_t(ultrasonicD.GetValue() * 0.125); }

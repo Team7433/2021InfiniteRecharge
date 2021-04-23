@@ -88,6 +88,7 @@ void RobotContainer::ConfigureButtonBindings()
     DriveMotionControl(&m_driveTrain, &m_gyro, 0.8_m, 1_mps, 0_mps, 1_mps, 1_mps_sq, [this] { return m_gyro.GetYaw(); })
   )); 
 
+
   frc2::JoystickButton(&m_driverStick, 7).WhenPressed(RunShooter(&m_shooter, 17000.00));
   // frc2::JoystickButton(&m_driverStick, 9).WhenPressed(RunShooter(&m_shooter, [] { return frc::SmartDashboard::GetNumber("Shooter/Custom Speed", 0); }));
   frc2::JoystickButton(&m_driverStick, 9).WhenPressed(frc2::InstantCommand([this] {m_gyro.Reset();}));
@@ -153,29 +154,7 @@ void RobotContainer::ConfigureButtonBindings()
 
   frc2::JoystickButton(&m_driverStick, 4).WhenPressed(SetArmAngle(&m_arm, 10_deg));
 
-  frc2::JoystickButton(&m_driverStick, 3).WhileHeld(frc2::SequentialCommandGroup(
-    frc2::InstantCommand([this] { 
-      m_startingDistance = m_vision.getPortDistance(); //Reads starting distance using limelight
-      m_startingRightEncoder = m_driveTrain.getRightEncoder(); //Reads starting Right drivetrain encoder count
-      m_startingLeftEncoder = m_driveTrain.getLeftEncoder(); //Reads starting left drivetrain encoder count
-      m_targetAngle = units::degree_t(m_gyro.GetYaw() + m_vision.getPowerPortHorizontalAngle() - units::math::atan(160_mm / m_vision.getPortDistance())); //Sets target Gyro angle
-      frc::SmartDashboard::PutNumber("ShootOnTheRun/targetAngle", m_targetAngle.to<double>());
-    }),
-    TurnToTarget(&m_gyro, &m_driveTrain, [this] { return m_targetAngle; }),
-    frc2::ConditionalCommand(
-      frc2::ParallelCommandGroup(
-        
-        GyroDrive(&m_gyro, &m_driveTrain, [this] {return m_targetAngle; }, [this] { return -m_driverStick.GetY(); }),
-        AutoTarget([this] {
-          return units::meter_t(m_startingDistance.to<double>() + DriveTrainConstants::kMetersPerUnit * ((m_driveTrain.getRightEncoder() - m_startingRightEncoder) + (m_driveTrain.getLeftEncoder() - m_startingLeftEncoder)) / 2);
-        }, &m_arm, &m_shooter, true)
-
-      ),
-      frc2::InstantCommand([] {std::cout << "No Target Detected \n";}),
-      [this] {return m_vision.getPowerPortDetected();}
-    ) // conditional command
-
-  ));
+  frc2::JoystickButton(&m_driverStick, 3).WhileHeld(LogToFile(&m_driveTrain, &m_gyro));
 
 
   // frc2::JoystickButton(&m_buttonBOX, 4).WhenPressed(RunShooter(&m_shooter, [] {

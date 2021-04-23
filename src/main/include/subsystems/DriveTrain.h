@@ -11,6 +11,7 @@
 #include <ctre/Phoenix.h>
 #include <frc/drive/DifferentialDrive.h>
 #include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/AnalogInput.h>
 
 #include <units/length.h>
 #include <units/velocity.h>
@@ -79,6 +80,11 @@ class DriveTrain : public frc2::SubsystemBase {
 
   double m_numberTest = 0.0;
 
+  units::meter_t getUltrasonicDistanceA();
+  units::meter_t getUltrasonicDistanceB();
+  units::meter_t getUltrasonicDistanceC();
+  units::meter_t getUltrasonicDistanceD();
+
  private:
   // Components (e.g. motor controllers and sensors) should generally be
   // declared private and exposed only through public methods.
@@ -92,5 +98,10 @@ class DriveTrain : public frc2::SubsystemBase {
   frc::DifferentialDrive m_robotDrive{*m_leftDriveMaster, *m_rightDriveMaster};
   
   Iona::MotionProfileRunner *m_profiler = new Iona::MotionProfileRunner(m_leftDriveMaster, m_rightDriveMaster);
+
+  frc::AnalogInput ultrasonicA{0};
+  frc::AnalogInput ultrasonicB{1};
+  frc::AnalogInput ultrasonicC{2};
+  frc::AnalogInput ultrasonicD{3};
 
 };

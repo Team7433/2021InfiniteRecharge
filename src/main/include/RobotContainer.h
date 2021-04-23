@@ -35,6 +35,7 @@
 #include "commands/AutoTarget.h"
 #include "commands/DriveMotionControl.h"
 #include "commands/StatusLight.h"
+#include "commands/LogToFile.h"
 
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"

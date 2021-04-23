@@ -74,7 +74,7 @@ void Robot::TeleopInit() {
   // continue until interrupted by another command, remove
   // this line or comment it out.
   m_container.SetLimelightLED(VisionConstants::LEDState::currentPipeline);
-  m_container.BrakeMode(); // Set Drivetrain to Brake Mode
+  // m_container.BrakeMode(); // Set Drivetrain to Brake Mode
   if (m_autonomousCommand != nullptr) {
     m_autonomousCommand->Cancel();
     m_autonomousCommand = nullptr;
