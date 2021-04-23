@@ -45,11 +45,20 @@ void RobotContainer::ConfigureButtonBindings()
   frc2::JoystickButton(&m_operatorController, 2).WhenPressed(&m_stop); //stoppy
   frc2::JoystickButton(&m_operatorController, 4).WhenPressed(&m_shooting); // shooting
 
-  frc2::JoystickButton(&m_operatorController, 6).WhenReleased(frc2::ParallelCommandGroup(
-    frc2::InstantCommand([this] {m_storing.Schedule();}),
-    SetArmAngle(&m_arm, 6_deg),
-    RunShooter(&m_shooter, 0.0)
-  ));
+  frc2::JoystickButton(&m_operatorController, 6).WhenReleased(
+    frc2::ParallelCommandGroup(
+      frc2::InstantCommand([this] {m_storing.Schedule();}),
+      SetArmAngle(&m_arm, 6_deg),
+      RunShooter(&m_shooter, 0.0)
+    ) // Parallel Command
+  ); // When released
+
+  frc2::JoystickButton(&m_operatorController, 5).WhenPressed(
+    frc2::ParallelCommandGroup(
+      RunShooter(&m_shooter, 0.0),
+      SetBallManipulation(&m_feeder, &m_ballholder, &m_floorIntake, 0, 0, 0, 0, false)
+    ) // Parallel Command
+  ); // WhenPressed
 
   frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::L_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_intakeState; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } ), false);
   frc2::TriggerButton(&m_operatorController, frc::XboxTriggers::R_trig).WhileHeld(ReverseMagazine(&m_ballholder, &m_floorIntake, &m_feeder, [this] { return m_intakeState; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::L_trig) > 0.6; }, [this] { return m_operatorController.GetRawAxis(frc::XboxTriggers::R_trig) > 0.6; } ), false);
