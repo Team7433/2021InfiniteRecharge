@@ -85,7 +85,17 @@ void Climber::RunRevolutions(double revolutions, double maxAccel, double maxVel)
 void Climber::RunDynamicRevoltions(std::function<double()> revolutionTarget) {
 
     if (GetLockPosition() == ClimberConstants::ClimberLock_Position::Unlock) {
+        if ( revolutionTarget() > m_masterMotor->GetSelectedSensorPosition() ) {
 
+            m_masterMotor->ConfigMotionAcceleration(3*((11.431*2048)/10), ktimeoutMs);
+            m_masterMotor->ConfigMotionCruiseVelocity(4*((11.431*2048)/10), ktimeoutMs);
+
+        } else {
+
+            m_masterMotor->ConfigMotionAcceleration(1.5*((11.431*2048)/10), ktimeoutMs);
+            m_masterMotor->ConfigMotionCruiseVelocity(3*((11.431*2048)/10), ktimeoutMs);
+
+        }
         m_masterMotor->Set(ControlMode::MotionMagic, (revolutionTarget()*(2048*11.431)));
 
     } else {
