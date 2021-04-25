@@ -83,6 +83,7 @@ void DriveTrain::Periodic() {
     frc::SmartDashboard::PutNumber("drive/RightVelocity", getRightVelocity().to<double>());
     frc::SmartDashboard::PutNumber("drive/LeftPosition", getLeftDistance().to<double>());
     frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
+    frc::SmartDashboard::PutString("drive/idleState", idleStateTypes[m_idleState]);
     // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
     // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
 }

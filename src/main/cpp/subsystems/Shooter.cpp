@@ -30,7 +30,7 @@ void Shooter::Periodic() {
     // frc::SmartDashboard::PutNumber("Percentage Output", GetPercentageOutput());
     // frc::SmartDashboard::PutNumber("Target velocity", GetVelocityLoopTarget());
     // frc::SmartDashboard::PutNumber("Shooter/Velocity", GetVelocity());
-    // frc::SmartDashboard::PutNumber("")
+    frc::SmartDashboard::PutString("shooter/IdleState", idleStateTypes[m_idleState]);
 
 
 }

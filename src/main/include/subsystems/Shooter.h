@@ -39,6 +39,11 @@ class Shooter : public frc2::SubsystemBase {
 
   void configKF(double kF);
 
+  void setState(idleState state) { m_idleState = state; }
+
+  idleState getState() const { return m_idleState; }
+
+
   void Periodic();
 
  private:
@@ -47,5 +52,7 @@ class Shooter : public frc2::SubsystemBase {
   WPI_TalonFX * m_shooterA = new WPI_TalonFX{kShooterAID};
   WPI_TalonFX * m_shooterB = new WPI_TalonFX{kShooterBID};
 
+  idleState m_idleState = idleState::targetReached;
+  std::string idleStateTypes[2] = {"Target Reached", "Reaching Target"};
 
 };

@@ -38,6 +38,7 @@ TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, std::function<uni
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
   //Checks if there is a target if not ends command
+  m_driveTrain->setState(idleState::reachingTarget);
   if (m_overide == false) {
     if (m_vision->getPowerPortDetected() == false) {
       std::cout << "Power Port not detected" << std::endl;
@@ -114,6 +115,7 @@ void TurnToTarget::End(bool interrupted) {
   m_done = false;
   m_timer.Stop();
   m_timer.Reset();
+  m_driveTrain->setState(idleState::targetReached);
 
   
                                                    

@@ -27,6 +27,7 @@ RunShooter::RunShooter(Shooter* shooter, std::function<double()>  velocity, bool
 // Called when the command is initially scheduled.
 void RunShooter::Initialize() {
   m_targetVelocity = m_velocity();
+  m_shooter->setState(idleState::reachingTarget);
   if (m_targetVelocity != 0) {
   m_shooter->configKF((474.592 + (384574 / (m_targetVelocity - 1917.6))) / 10000);
   }
@@ -63,7 +64,7 @@ void RunShooter::Execute() {
 // Called once the command ends or is interrupted.
 void RunShooter::End(bool interrupted) {
   m_done = false;
-
+  m_shooter->setState(idleState::targetReached);
 }
 
 // Returns true when the command should end.

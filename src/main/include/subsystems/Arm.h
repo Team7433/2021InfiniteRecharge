@@ -44,6 +44,9 @@ class Arm : public frc2::SubsystemBase {
   units::degree_t GetTargetPositionUnits();
   units::degree_t GetArmAngleUnits();
   units::degree_t GetArmAngleMotorUnits();
+  void setState(idleState state) { m_idleState = state; }
+  idleState getState() const { return m_idleState; }
+
 
   //Method used to do some calculations
   units::degree_t CalculateAngleFromDistance(units::meter_t distance);
@@ -58,5 +61,8 @@ class Arm : public frc2::SubsystemBase {
   WPI_TalonSRX* m_armEncoder = new WPI_TalonSRX{11};
   frc::DoubleSolenoid m_lockSolenoid{kSolonoidPortAid, kSolonoidPortBid};
   
-  
+  idleState m_idleState = idleState::targetReached;
+  std::string idleStateTypes[2] = {"Target Reached", "Reaching Target"};
+
+
 };

@@ -56,6 +56,7 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
     frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
     frc::SmartDashboard::PutNumber("Arm/EncoderDifference", (GetArmAngleUnits() - GetArmAngleMotorUnits()).to<double>() );
+    frc::SmartDashboard::PutString("Arm/IdleState", idleStateTypes[m_idleState]);
 
 }
 

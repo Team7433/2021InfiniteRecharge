@@ -24,6 +24,7 @@ void GyroDrive::Initialize() {
 
   m_error = m_headingAngle() - m_gyro->GetYaw();
   m_startError = m_error;
+  m_driveTrain->setState(idleState::reachingTarget);
 
   frc::SmartDashboard::PutNumber("GyroDrive/TargetAngle", m_headingAngle().to<double>());
 
@@ -39,6 +40,8 @@ void GyroDrive::Execute() {
   m_driveTrain->CurvatureDrive(m_forwardPower(), outputPower, false);
   
   m_error = m_headingAngle() - m_gyro->GetYaw();
+
+  if (m_error > 1_deg) { m_driveTrain->setState(idleState::targetReached); } else { m_driveTrain->setState(idleState::reachingTarget); }
 
   
 }

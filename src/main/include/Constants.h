@@ -21,6 +21,15 @@
 constexpr double kPi = 3.1415926545897;
 constexpr int ktimeoutMs = 10;
 
+
+
+enum idleState {
+
+    targetReached = 0,
+    reachingTarget =1
+
+};
+
 #include <ctre/Phoenix.h>
 #include <units/time.h>
 #include <units/angle.h>
