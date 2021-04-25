@@ -26,7 +26,7 @@
 class ClimbMode
     : public frc2::CommandHelper<frc2::CommandBase, ClimbMode> {
  public:
-  ClimbMode(Arm* arm, Climber* climber, DriveTrain* m_driveTrain, frc::Joystick* joystick);
+  ClimbMode(Arm* arm, Climber* climber, DriveTrain* m_driveTrain, frc::Joystick* driverJoystick, frc::Joystick* operatorJoystick);
 
   void Initialize() override;
 
@@ -41,7 +41,8 @@ class ClimbMode
   Arm* m_arm;
   Climber* m_climber;
   DriveTrain* m_driveTrain;
-  frc::Joystick* m_joystick;
+  frc::Joystick* m_operatorJoystick;
+  frc::Joystick* m_driverJoystick;
   frc2::Timer m_timer;
 
   bool m_armLocked = false;
