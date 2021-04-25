@@ -15,7 +15,7 @@
 
 #include <frc2/Timer.h>
 #include <frc/Joystick.h>
-
+#include <frc/XboxController.h>
 /**
  * An example command.
  *
@@ -26,7 +26,7 @@
 class ClimbMode
     : public frc2::CommandHelper<frc2::CommandBase, ClimbMode> {
  public:
-  ClimbMode(Arm* arm, Climber* climber, DriveTrain* m_driveTrain, frc::Joystick* driverJoystick, frc::Joystick* operatorJoystick);
+  ClimbMode(Arm* arm, Climber* climber, DriveTrain* m_driveTrain, frc::Joystick* driverJoystick, frc::XboxController* operatorJoystick);
 
   void Initialize() override;
 
@@ -41,7 +41,7 @@ class ClimbMode
   Arm* m_arm;
   Climber* m_climber;
   DriveTrain* m_driveTrain;
-  frc::Joystick* m_operatorJoystick;
+  frc::XboxController* m_operatorJoystick;
   frc::Joystick* m_driverJoystick;
   frc2::Timer m_timer;
 

@@ -4,7 +4,7 @@
 
 #include "commands/ClimbMode.h"
 
-ClimbMode::ClimbMode(Arm* arm, Climber* climber, DriveTrain* driveTrain, frc::Joystick* Driverjoystick, frc::Joystick* Operatorjoystick) {
+ClimbMode::ClimbMode(Arm* arm, Climber* climber, DriveTrain* driveTrain, frc::Joystick* Driverjoystick, frc::XboxController* Operatorjoystick) {
   // Use addRequirements() here to declare subsystem dependencies.
 
   AddRequirements( {arm, climber, driveTrain} );

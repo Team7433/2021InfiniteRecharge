@@ -181,7 +181,7 @@ void RobotContainer::ConfigureButtonBox() {
     //   // m_climber.RunRevolutions(5.0, 1, 2);
     // });
 
-    frc2::JoystickButton(&m_buttonBox, 1).WhenPressed(ClimbMode(&m_arm, &m_climber, &m_driveTrain, &m_buttonBox));
+    frc2::JoystickButton(&m_buttonBox, 1).WhenPressed(ClimbMode(&m_arm, &m_climber, &m_driveTrain, &m_driverStick, &m_operatorController));
     frc2::JoystickButton(&m_buttonBox, 2).WhileHeld(frc2::InstantCommand([this] {std::cout << (4.53/2)*((m_buttonBox.GetRawAxis(3))+1)-1.75 << std::endl;   m_climber.RunDynamicRevoltions([this] {return (4.53/2)*(-(m_buttonBox.GetRawAxis(3))+1)-1.75;});}));
 
     // frc2::JoystickButton(&m_driverStick, 5).WhenPressed(frc2::InstantCommand([this] {m_climber.SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock); m_climber.SetOutput(0.0);} ));
