@@ -57,7 +57,7 @@ void ClimbMode::Execute() {
   }
 
   //toggle climbMode
-  if (m_operatorJoystick->GetRawButtonPressed(6)) {
+  if (m_operatorJoystick->GetRawButtonPressed(8)) {
     m_climbMode = !m_climbMode;
   }
   //toggles to lock mode when match time reaches less than 2

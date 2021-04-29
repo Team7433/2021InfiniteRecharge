@@ -39,7 +39,7 @@ void RunShooter::Execute() {
   if (m_update) {
 
       m_targetVelocity = m_velocity();
-
+      if ( abs(m_targetVelocity - m_shooter->GetVelocityLoopTarget()) < 500) { m_shooter->setState(idleState::targetReached); } else { m_shooter->setState(idleState::reachingTarget); }
   }
 
   if (m_targetVelocity != 0) {

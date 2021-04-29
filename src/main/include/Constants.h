@@ -35,7 +35,7 @@ enum idleState {
 #include <units/angle.h>
 #include <units/length.h>
 
-#define ButtonBox
+// #define ButtonBox
 
 
 namespace AutonmousConstants {
@@ -242,8 +242,7 @@ namespace RobotContainerConstants {
 
 namespace ClimberConstants {
 
-    constexpr int kMasterMotorID = 7;
-    constexpr int kSlaveMotorID = 8;
+    constexpr int kMasterMotorID = 8;
 
     constexpr int KslotID = 0;
     constexpr double Kp = 0.12;

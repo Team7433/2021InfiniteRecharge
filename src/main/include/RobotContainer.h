@@ -45,8 +45,10 @@
 #include "commands/ReverseMagazine.h"
 #include "commands/ClimbMode.h"
 
+#include "commands/OpposingTrenchAuto.h"
 #include "commands/EightBallAutoA.h"
 #include "commands/SimpleAuto.h"
+#include "commands/SixBallAutoA.h"
 #include "commands/SixBallAutoB.h"
 #include "commands/SixBallAutoC.h"
 #include "commands/ThreeBallAuto.h"

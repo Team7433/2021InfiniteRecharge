@@ -41,7 +41,7 @@ void GyroDrive::Execute() {
   
   m_error = m_headingAngle() - m_gyro->GetYaw();
 
-  if (m_error > 1_deg) { m_driveTrain->setState(idleState::targetReached); } else { m_driveTrain->setState(idleState::reachingTarget); }
+  if (m_error < 1_deg) { m_driveTrain->setState(idleState::targetReached); } else { m_driveTrain->setState(idleState::reachingTarget); }
 
   
 }

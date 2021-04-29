@@ -41,16 +41,9 @@
 #include "commands/AutoTarget.h"
 #include "commands/DriveMotionControl.h"
 
-
-
-class SixBallAutoB
+class SixBallAutoA
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 SixBallAutoB> {
+                                 SixBallAutoA> {
  public:
-  SixBallAutoB(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
- private:
-
-  
-
-
+  SixBallAutoA(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
 };
