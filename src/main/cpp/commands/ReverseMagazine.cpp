@@ -111,7 +111,7 @@ void ReverseMagazine::Execute() {
 
     if (m_leftTrig()) {
       m_ballHolder->SetMagazine(-0.3);
-      m_ballHolder->SetIndexer(-0.3);
+      m_ballHolder->SetIndexer(-0.45);
       m_feeder->SetFeeder(-0.3);
     }
 

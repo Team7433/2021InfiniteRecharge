@@ -12,9 +12,11 @@
 #include <frc2/Timer.h>
 #include <frc/smartdashboard/SmartDashboard.h>
 
-#include <subsystems/RGBStrip.h>
-#include <subsystems/Arm.h>
-#include <subsystems/Vision.h>
+#include "subsystems/RGBStrip.h"
+#include "subsystems/Shooter.h"
+#include "subsystems/Arm.h"
+#include "subsystems/Vision.h"
+#include "subsystems/DriveTrain.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -32,7 +34,7 @@
 class StatusLight
     : public frc2::CommandHelper<frc2::CommandBase, StatusLight> {
  public:
-  StatusLight(RGBStrip*, std::function<units::degree_t()> targetAngle, std::function<units::degree_t()> currentAngle, std::function<bool()> targetDeteced, std::function<double()> targetVelocity);
+  StatusLight(RGBStrip*, Arm*, Shooter*, DriveTrain*, Vision*);
 
   void Initialize() override;
 
@@ -43,11 +45,10 @@ class StatusLight
   bool IsFinished() override;
  private:
   RGBStrip* m_RGBStrip;
-  std::function<units::degree_t()> m_targetAngle;
-  std::function<units::degree_t()> m_currentAngle;
-  std::function<double()> m_targetVelocity;
-  std::function<bool()> m_targetDetected;
-
+  Arm* m_arm;
+  Shooter* m_shooter;
+  Vision* m_vision;
+  DriveTrain* m_driveTrain;
   frc2::Timer m_timer;
 
   double m_countR;

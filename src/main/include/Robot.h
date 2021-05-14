@@ -13,6 +13,8 @@
 #include <cameraserver/CameraServer.h>
 
 #include "RobotContainer.h"
+#include <frc/smartdashboard/SmartDashboard.h>
+#include <frc/Timer.h>
 
 class Robot : public frc::TimedRobot {
  public:
@@ -32,4 +34,5 @@ class Robot : public frc::TimedRobot {
   frc2::Command* m_autonomousCommand = nullptr;
 
   RobotContainer m_container;
+  // frc::Timer m_timer;
 };

@@ -4,15 +4,16 @@
 
 #include "commands/StatusLight.h"
 
-StatusLight::StatusLight(RGBStrip* rgbStrip, std::function<units::degree_t()> targetAngle, std::function<units::degree_t()> currentAngle, std::function<bool()> targetDeteced, std::function<double()> targetVelocity) {
+StatusLight::StatusLight(RGBStrip* rgbStrip, Arm* arm, Shooter* shooter, DriveTrain* driveTrain, Vision* vision) {
   // Use addRequirements() here to declare subsystem dependencies.
   AddRequirements(rgbStrip);
 
   m_RGBStrip = rgbStrip;
-  m_targetAngle = targetAngle;
-  m_currentAngle = currentAngle;
-  m_targetDetected = targetDeteced;
-  m_targetVelocity = targetVelocity;
+  m_arm = arm;
+  m_shooter = shooter;
+  m_driveTrain = driveTrain;
+  m_vision = vision;
+
 
 }
 
@@ -29,10 +30,10 @@ void StatusLight::Execute() {
 
 
   if(!frc::SmartDashboard::GetBoolean("strip/RainbowMode", false)) {
-    if (units::math::fabs(m_currentAngle() - m_targetAngle()) < 1_deg) {
-      if (m_targetDetected() && m_currentAngle() && m_targetVelocity() < 500) {
+    if (m_arm->getState() == idleState::targetReached && m_driveTrain->getState() == idleState::targetReached && m_shooter->getState() == idleState::targetReached) {
+      if (m_vision->getPowerPortDetected() && m_arm->getState() == idleState::targetReached && m_shooter->GetVelocityLoopTarget() < 500) {
         m_RGBStrip->SetRGBStrip(0, 0, 255);
-      } else if (!m_targetDetected() && m_currentAngle() && m_targetVelocity() < 500) {
+      } else if (!m_vision->getPowerPortDetected() && m_arm->getState() == idleState::targetReached && m_shooter->GetVelocityLoopError() < 500) {
         m_RGBStrip->SetRGBStrip(140, 0, 128);
       } else { m_RGBStrip->SetRGBStrip(0, 255, 0); }
 

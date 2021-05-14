@@ -17,8 +17,8 @@ Vision::Vision(Arm* arm) {
 // This method will be called once per scheduler run
 void Vision::Periodic() {
     frc::SmartDashboard::PutBoolean("Vision/TargetDetected", getPowerPortDetected());
-    frc::SmartDashboard::PutNumber("Vision/Target Distance Bumper", getPortDistanceBumper().to<double>());
     frc::SmartDashboard::PutNumber("Vision/Target Distance", getPortDistance().to<double>());
+    frc::SmartDashboard::PutNumber("Vision/Target Distance Bumper", getPortDistanceBumper().to<double>());
 }
 
 bool Vision::getPowerPortDetected() {
@@ -29,8 +29,20 @@ bool Vision::getPowerPortDetected() {
 }
 
 units::degree_t Vision::getPowerPortHorizontalAngle() {
-    // std::cout << nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) << "LimeLightTX" << std::endl;
-    return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) );
+    // std::cout << nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0) << "LimeLightTX" << std::endl;w
+    // double px = (nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumberArray("tcornxy", 0.0)[6] + nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumberArray("tcornxy", 0.0)[4]) / 2.0; // set average corner pixel
+
+    //check limelight docs convert pixels to angles
+
+    // double nx = (px - 159.5); // normalize the pixel coords
+    // double vpw = 2.0 * tan(54.0/2.0); // view plane rectangle width
+    // double x = (vpw/2.0) * nx; //x coord
+    // double ax = (atan2(1.0,x) *3.141592)/180;
+    // return units::degree_t(ax);
+    // std::cout <<"px: " << px <<" nx: " << nx << " vpw: " << vpw << " x: " << x << " ax: " << ax << std::endl;
+    // frc::SmartDashboard::PutNumber("Vision/px", ax);
+
+    return units::degree_t( nt::NetworkTableInstance::GetDefault().GetTable("limelight")->GetNumber("tx", 0.0)) + ktxOffset;
 }
 
 units::degree_t Vision::getPowerPortVerticalAngle() {
@@ -77,7 +89,6 @@ void Vision::SetLED(VisionConstants::LEDState state) {
     // 1	force off
     // 2	force blink
     // 3	force on
-
     nt::NetworkTableInstance::GetDefault().GetTable("limelight")->PutNumber("ledMode",state);
 
 }

@@ -21,22 +21,25 @@ TurnToTarget::TurnToTarget(Vision* vision, Gyro* gyro, DriveTrain* drivetrain) {
 
 }
 
-TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, units::degree_t overideAngle) : TurnToTarget(gyro, drivetrain, [overideAngle] {return overideAngle;}) {}
+TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, units::degree_t overideAngle, bool end) : TurnToTarget(gyro, drivetrain, [overideAngle] {return overideAngle;}, end) {}
 
 
-TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, std::function<units::degree_t()> overideAngle) {
+TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, std::function<units::degree_t()> overideAngle, bool end) {
 
   AddRequirements({drivetrain, gyro});
   m_driveTrain = drivetrain;
   m_gyro = gyro;
   m_overideAngle = [overideAngle] {return overideAngle();};
   m_overide = true;
+  m_end = end;
 
 }
                                            
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
   //Checks if there is a target if not ends command
+  m_driveTrain->SstVelocityRamping(0.0);
+  m_driveTrain->setState(idleState::reachingTarget);
   if (m_overide == false) {
     if (m_vision->getPowerPortDetected() == false) {
       std::cout << "Power Port not detected" << std::endl;
@@ -113,6 +116,7 @@ void TurnToTarget::End(bool interrupted) {
   m_done = false;
   m_timer.Stop();
   m_timer.Reset();
+  m_driveTrain->setState(idleState::targetReached);
 
   
                                                    
@@ -138,13 +142,15 @@ bool TurnToTarget::IsFinished() {
   // }
 
   // return (m_timer.Get() > 0.5_s);
-  if (units::math::fabs(m_error) < 0.5_deg) {
-    m_counter++;
-  } else {
-    m_counter = 0;
+  if (m_end) {
+    if (units::math::fabs(m_error) < 0.5_deg) {
+      m_counter++;
+    } else {
+      m_counter = 0;
+    }
+    if (m_counter >= 3 ) {return true;}
   }
-  if (m_counter >= 3 ) {return true;}
-  return false;
+    return false;
   // return (units::math::fabs(m_error) < 0.5_deg);
 
 

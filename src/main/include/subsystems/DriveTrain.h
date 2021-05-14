@@ -81,7 +81,12 @@ class DriveTrain : public frc2::SubsystemBase {
 
   void playSong() {m_orchestra->Play();}
 
-  double m_numberTest = 0.0;
+  void setState(idleState state) { m_idleState = state; }
+
+  void SstVelocityRamping(double ramp) {m_leftDriveMaster->ConfigOpenloopRamp(ramp, ktimeoutMs); m_rightDriveMaster->ConfigOpenloopRamp(ramp, ktimeoutMs);}
+
+  idleState getState() const { return m_idleState; }
+
 
  private:
   // Components (e.g. motor controllers and sensors) should generally be
@@ -98,5 +103,7 @@ class DriveTrain : public frc2::SubsystemBase {
   frc::DifferentialDrive m_robotDrive{*m_leftDriveMaster, *m_rightDriveMaster};
   
   Iona::MotionProfileRunner *m_profiler = new Iona::MotionProfileRunner(m_leftDriveMaster, m_rightDriveMaster);
+  idleState m_idleState = idleState::targetReached;
+  std::string idleStateTypes[2] = {"Target Reached", "Reaching Target"};
 
 };

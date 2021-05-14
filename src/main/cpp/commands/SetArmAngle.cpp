@@ -23,6 +23,7 @@ SetArmAngle::SetArmAngle(Arm* arm, std::function<units::degree_t()> angle, bool 
 void SetArmAngle::Initialize() {
 
   m_setAngle = m_angle();
+  m_arm->setState(idleState::reachingTarget);
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -30,6 +31,7 @@ void SetArmAngle::Execute() {
 
     if (m_update == true) {
       m_setAngle = m_angle();
+      if(m_arm->GetArrived()) { m_arm->setState(idleState::targetReached); } else { m_arm->setState(idleState::reachingTarget); }
     }
     if (m_setAngle > 7.5_deg) {
       m_arm->SetAngle(m_setAngle, 0.1*cos(m_arm->GetArmAngle()));
@@ -37,10 +39,12 @@ void SetArmAngle::Execute() {
        m_arm->SetAngle(m_setAngle, 0.0);
     }
 
+
 }
 
 // Called once the command ends or is interrupted.
 void SetArmAngle::End(bool interrupted) {
+  m_arm->setState(idleState::targetReached);
 }
 
 // Returns true when the command should end.

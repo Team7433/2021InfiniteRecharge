@@ -36,5 +36,5 @@ class Climber : public frc2::SubsystemBase {
   frc::DoubleSolenoid m_climbSolenoid{kClimberSolenoidPortAID, kClimberSolenoidPortBID};
 
   TalonFX* m_masterMotor = new TalonFX{kMasterMotorID};
-  TalonFX* m_slaveMotor = new TalonFX{kSlaveMotorID};
+
 };

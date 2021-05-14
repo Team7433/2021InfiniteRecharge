@@ -4,61 +4,72 @@
 
 #include "commands/ClimbMode.h"
 
-ClimbMode::ClimbMode(Arm* arm, Climber* climber, DriveTrain* driveTrain, frc::Joystick* joystick) {
+ClimbMode::ClimbMode(Arm* arm, Climber* climber, DriveTrain* driveTrain, frc::Joystick* Driverjoystick, frc::XboxController* Operatorjoystick) {
   // Use addRequirements() here to declare subsystem dependencies.
 
-  AddRequirements( {arm, climber} );
+  AddRequirements( {arm, climber, driveTrain} );
 
   m_arm = arm;
   m_climber = climber;
   m_driveTrain = driveTrain;
-  m_joystick = joystick;
+  m_driverJoystick = Driverjoystick;
+  m_operatorJoystick = Operatorjoystick;
 
 }
 
 // Called when the command is initially scheduled.
 void ClimbMode::Initialize() {
   m_arm->SetAngle(75_deg);  //sets arm to climb angle
+  m_driveTrain->SetCoastMode();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void ClimbMode::Execute() {
 
-  if (m_climbMode) { 
-    if(m_arm->GetArrived() && !m_armLocked) {
+    if (m_driverJoystick->GetRawButton(1)) {
+      m_driveTrain->CurvatureDrive(-m_driverJoystick->GetY()*0.5, m_driverJoystick->GetZ() * 0.3, m_driverJoystick->GetRawButton(1));
+    } else {
+      m_driveTrain->CurvatureDrive(-m_driverJoystick->GetY()*0.5, m_driverJoystick->GetZ(), m_driverJoystick->GetRawButton(1));
+    }
 
+  if (m_climbMode) { 
+    //lock arm position
+    if(m_arm->GetArrived() && !m_armLocked) {
       m_arm->SetLock(ArmConstants::Lock_Position::Lock);
       m_armLocked = true;
-
     }
-    if ((m_joystick->GetRawAxis(3)+1) < 0.2) {
+
+    // slider saftey
+    if ((m_driverJoystick->GetRawAxis(3)+1) < 0.2) {
       m_sliderSaftey = false;
     }
 
+    // if slider saftey and arm is locked is clear then enable climb
     if (m_armLocked && !m_sliderSaftey) {
       m_climber->SetLockPosition(ClimberConstants::ClimberLock_Position::Unlock);
       m_driveTrain->SetCoastMode();
-      m_climber->RunDynamicRevoltions([this] {return (4.53/2.0)*(m_joystick->GetRawAxis(3)+1.0) -1.75; });
+      m_climber->RunDynamicRevoltions([this] {return (((m_driverJoystick->GetRawAxis(3)+1.0)/2)*4.5) -1.90; });
     }
-  } else { // if climbDode
-
+  } else { 
+    // locks climber
     m_climber->SetLockPosition(ClimberConstants::ClimberLock_Position::Lock); // locks climb
 
   }
 
   //toggle climbMode
-  if (m_joystick->GetRawButtonPressed(1)) {
-
-    m_climbMode = !m_climbMode;
-
+  if (m_operatorJoystick->GetRawButtonPressed(7)) {
+    m_climbMode = true;
+  }
+  if (m_operatorJoystick->GetRawButtonPressed(8)) {
+    m_climbMode = false;
   }
   //toggles to lock mode when match time reaches less than 2
-  // if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {
+  if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {
     
-  //   m_climbMode = false;
-  //   m_matchTriggered = true;
+    m_climbMode = false;
+    m_matchTriggered = true;
 
-  // }
+  }
 
 
 

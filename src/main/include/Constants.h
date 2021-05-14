@@ -21,12 +21,21 @@
 constexpr double kPi = 3.1415926545897;
 constexpr int ktimeoutMs = 10;
 
+
+
+enum idleState {
+
+    targetReached = 0,
+    reachingTarget =1
+
+};
+
 #include <ctre/Phoenix.h>
 #include <units/time.h>
 #include <units/angle.h>
 #include <units/length.h>
 
-#define ButtonBox
+// #define ButtonBox
 
 
 namespace AutonmousConstants {
@@ -185,6 +194,8 @@ namespace units::angle {
 
 namespace VisionConstants {
 
+    constexpr units::degree_t ktxOffset = 2_deg;
+
     constexpr int klidarPort = 0;
     //Port height
     constexpr units::millimeter_t kheightOfTarget = 2012_mm;
@@ -231,8 +242,7 @@ namespace RobotContainerConstants {
 
 namespace ClimberConstants {
 
-    constexpr int kMasterMotorID = 7;
-    constexpr int kSlaveMotorID = 8;
+    constexpr int kMasterMotorID = 8;
 
     constexpr int KslotID = 0;
     constexpr double Kp = 0.12;

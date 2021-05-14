@@ -51,11 +51,13 @@ void Arm::Periodic() {
     frc::SmartDashboard::PutNumber("Arm/Position", GetPosition());
     // frc::SmartDashboard::PutNumber("Arm/TargetEncoderCount", GetTargetPositionUnits().to<double>());
     frc::SmartDashboard::PutNumber("Arm/Accumulator", m_armMotor->GetIntegralAccumulator());
+    // frc::SmartDashboard::PutNumber("Arm/TargetAngle", GetTargetPositionUnits().to<double>());
     // frc::SmartDashboard::PutNumber("Arm/EncoderError", m_armMotor->GetClosedLoopError());
     frc::SmartDashboard::PutNumber("Arm/Output", GetMotorOutput());
     frc::SmartDashboard::PutString("Arm/Angle", units::angle::to_string(GetArmAngleUnits()));
     frc::SmartDashboard::PutString("Arm/AngleMotor", units::angle::to_string(GetArmAngleMotorUnits()));
     frc::SmartDashboard::PutNumber("Arm/EncoderDifference", (GetArmAngleUnits() - GetArmAngleMotorUnits()).to<double>() );
+    frc::SmartDashboard::PutString("Arm/IdleState", idleStateTypes[m_idleState]);
 
 }
 
@@ -111,7 +113,7 @@ units::degree_t Arm::GetTargetPositionUnits() {
 
 double Arm::GetArmAngle() {
 
-    return ((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 196;
+    return ((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 195;
 }
 
 double Arm::GetArmAngleMotor() {
@@ -122,7 +124,7 @@ double Arm::GetArmAngleMotor() {
 
 units::degree_t Arm::GetArmAngleUnits() {
 
-    return units::degree_t(((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 196);
+    return units::degree_t(((m_armEncoder->GetSelectedSensorPosition() / 4096.0) * 360 ) + 195);
 
 }
 

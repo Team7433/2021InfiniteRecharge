@@ -11,7 +11,7 @@ DriveTrain::DriveTrain() {
 
     m_orchestra->AddInstrument(*m_rightDriveMaster);
     m_orchestra->AddInstrument(*m_leftDriveMaster);
-    m_orchestra->LoadMusic("Enabled.chrp");
+    m_orchestra->LoadMusic("song1.chrp");
 
     m_leftDriveSlave->Follow(*m_leftDriveMaster);
     m_rightDriveSlave->Follow(*m_rightDriveMaster);
@@ -75,6 +75,11 @@ DriveTrain::DriveTrain() {
     m_profiler->SetMetersToUnits((1/kMetersPerUnit));
     m_profiler->SetmpsToUnit100ms(kUnits100msPerMeterSecond);
 
+    m_leftDriveMaster->ConfigOpenloopRamp(0);
+    m_rightDriveMaster->ConfigOpenloopRamp(0);
+    m_rightDriveSlave->ConfigOpenloopRamp(0);
+    m_leftDriveSlave->ConfigOpenloopRamp(0);
+
 }
 
 // This method will be called once per scheduler run
@@ -83,6 +88,7 @@ void DriveTrain::Periodic() {
     frc::SmartDashboard::PutNumber("drive/RightVelocity", getRightVelocity().to<double>());
     frc::SmartDashboard::PutNumber("drive/LeftPosition", getLeftDistance().to<double>());
     frc::SmartDashboard::PutNumber("drive/RightPosition", getRightDistance().to<double>());
+    frc::SmartDashboard::PutString("drive/idleState", idleStateTypes[m_idleState]);
     // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorLeft", m_leftDriveMaster->GetClosedLoopError());
     // frc::SmartDashboard::PutNumber("drive/ClosedLoopErrorRight", m_rightDriveMaster->GetClosedLoopError());
 }

@@ -53,5 +53,6 @@ class Vision : public frc2::SubsystemBase {
   units::millimeter_t HeightOfTarget_datam;
   units::degree_t PHI;
   units::degree_t AngleOfArm;
+
   Arm* m_arm;
 };

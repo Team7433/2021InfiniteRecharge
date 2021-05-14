@@ -16,7 +16,6 @@ Climber::Climber() {
     m_masterMotor->ConfigMotionAcceleration(0.0, ktimeoutMs);
     m_masterMotor->ConfigMotionCruiseVelocity(0.0, ktimeoutMs);
 
-    m_slaveMotor->SetNeutralMode(NeutralMode::Coast);
     m_masterMotor->SetNeutralMode(NeutralMode::Brake);
 
     m_masterMotor->ConfigMotionAcceleration(1*((11.431*2048)/10), ktimeoutMs);
@@ -33,8 +32,8 @@ Climber::Climber() {
 void Climber::Periodic() {
 
     frc::SmartDashboard::PutNumber("Climber/PercetangeOutput", m_masterMotor->GetMotorOutputPercent());
-    frc::SmartDashboard::PutNumber("Climber/Error", m_masterMotor->GetClosedLoopError());
-    frc::SmartDashboard::PutNumber("Climber/TargetEncoder", m_masterMotor->GetClosedLoopTarget());
+    // frc::SmartDashboard::PutNumber("Climber/Error", m_masterMotor->GetClosedLoopError());
+    // frc::SmartDashboard::PutNumber("Climber/TargetEncoder", m_masterMotor->GetClosedLoopTarget());
     frc::SmartDashboard::PutBoolean("Climber/Locked", GetLockPosition() == ClimberLock_Position::Lock);
     
     if (GetLockPosition() == ClimberConstants::ClimberLock_Position::Lock) {
@@ -85,7 +84,17 @@ void Climber::RunRevolutions(double revolutions, double maxAccel, double maxVel)
 void Climber::RunDynamicRevoltions(std::function<double()> revolutionTarget) {
 
     if (GetLockPosition() == ClimberConstants::ClimberLock_Position::Unlock) {
+        if ( revolutionTarget() < m_masterMotor->GetSelectedSensorPosition() ) {
 
+            m_masterMotor->ConfigMotionAcceleration(3*((11.431*2048)/10), ktimeoutMs);
+            m_masterMotor->ConfigMotionCruiseVelocity(4*((11.431*2048)/10), ktimeoutMs);
+
+        } else {
+
+            m_masterMotor->ConfigMotionAcceleration(1.5*((11.431*2048)/10), ktimeoutMs);
+            m_masterMotor->ConfigMotionCruiseVelocity(3*((11.431*2048)/10), ktimeoutMs);
+
+        }
         m_masterMotor->Set(ControlMode::MotionMagic, (revolutionTarget()*(2048*11.431)));
 
     } else {

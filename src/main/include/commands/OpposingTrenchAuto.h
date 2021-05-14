@@ -4,6 +4,9 @@
 
 #pragma once
 
+#include <frc2/command/CommandHelper.h>
+#include <frc2/command/SequentialCommandGroup.h>
+
 #include <iostream>
 
 #include <frc2/command/CommandHelper.h>
@@ -42,15 +45,9 @@
 #include "commands/DriveMotionControl.h"
 
 
-
-class SixBallAutoB
+class OpposingTrenchAuto
     : public frc2::CommandHelper<frc2::SequentialCommandGroup,
-                                 SixBallAutoB> {
+                                 OpposingTrenchAuto> {
  public:
-  SixBallAutoB(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
- private:
-
-  
-
-
+  OpposingTrenchAuto(FloorIntake*, DriveTrain*, Shooter*, BallHolder*, Feeder*, Gyro*, Vision*, Arm*);
 };
