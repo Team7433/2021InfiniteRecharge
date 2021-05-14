@@ -38,6 +38,7 @@ TurnToTarget::TurnToTarget(Gyro* gyro, DriveTrain* drivetrain, std::function<uni
 // Called when the command is initially scheduled.
 void TurnToTarget::Initialize() {
   //Checks if there is a target if not ends command
+  m_driveTrain->SstVelocityRamping(0.0);
   m_driveTrain->setState(idleState::reachingTarget);
   if (m_overide == false) {
     if (m_vision->getPowerPortDetected() == false) {

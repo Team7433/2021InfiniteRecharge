@@ -25,6 +25,7 @@ void GyroDrive::Initialize() {
   m_error = m_headingAngle() - m_gyro->GetYaw();
   m_startError = m_error;
   m_driveTrain->setState(idleState::reachingTarget);
+  m_driveTrain->SstVelocityRamping(0.0);
 
   frc::SmartDashboard::PutNumber("GyroDrive/TargetAngle", m_headingAngle().to<double>());
 

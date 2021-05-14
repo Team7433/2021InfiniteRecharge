@@ -57,8 +57,11 @@ void ClimbMode::Execute() {
   }
 
   //toggle climbMode
+  if (m_operatorJoystick->GetRawButtonPressed(7)) {
+    m_climbMode = true;
+  }
   if (m_operatorJoystick->GetRawButtonPressed(8)) {
-    m_climbMode = !m_climbMode;
+    m_climbMode = false;
   }
   //toggles to lock mode when match time reaches less than 2
   if (m_timer.GetMatchTime() < 2_s && !m_matchTriggered) {

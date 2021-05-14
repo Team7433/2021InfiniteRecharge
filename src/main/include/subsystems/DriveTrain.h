@@ -83,6 +83,8 @@ class DriveTrain : public frc2::SubsystemBase {
 
   void setState(idleState state) { m_idleState = state; }
 
+  void SstVelocityRamping(double ramp) {m_leftDriveMaster->ConfigOpenloopRamp(ramp, ktimeoutMs); m_rightDriveMaster->ConfigOpenloopRamp(ramp, ktimeoutMs);}
+
   idleState getState() const { return m_idleState; }
 
 
